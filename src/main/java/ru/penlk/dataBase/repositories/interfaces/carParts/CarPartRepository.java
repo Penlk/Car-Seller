@@ -8,8 +8,12 @@ import java.util.Optional;
 
 public interface CarPartRepository {
     Collection<CarPart> findAll();
+
     Optional<CarPart> findById(CarPartId id);
+
     void delete(CarPartId id) throws CarPartNotFoundException;
+
     CarPart update(CarPart node) throws CarPartNotFoundException;
+
     CarPart create(CarPart node) throws CarPartAlreadyInException;
 }

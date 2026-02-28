@@ -10,7 +10,9 @@ import java.util.Collection;
 
 public interface SpecialConfigurationRepository {
     Collection<SpecialConfiguration> findByCarId(CarId carId) throws CarNotFoundException;
+
     void delete(SpecialConfiguration configuration) throws CarNotFoundException, CarPartNotFoundException;
+
     // CarPartId updateNode(SpecialConfiguration configuration) throws CarNotFoundException, CarPartNotFoundException;
     void create(SpecialConfiguration configuration) throws CarPartAlreadyInException;
 }
