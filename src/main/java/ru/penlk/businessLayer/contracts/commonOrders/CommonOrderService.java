@@ -13,7 +13,7 @@ public interface CommonOrderService {
 
     IssueCommonOrder.Response issue(IssueCommonOrder.Request request);
 
-    ConfirmedCommonOrder.Response confirm(ConfirmedCommonOrder.Request request);
+    ConfirmCommonOrder.Response confirm(ConfirmCommonOrder.Request request);
 
     WaitPurchaseCommonOrder.Response waitPurchase(WaitPurchaseCommonOrder.Request request);
 
