@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import ru.penlk.dataBase.entities.cars.*;
+import ru.penlk.dataBase.entities.valueObjects.Price;
 
 import java.util.List;
 
@@ -13,8 +14,8 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CarQuery {
-    private CarPrice minPrice;
-    private CarPrice maxPrice;
+    private Price minPrice;
+    private Price maxPrice;
     private List<String> brands;
     private String model;
     private List<String> bodies;

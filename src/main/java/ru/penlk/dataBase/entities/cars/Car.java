@@ -3,21 +3,22 @@ package ru.penlk.dataBase.entities.cars;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
+import ru.penlk.dataBase.entities.valueObjects.Price;
 
 @AllArgsConstructor
 @Getter
 @Setter
 public class Car {
     private CarId id;
-    private CarPrice price;
+    private Price price;
     private String brand;
     private String model;
     private String body;
-    private Fuel typeFuel;
+    private Fuel fuel;
     private EnginePower enginePower;
     private EngineVolume engineVolume;
-    private GearShiftBox typeGearShiftBox;
-    private CarDrive typeCareDrive;
+    private GearShiftBox gearShiftBox;
+    private CarDrive carDrive;
     private String colour;
 }
 

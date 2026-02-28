@@ -9,7 +9,7 @@ import ru.penlk.dataBase.repositories.interfaces.orders.specialOrders.SpecialOrd
 import java.util.Collection;
 
 public interface NodeSetRepository {
-    Collection<CarPartId> findByOrderId(SpecialOrderId specialOrderId);
+    Collection<CarPartId> findByOrderId(SpecialOrderId specialOrderId) throws SpecialOrderNotFoundException;
 
     void create(SpecialOrderId specialOrderId, CarPartId carPartId) throws CarPartAlreadyInException;
 
