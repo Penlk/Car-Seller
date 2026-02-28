@@ -2,8 +2,8 @@ package ru.penlk.businessLayer.contracts.commonOrders.updates;
 
 import ru.penlk.businessLayer.contracts.commonOrders.models.CommonOrderDto;
 
-public abstract class PurchasedCommonOrder {
-    private PurchasedCommonOrder() { }
+public abstract class PurchaseCommonOrder {
+    private PurchaseCommonOrder() { }
 
     public record Request(long orderId) { }
 

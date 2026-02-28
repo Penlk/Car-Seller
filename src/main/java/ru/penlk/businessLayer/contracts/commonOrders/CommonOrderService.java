@@ -1,5 +1,7 @@
 package ru.penlk.businessLayer.contracts.commonOrders;
 
+import ru.penlk.businessLayer.contracts.commonOrders.updates.*;
+
 public interface CommonOrderService {
     CreateCommonOrder.Response create(CreateCommonOrder.Request request);
 
@@ -8,4 +10,18 @@ public interface CommonOrderService {
     UpdateCommonOrder.Response update(UpdateCommonOrder.Request request);
 
     DeleteCommonOrder.Response delete(DeleteCommonOrder.Request request);
+
+    IssueCommonOrder.Response issue(IssueCommonOrder.Request request);
+
+    ConfirmedCommonOrder.Response confirm(ConfirmedCommonOrder.Request request);
+
+    WaitPurchaseCommonOrder.Response waitPurchase(WaitPurchaseCommonOrder.Request request);
+
+    PurchaseCommonOrder.Response purchase(PurchaseCommonOrder.Request request);
+
+    CarReadyToTakeCommonOrder.Response carReadyToTake(CarReadyToTakeCommonOrder.Request request);
+
+    CompletedCommonOrder.Response completed(CompletedCommonOrder.Request request);
+
+    CancelCommonOrder.Response cancel(CancelCommonOrder.Request request);
 }

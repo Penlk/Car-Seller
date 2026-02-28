@@ -1,7 +1,5 @@
 package ru.penlk.businessLayer.contracts.commonOrders.updates;
 
-import ru.penlk.businessLayer.contracts.commonOrders.models.CommonOrderDto;
-
 public abstract class CancelCommonOrder {
     private CancelCommonOrder() { }
 
