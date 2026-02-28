@@ -1,16 +1,15 @@
 package ru.penlk.businessLayer.contracts.cars;
 
-import ru.penlk.businessLayer.contracts.cars.operations.CreateCar;
-import ru.penlk.businessLayer.contracts.cars.operations.DeleteCar;
-import ru.penlk.businessLayer.contracts.cars.operations.ReadCar;
-import ru.penlk.businessLayer.contracts.cars.operations.UpdateCar;
+import ru.penlk.businessLayer.contracts.ServiceException;
+import ru.penlk.businessLayer.contracts.cars.models.CarDto;
+import ru.penlk.businessLayer.contracts.cars.models.CreateCarDto;
 
 public interface CarService {
-    CreateCar.Response create(CreateCar.Request request);
+    CarDto create(CreateCarDto request);
 
-    ReadCar.Response read(ReadCar.Request request);
+    CarDto read(Long id) throws ServiceException;
 
-    UpdateCar.Response update(UpdateCar.Request request);
+    CarDto update(CarDto request) throws ServiceException;
 
-    DeleteCar.Response delete(DeleteCar.Request request);
+    void delete(Long id) throws ServiceException;
 }

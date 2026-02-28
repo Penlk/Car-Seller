@@ -1,11 +1,15 @@
 package ru.penlk.businessLayer.contracts.carParts;
 
+import ru.penlk.businessLayer.contracts.ServiceException;
+import ru.penlk.businessLayer.contracts.carParts.models.CarPartDto;
+import ru.penlk.businessLayer.contracts.carParts.models.CreateCarPartDto;
+
 public interface CarPartService {
-    CreateCarPart.Response create(CreateCarPart.Request request);
+    CarPartDto create(CreateCarPartDto request);
 
-    ReadCarPart.Response read(ReadCarPart.Request request);
+    CarPartDto read(Long id) throws ServiceException;
 
-    UpdateCarPart.Response update(UpdateCarPart.Request request);
+    CarPartDto update(CarPartDto request) throws ServiceException;
 
-    DeleteCarPart.Response delete(DeleteCarPart.Request request);
+    void delete(Long id) throws ServiceException;
 }

@@ -1,27 +1,32 @@
 package ru.penlk.businessLayer.contracts.specialOrders;
 
-import ru.penlk.businessLayer.contracts.specialOrders.updates.*;
+import ru.penlk.businessLayer.contracts.ServiceException;
+import ru.penlk.businessLayer.contracts.specialOrders.models.CreateSpecialOrderDto;
+import ru.penlk.businessLayer.contracts.specialOrders.models.IssueSpecialOrderDto;
+import ru.penlk.businessLayer.contracts.specialOrders.models.SpecialOrderDto;
+
+import java.util.Collection;
 
 public interface SpecialOrderService {
-    CreateSpecialOrder.Response create(CreateSpecialOrder.Request request);
+    SpecialOrderDto create(CreateSpecialOrderDto request);
 
-    ReadSpecialOrder.Response read(ReadSpecialOrder.Request request);
+    SpecialOrderDto read(Long id) throws ServiceException;
 
-    UpdateSpecialOrder.Response update(UpdateSpecialOrder.Request request);
+    SpecialOrderDto update(SpecialOrderDto request) throws ServiceException;
 
-    DeleteSpecialOrder.Response delete(DeleteSpecialOrder.Request request);
+    void delete(Long id) throws ServiceException;
 
-    IssueSpecialOrder.Response issue(IssueSpecialOrder.Request request);
+    IssueSpecialOrderDto issue(Long clientId, Long carId, Collection<Long> carPartIds) throws ServiceException;
 
-    ConfirmSpecialOrder.Response confirm(ConfirmSpecialOrder.Request request);
+    SpecialOrderDto confirm(Long orderId) throws ServiceException;
 
-    WaitPurchaseSpecialOrder.Response waitPurchase(WaitPurchaseSpecialOrder.Request request);
+    SpecialOrderDto waitPurchase(Long orderId) throws ServiceException;
 
-    PurchaseSpecialOrder.Response purchase(PurchaseSpecialOrder.Request request);
+    SpecialOrderDto purchase(Long orderId) throws ServiceException;
 
-    CarReadyToTakeSpecialOrder.Response carReadyToTake(CarReadyToTakeSpecialOrder.Request request);
+    SpecialOrderDto carReadyToTake(Long orderId) throws ServiceException;
 
-    CompletedSpecialOrder.Response completed(CompletedSpecialOrder.Request request);
+    SpecialOrderDto completed(Long orderId) throws ServiceException;
 
-    CancelSpecialOrder.Response cancel(CancelSpecialOrder.Request request);
+    void cancel(Long orderId) throws ServiceException;
 }

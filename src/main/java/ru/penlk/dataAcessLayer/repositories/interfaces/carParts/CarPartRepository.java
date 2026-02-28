@@ -15,5 +15,5 @@ public interface CarPartRepository {
 
     CarPart update(CarPart node) throws CarPartNotFoundException;
 
-    CarPart create(CarPart node) throws CarPartAlreadyInException;
+    CarPart create(CarPart node);
 }

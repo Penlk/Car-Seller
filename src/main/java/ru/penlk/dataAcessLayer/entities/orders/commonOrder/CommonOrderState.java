@@ -1,7 +1,6 @@
 package ru.penlk.dataAcessLayer.entities.orders.commonOrder;
 
-public enum CommonOrderState
-{
+public enum CommonOrderState {
     Draft,
     Issued,
     Agreed,

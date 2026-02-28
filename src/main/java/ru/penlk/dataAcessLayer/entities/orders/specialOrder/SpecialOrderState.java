@@ -1,7 +1,6 @@
 package ru.penlk.dataAcessLayer.entities.orders.specialOrder;
 
-public enum SpecialOrderState
-{
+public enum SpecialOrderState {
     Draft,
     Issued,
     Agreed,

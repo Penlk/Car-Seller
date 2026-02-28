@@ -1,27 +1,30 @@
 package ru.penlk.businessLayer.contracts.commonOrders;
 
-import ru.penlk.businessLayer.contracts.commonOrders.updates.*;
+import ru.penlk.businessLayer.contracts.ServiceException;
+import ru.penlk.businessLayer.contracts.commonOrders.models.CommonOrderDto;
+import ru.penlk.businessLayer.contracts.commonOrders.models.CreateCommonOrderDto;
+import ru.penlk.businessLayer.contracts.commonOrders.models.IssueCommonOrderDto;
 
 public interface CommonOrderService {
-    CreateCommonOrder.Response create(CreateCommonOrder.Request request);
+    CommonOrderDto create(CreateCommonOrderDto request);
 
-    ReadCommonOrder.Response read(ReadCommonOrder.Request request);
+    CommonOrderDto read(Long id) throws ServiceException;
 
-    UpdateCommonOrder.Response update(UpdateCommonOrder.Request request);
+    CommonOrderDto update(CommonOrderDto request) throws ServiceException;
 
-    DeleteCommonOrder.Response delete(DeleteCommonOrder.Request request);
+    void delete(Long id) throws ServiceException;
 
-    IssueCommonOrder.Response issue(IssueCommonOrder.Request request);
+    IssueCommonOrderDto issue(Long clientId, Long carId) throws ServiceException;
 
-    ConfirmCommonOrder.Response confirm(ConfirmCommonOrder.Request request);
+    CommonOrderDto confirm(Long orderId) throws ServiceException;
 
-    WaitPurchaseCommonOrder.Response waitPurchase(WaitPurchaseCommonOrder.Request request);
+    CommonOrderDto waitPurchase(Long orderId) throws ServiceException;
 
-    PurchaseCommonOrder.Response purchase(PurchaseCommonOrder.Request request);
+    CommonOrderDto purchase(Long orderId) throws ServiceException;
 
-    CarReadyToTakeCommonOrder.Response carReadyToTake(CarReadyToTakeCommonOrder.Request request);
+    CommonOrderDto carReadyToTake(Long orderId) throws ServiceException;
 
-    CompletedCommonOrder.Response completed(CompletedCommonOrder.Request request);
+    CommonOrderDto completed(Long orderId) throws ServiceException;
 
-    CancelCommonOrder.Response cancel(CancelCommonOrder.Request request);
+    void cancel(Long orderId) throws ServiceException;
 }

@@ -1,7 +1,6 @@
 package ru.penlk.dataAcessLayer.repositories.implementations;
 
 
-
 import ru.penlk.dataAcessLayer.entities.users.systemAdmins.SystemAdmin;
 import ru.penlk.dataAcessLayer.entities.users.systemAdmins.SystemAdminId;
 import ru.penlk.dataAcessLayer.repositories.interfaces.users.systemAdmins.SystemAdminRepository;
