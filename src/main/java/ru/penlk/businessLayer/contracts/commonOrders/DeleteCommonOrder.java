@@ -1,7 +1,7 @@
 package ru.penlk.businessLayer.contracts.commonOrders;
 
-public abstract class DeleteCarPart {
-    private DeleteCarPart() {}
+public abstract class DeleteCommonOrder {
+    private DeleteCommonOrder() {}
 
     public record Request(long id) {}
 

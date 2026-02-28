@@ -1,12 +1,11 @@
 package ru.penlk.businessLayer.contracts.commonOrders;
 
 import ru.penlk.businessLayer.contracts.commonOrders.models.CommonOrderDto;
-import ru.penlk.businessLayer.contracts.commonOrders.models.CreateCommonOrderDto;
 
-public abstract class CreateCarPart {
-    private CreateCarPart() {}
+public abstract class ReadCommonOrder {
+    private ReadCommonOrder() {}
 
-    public record Request(CreateCommonOrderDto carDto) {}
+    public record Request(long id) {}
 
     public static class Response {
         public record Failure(String Message) { }

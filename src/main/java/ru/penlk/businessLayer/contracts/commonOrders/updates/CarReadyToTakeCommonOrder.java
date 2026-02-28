@@ -1,11 +1,11 @@
-package ru.penlk.businessLayer.contracts.commonOrders;
+package ru.penlk.businessLayer.contracts.commonOrders.updates;
 
 import ru.penlk.businessLayer.contracts.commonOrders.models.CommonOrderDto;
 
-public abstract class UpdateCarPart {
-    private UpdateCarPart() {}
+public abstract class CarReadyToTakeCommonOrder {
+    private CarReadyToTakeCommonOrder() { }
 
-    public record Request(CommonOrderDto carDto) {}
+    public record Request(long orderId) { }
 
     public static class Response {
         public record Failure(String Message) { }
