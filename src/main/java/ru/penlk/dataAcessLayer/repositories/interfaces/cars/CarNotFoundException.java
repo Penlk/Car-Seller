@@ -8,5 +8,5 @@ import ru.penlk.dataAcessLayer.entities.cars.CarId;
 @Getter
 @AllArgsConstructor
 public class CarNotFoundException extends RuntimeException {
-    private final CarId carId;
+    private final CarId id;
 }
