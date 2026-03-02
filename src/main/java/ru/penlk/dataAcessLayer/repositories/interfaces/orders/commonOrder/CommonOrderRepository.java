@@ -15,5 +15,5 @@ public interface CommonOrderRepository {
 
     void delete(CommonOrderId commonOrderId) throws CommonOrderNotFoundException;
 
-    CommonOrder create(CommonOrder commonOrder) throws CommonOrderAlreadyInException;
+    CommonOrder create(CommonOrder commonOrder);
 }

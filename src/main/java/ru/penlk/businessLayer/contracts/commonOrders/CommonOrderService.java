@@ -3,7 +3,6 @@ package ru.penlk.businessLayer.contracts.commonOrders;
 import ru.penlk.businessLayer.contracts.ServiceException;
 import ru.penlk.businessLayer.contracts.commonOrders.models.CommonOrderDto;
 import ru.penlk.businessLayer.contracts.commonOrders.models.CreateCommonOrderDto;
-import ru.penlk.businessLayer.contracts.commonOrders.models.IssueCommonOrderDto;
 
 public interface CommonOrderService {
     CommonOrderDto create(CreateCommonOrderDto request);

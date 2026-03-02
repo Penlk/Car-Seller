@@ -36,7 +36,7 @@ public record CarDto(long id,
         );
     }
 
-    public static Car MapToCar(CarDto carDto) {
+    public static Car MapToModel(CarDto carDto) {
         return new Car(
                 new CarId(carDto.id()),
                 new Price(carDto.price()),

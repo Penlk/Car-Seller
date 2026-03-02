@@ -13,12 +13,12 @@ import ru.penlk.dataAcessLayer.repositories.interfaces.cars.CarRepository;
 import java.util.Optional;
 
 @AllArgsConstructor
-public class CommonCarService implements CarService {
+public class DefaultCarService implements CarService {
     private final CarRepository carRepository;
 
     @Override
     public CarDto create(CreateCarDto request) {
-        Car car = carRepository.create(CreateCarDto.MapToCar(request));
+        Car car = carRepository.create(CreateCarDto.MapToModel(request));
 
         return CarDto.MapToDto(car);
     }
@@ -31,13 +31,13 @@ public class CommonCarService implements CarService {
             return CarDto.MapToDto(carOptional.get());
         }
 
-        throw new ServiceException("Car not found");
+        throw new ServiceException(String.format("Car with id: {%d} not found", id));
     }
 
     @Override
     public CarDto update(CarDto request) throws ServiceException {
         try {
-            Car mappingCar = CarDto.MapToCar(request);
+            Car mappingCar = CarDto.MapToModel(request);
 
             return CarDto.MapToDto(
                 carRepository.update(mappingCar)

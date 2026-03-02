@@ -14,7 +14,7 @@ import ru.penlk.dataAcessLayer.repositories.interfaces.carParts.CarPartRepositor
 import java.util.Optional;
 
 @AllArgsConstructor
-public class CommonCarPartService implements CarPartService {
+public class DefaultCarPartService implements CarPartService {
     private final CarPartRepository carPartRepository;
 
     @Override
@@ -36,7 +36,7 @@ public class CommonCarPartService implements CarPartService {
             return CarPartDto.MapToDto(carPartOptional.get());
         }
 
-        throw new ServiceException("CarPart not found");
+        throw new ServiceException(String.format("CarPart with id: {%d} not found", id));
     }
 
     @Override

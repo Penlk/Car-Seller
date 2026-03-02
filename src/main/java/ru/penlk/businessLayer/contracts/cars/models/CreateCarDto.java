@@ -16,10 +16,10 @@ public record CreateCarDto(BigDecimal price,
                            BigDecimal enginePower,
                            BigDecimal engineVolume,
                            GearShiftBoxContract gearShiftBox,
-                           CarDriveContract CarDrive,
+                           CarDriveContract carDrive,
                            String colour) {
 
-    public static Car MapToCar(CreateCarDto createCarDto) {
+    public static Car MapToModel(CreateCarDto createCarDto) {
         return new Car(
                 CarId.defaultId(),
                 new Price(createCarDto.price()),
