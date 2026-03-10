@@ -18,9 +18,9 @@ public class DefaultCarService implements CarService {
 
     @Override
     public CarDto create(CreateCarDto request) {
-        Car car = carRepository.create(CreateCarDto.MapToModel(request));
+        Car car = carRepository.create(CreateCarDto.mapToModel(request));
 
-        return CarDto.MapToDto(car);
+        return CarDto.mapToDto(car);
     }
 
     @Override
@@ -28,7 +28,7 @@ public class DefaultCarService implements CarService {
         Optional<Car> carOptional = carRepository.findById(new CarId(id));
 
         if (carOptional.isPresent()) {
-            return CarDto.MapToDto(carOptional.get());
+            return CarDto.mapToDto(carOptional.get());
         }
 
         throw new ServiceException(String.format("Car with id: {%d} not found", id));
@@ -37,9 +37,9 @@ public class DefaultCarService implements CarService {
     @Override
     public CarDto update(CarDto request) throws ServiceException {
         try {
-            Car mappingCar = CarDto.MapToModel(request);
+            Car mappingCar = CarDto.mapToModel(request);
 
-            return CarDto.MapToDto(
+            return CarDto.mapToDto(
                 carRepository.update(mappingCar)
             );
         } catch (CarNotFoundException e) {

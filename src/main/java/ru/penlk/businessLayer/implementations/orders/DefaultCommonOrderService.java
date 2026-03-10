@@ -5,12 +5,14 @@ import ru.penlk.businessLayer.contracts.ServiceException;
 import ru.penlk.businessLayer.contracts.commonOrders.CommonOrderService;
 import ru.penlk.businessLayer.contracts.commonOrders.models.CommonOrderDto;
 import ru.penlk.businessLayer.contracts.commonOrders.models.CreateCommonOrderDto;
+import ru.penlk.businessLayer.contracts.commonOrders.models.IssueCommonOrderDto;
 import ru.penlk.dataAcessLayer.entities.cars.CarId;
 import ru.penlk.dataAcessLayer.entities.orders.commonOrder.CommonOrder;
 import ru.penlk.dataAcessLayer.entities.orders.commonOrder.CommonOrderId;
 import ru.penlk.dataAcessLayer.entities.orders.commonOrder.CommonOrderState;
 import ru.penlk.dataAcessLayer.entities.users.clients.ClientId;
 import ru.penlk.dataAcessLayer.entities.users.managers.Manager;
+import ru.penlk.dataAcessLayer.entities.users.managers.ManagerId;
 import ru.penlk.dataAcessLayer.repositories.interfaces.orders.commonOrder.CommonOrderNotFoundException;
 import ru.penlk.dataAcessLayer.repositories.interfaces.orders.commonOrder.CommonOrderRepository;
 import ru.penlk.dataAcessLayer.repositories.interfaces.users.clients.ClientRepository;
@@ -71,23 +73,28 @@ public class DefaultCommonOrderService implements CommonOrderService {
             throw new ServiceException(String.format("Client with id: {%d} not found", clientId));
         }
 
-        Optional<Manager> optionalManager = managerSelectionStrategy.findManager(managerRepository);
+        return IssueCommonOrderDto.mapToDto(
+                commonOrderRepository.create(new CommonOrder(
+                    CommonOrderId.defaultId(),
+                    CommonOrderState.Issued,
+                    new ClientId(clientId),
+                    ManagerId.defaultId(),
+                    new CarId(carId)
+                    )
+                )
+        );
+    }
+
+    @Override
+    public CommonOrderDto confirm(Long orderId) throws ServiceException {
+        Optional<Manager> optionalManager = managerSelectionStrategy.findManager(managerRepository.findAll());
 
         if (optionalManager.isEmpty()) {
             throw new ServiceException("Cannot find any manager");
         }
 
-        commonOrderRepository.create(new CommonOrder(
-                CommonOrderId.defaultId(),
-                CommonOrderState.Issued,
-                new ClientId(clientId),
-                optionalManager.get().getId(),
-                new CarId(carId)
-        ));
-    }
 
-    @Override
-    public CommonOrderDto confirm(Long orderId) throws ServiceException {
+
         return null;
     }
 

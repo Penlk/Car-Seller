@@ -10,9 +10,7 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class DefaultManagerSelection implements ManagerSelectionStrategy {
     @Override
-    public Optional<Manager> findManager(ManagerRepository managerRepository) {
-        Collection<Manager> managers = managerRepository.findAll();
-
+    public Optional<Manager> findManager(Collection<Manager> managers) {
         int randomIndex = ThreadLocalRandom.current().nextInt(managers.size());
 
         Iterator<Manager> managerIterator = managers.stream().iterator();

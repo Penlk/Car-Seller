@@ -20,7 +20,7 @@ public record CarDto(long id,
                      CarDriveContract carDrive,
                      String colour) {
 
-    public static CarDto MapToDto(Car car) {
+    public static CarDto mapToDto(Car car) {
         return new CarDto(
                 car.getId().id(),
                 car.getPrice().value(),
@@ -36,7 +36,7 @@ public record CarDto(long id,
         );
     }
 
-    public static Car MapToModel(CarDto carDto) {
+    public static Car mapToModel(CarDto carDto) {
         return new Car(
                 new CarId(carDto.id()),
                 new Price(carDto.price()),

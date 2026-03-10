@@ -19,7 +19,7 @@ public record CreateCarDto(BigDecimal price,
                            CarDriveContract carDrive,
                            String colour) {
 
-    public static Car MapToModel(CreateCarDto createCarDto) {
+    public static Car mapToModel(CreateCarDto createCarDto) {
         return new Car(
                 CarId.defaultId(),
                 new Price(createCarDto.price()),
