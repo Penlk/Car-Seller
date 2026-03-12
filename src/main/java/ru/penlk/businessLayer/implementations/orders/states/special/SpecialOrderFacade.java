@@ -1,8 +1,6 @@
 package ru.penlk.businessLayer.implementations.orders.states.special;
 
 import lombok.AllArgsConstructor;
-import ru.penlk.dataAcessLayer.entities.orders.commonOrder.CommonOrder;
-import ru.penlk.dataAcessLayer.entities.orders.commonOrder.CommonOrderState;
 import ru.penlk.dataAcessLayer.entities.orders.specialOrder.SpecialOrder;
 import ru.penlk.dataAcessLayer.entities.orders.specialOrder.SpecialOrderState;
 import ru.penlk.dataAcessLayer.entities.users.managers.ManagerId;

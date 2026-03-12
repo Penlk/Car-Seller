@@ -48,7 +48,7 @@ public class DefaultCarPartService implements CarPartService {
                     new NodeId(request.nodeId()));
 
             return CarPartDto.MapToDto(
-                carPartRepository.update(mappingCarPart)
+                    carPartRepository.update(mappingCarPart)
             );
         } catch (CarPartNotFoundException e) {
             throw new ServiceException(String.format("CarPart with id: {%d} not found", e.getId().id()));

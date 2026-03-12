@@ -5,7 +5,11 @@ import ru.penlk.dataAcessLayer.entities.users.managers.Manager;
 import ru.penlk.dataAcessLayer.entities.users.managers.ManagerId;
 import ru.penlk.dataAcessLayer.repositories.interfaces.users.managers.ManagerRepository;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
 
 public class InMemoryManagerRepository implements ManagerRepository {
     Map<ManagerId, Manager> managers = new HashMap<>();

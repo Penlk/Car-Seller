@@ -8,15 +8,19 @@ import ru.penlk.dataAcessLayer.repositories.interfaces.carParts.CarPartNotFoundE
 import ru.penlk.dataAcessLayer.repositories.interfaces.cars.CarNotFoundException;
 import ru.penlk.dataAcessLayer.repositories.interfaces.orders.specialConfigurations.SpecialConfigurationRepository;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class InMemorySpecialConfigurationRepository implements SpecialConfigurationRepository {
     Map<CarId, List<SpecialConfiguration>> nodes = new HashMap<>();
 
     @Override
-    public Collection<SpecialConfiguration> findByCarId(CarId carId) throws CarNotFoundException {
+    public Collection<SpecialConfiguration> findByCarId(CarId carId) {
         if (!nodes.containsKey(carId)) {
-            throw new CarNotFoundException(carId);
+            return new ArrayList<>();
         }
 
         return nodes.get(carId);

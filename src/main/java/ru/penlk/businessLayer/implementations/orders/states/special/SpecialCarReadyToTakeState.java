@@ -11,7 +11,7 @@ public class SpecialCarReadyToTakeState extends SpecialDraftState {
     @Override
     public Boolean tryComplete(SpecialOrderCore core) {
         core.updateState(new SpecialCompletedState());
-        
+
         return true;
     }
 }

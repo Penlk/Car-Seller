@@ -9,7 +9,7 @@ import ru.penlk.dataAcessLayer.repositories.interfaces.cars.CarNotFoundException
 import java.util.Collection;
 
 public interface SpecialConfigurationRepository {
-    Collection<SpecialConfiguration> findByCarId(CarId carId) throws CarNotFoundException;
+    Collection<SpecialConfiguration> findByCarId(CarId carId);
 
     void delete(SpecialConfiguration configuration) throws CarNotFoundException, CarPartNotFoundException;
 

@@ -40,7 +40,7 @@ public class DefaultCarService implements CarService {
             Car mappingCar = CarDto.mapToModel(request);
 
             return CarDto.mapToDto(
-                carRepository.update(mappingCar)
+                    carRepository.update(mappingCar)
             );
         } catch (CarNotFoundException e) {
             throw new ServiceException(String.format("Car with id: {%d} not found", e.getId().id()));

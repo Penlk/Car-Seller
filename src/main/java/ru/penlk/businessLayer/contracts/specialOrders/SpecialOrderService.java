@@ -1,6 +1,7 @@
 package ru.penlk.businessLayer.contracts.specialOrders;
 
 import ru.penlk.businessLayer.contracts.DomainValidationException;
+import ru.penlk.businessLayer.contracts.IncompatibleComponentException;
 import ru.penlk.businessLayer.contracts.ServiceException;
 import ru.penlk.businessLayer.contracts.specialOrders.models.CreateSpecialOrderDto;
 import ru.penlk.businessLayer.contracts.specialOrders.models.IssueSpecialOrderDto;
@@ -17,7 +18,10 @@ public interface SpecialOrderService {
 
     void delete(Long id) throws ServiceException;
 
-    IssueSpecialOrderDto issue(Long clientId, Long carId, Collection<Long> carPartIds) throws ServiceException, DomainValidationException;
+    IssueSpecialOrderDto issue(Long clientId, Long carId, Collection<Long> carPartIds) throws
+            ServiceException,
+            DomainValidationException,
+            IncompatibleComponentException;
 
     SpecialOrderDto confirm(Long orderId) throws ServiceException;
 

@@ -1,7 +1,5 @@
 package ru.penlk.businessLayer.contracts.specialOrders.models;
 
-import ru.penlk.businessLayer.contracts.specialOrders.models.SpecialOrderStateContract;
-import ru.penlk.businessLayer.contracts.specialOrders.models.IssueSpecialOrderDto;
 import ru.penlk.dataAcessLayer.entities.orders.specialOrder.SpecialOrder;
 import ru.penlk.dataAcessLayer.entities.valueObjects.Price;
 

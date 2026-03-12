@@ -11,7 +11,7 @@ public class CommonCarReadyToTakeState extends CommonDraftState {
     @Override
     public Boolean tryComplete(CommonOrderCore core) {
         core.updateState(new CommonCompletedState());
-        
+
         return true;
     }
 }

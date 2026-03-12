@@ -4,7 +4,11 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import ru.penlk.dataAcessLayer.entities.cars.*;
+import ru.penlk.dataAcessLayer.entities.cars.CarDrive;
+import ru.penlk.dataAcessLayer.entities.cars.EnginePower;
+import ru.penlk.dataAcessLayer.entities.cars.EngineVolume;
+import ru.penlk.dataAcessLayer.entities.cars.Fuel;
+import ru.penlk.dataAcessLayer.entities.cars.GearShiftBox;
 import ru.penlk.dataAcessLayer.entities.valueObjects.Price;
 
 import java.util.List;

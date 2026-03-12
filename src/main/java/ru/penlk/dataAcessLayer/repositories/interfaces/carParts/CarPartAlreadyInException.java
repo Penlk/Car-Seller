@@ -6,6 +6,6 @@ import ru.penlk.dataAcessLayer.entities.carParts.CarPartId;
 
 @AllArgsConstructor
 @Getter
-public class CarPartAlreadyInException extends Exception {
+public class CarPartAlreadyInException extends RuntimeException {
     private final CarPartId id;
 }
