@@ -1,0 +1,17 @@
+package ru.penlk.businessLayer.implementations.orders.states.common;
+
+import ru.penlk.dataAcessLayer.entities.orders.commonOrder.CommonOrderState;
+
+public class CommonPurchasedState extends CommonDraftState {
+    @Override
+    public CommonOrderState getState() {
+        return CommonOrderState.Paid;
+    }
+
+    @Override
+    public Boolean tryCarReadyToTake(CommonOrderCore core) {
+        core.updateState(new CommonCarReadyToTakeState());
+
+        return true;
+    }
+}

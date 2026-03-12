@@ -1,0 +1,18 @@
+package ru.penlk.businessLayer.implementations.orders.states.mappers;
+
+import ru.penlk.dataAcessLayer.entities.orders.specialOrder.SpecialOrderState;
+
+public class SpecialStateMapperImpl implements SpecialStateMapper {
+    @Override
+    public SpecialOrderStateHandler map(SpecialOrderState state) {
+        return switch (state) {
+            case SpecialOrderState.Issued -> new SpecialIssuedState();
+            case SpecialOrderState.Agreed -> new SpecialConfirmedState();
+            case SpecialOrderState.WaitingPayment -> new SpecialWaitingPurchaseState();
+            case SpecialOrderState.Paid -> new SpecialPurchasedState();
+            case SpecialOrderState.CarIsReady -> new SpecialCarReadyToTakeState();
+            case SpecialOrderState.Canceled -> new SpecialCanceledState();
+            case SpecialOrderState.Done -> new SpecialCompletedState();
+        };
+    }
+}

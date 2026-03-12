@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 import ru.penlk.dataAcessLayer.entities.carParts.CarPartId;
 import ru.penlk.dataAcessLayer.entities.cars.CarId;
+import ru.penlk.dataAcessLayer.entities.valueObjects.Price;
 
 @AllArgsConstructor
 @Getter
@@ -12,5 +13,5 @@ import ru.penlk.dataAcessLayer.entities.cars.CarId;
 public class SpecialConfiguration {
     private CarId carId;
     private CarPartId carPartId;
-    private long price;
+    private Price price;
 }

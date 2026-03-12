@@ -1,0 +1,12 @@
+package ru.penlk.businessLayer.implementations.orders.states.special;
+
+
+import ru.penlk.dataAcessLayer.entities.orders.specialOrder.SpecialOrderState;
+
+public class SpecialCanceledState extends SpecialDraftState {
+
+    @Override
+    public SpecialOrderState getState() {
+        return SpecialOrderState.Canceled;
+    }
+}

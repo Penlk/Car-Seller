@@ -2,8 +2,8 @@ package ru.penlk.dataAcessLayer.repositories.implementations;
 
 import ru.penlk.dataAcessLayer.entities.orders.commonOrder.CommonOrder;
 import ru.penlk.dataAcessLayer.entities.orders.commonOrder.CommonOrderId;
-import ru.penlk.dataAcessLayer.repositories.interfaces.orders.commonOrder.CommonOrderNotFoundException;
-import ru.penlk.dataAcessLayer.repositories.interfaces.orders.commonOrder.CommonOrderRepository;
+import ru.penlk.dataAcessLayer.repositories.interfaces.orders.commonOrders.CommonOrderNotFoundException;
+import ru.penlk.dataAcessLayer.repositories.interfaces.orders.commonOrders.CommonOrderRepository;
 
 import java.util.*;
 
