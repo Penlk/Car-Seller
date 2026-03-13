@@ -5,7 +5,7 @@ import ru.penlk.dataAcessLayer.entities.orders.commonOrder.CommonOrderState;
 public class CommonConfirmedState extends CommonDraftState {
     @Override
     public CommonOrderState getState() {
-        return CommonOrderState.Agreed;
+        return CommonOrderState.AGREED;
     }
 
     @Override

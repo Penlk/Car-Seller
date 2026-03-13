@@ -5,7 +5,7 @@ import ru.penlk.dataAcessLayer.entities.orders.specialOrder.SpecialOrderState;
 public class SpecialCarReadyToTakeState extends SpecialDraftState {
     @Override
     public SpecialOrderState getState() {
-        return SpecialOrderState.CarIsReady;
+        return SpecialOrderState.CAR_IS_READY;
     }
 
     @Override

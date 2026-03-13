@@ -14,13 +14,13 @@ public class SpecialStateMapperImpl implements SpecialStateMapper {
     @Override
     public SpecialOrderStateHandler map(SpecialOrderState state) {
         return switch (state) {
-            case SpecialOrderState.Issued -> new SpecialIssuedState();
-            case SpecialOrderState.Agreed -> new SpecialConfirmedState();
-            case SpecialOrderState.WaitingPayment -> new SpecialWaitingPurchaseState();
-            case SpecialOrderState.Paid -> new SpecialPurchasedState();
-            case SpecialOrderState.CarIsReady -> new SpecialCarReadyToTakeState();
-            case SpecialOrderState.Canceled -> new SpecialCanceledState();
-            case SpecialOrderState.Done -> new SpecialCompletedState();
+            case SpecialOrderState.ISSUED -> new SpecialIssuedState();
+            case SpecialOrderState.AGREED -> new SpecialConfirmedState();
+            case SpecialOrderState.WAITING_PAYMENT -> new SpecialWaitingPurchaseState();
+            case SpecialOrderState.PAID -> new SpecialPurchasedState();
+            case SpecialOrderState.CAR_IS_READY -> new SpecialCarReadyToTakeState();
+            case SpecialOrderState.CANCELED -> new SpecialCanceledState();
+            case SpecialOrderState.DONE -> new SpecialCompletedState();
         };
     }
 }

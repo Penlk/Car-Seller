@@ -3,23 +3,23 @@ package ru.penlk.businessLayer.contracts.cars.models;
 import ru.penlk.dataAcessLayer.entities.cars.Fuel;
 
 public enum FuelContract {
-    Petrol,
-    Diesel,
-    Electricity;
+    PETROL,
+    DIESEL,
+    ELECTRICITY;
 
     public static FuelContract mapToContract(Fuel fuel) {
         return switch (fuel) {
-            case Fuel.Petrol -> FuelContract.Petrol;
-            case Fuel.Diesel -> FuelContract.Diesel;
-            case Fuel.Electricity -> FuelContract.Electricity;
+            case Fuel.PETROL -> FuelContract.PETROL;
+            case Fuel.DIESEL -> FuelContract.DIESEL;
+            case Fuel.ELECTRICITY -> FuelContract.ELECTRICITY;
         };
     }
 
     public static Fuel mapToFuel(FuelContract fuelContract) {
         return switch (fuelContract) {
-            case FuelContract.Petrol -> Fuel.Petrol;
-            case FuelContract.Diesel -> Fuel.Diesel;
-            case FuelContract.Electricity -> Fuel.Electricity;
+            case FuelContract.PETROL -> Fuel.PETROL;
+            case FuelContract.DIESEL -> Fuel.DIESEL;
+            case FuelContract.ELECTRICITY -> Fuel.ELECTRICITY;
         };
     }
 }

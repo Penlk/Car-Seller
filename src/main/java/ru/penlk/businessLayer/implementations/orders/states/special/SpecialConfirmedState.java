@@ -5,7 +5,7 @@ import ru.penlk.dataAcessLayer.entities.orders.specialOrder.SpecialOrderState;
 public class SpecialConfirmedState extends SpecialDraftState {
     @Override
     public SpecialOrderState getState() {
-        return SpecialOrderState.Agreed;
+        return SpecialOrderState.AGREED;
     }
 
     @Override

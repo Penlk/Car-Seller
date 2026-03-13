@@ -5,7 +5,7 @@ import ru.penlk.dataAcessLayer.entities.orders.specialOrder.SpecialOrderState;
 public class SpecialPurchasedState extends SpecialDraftState {
     @Override
     public SpecialOrderState getState() {
-        return SpecialOrderState.Paid;
+        return SpecialOrderState.PAID;
     }
 
     @Override

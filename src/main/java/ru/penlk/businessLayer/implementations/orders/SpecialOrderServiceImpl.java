@@ -15,7 +15,6 @@ import ru.penlk.businessLayer.internal.CarPartConfigurationService;
 import ru.penlk.businessLayer.internal.CarPartPriceCalculator;
 import ru.penlk.businessLayer.internal.RequiredNodeConfigurationService;
 import ru.penlk.dataAcessLayer.entities.carParts.CarPart;
-import ru.penlk.dataAcessLayer.entities.carParts.CarPartId;
 import ru.penlk.dataAcessLayer.entities.cars.Car;
 import ru.penlk.dataAcessLayer.entities.cars.CarId;
 import ru.penlk.dataAcessLayer.entities.orders.specialOrder.SpecialOrder;
@@ -34,7 +33,6 @@ import ru.penlk.dataAcessLayer.repositories.interfaces.users.clients.ClientRepos
 import ru.penlk.dataAcessLayer.repositories.interfaces.users.managers.ManagerRepository;
 
 import java.util.Collection;
-import java.util.List;
 import java.util.Optional;
 
 @AllArgsConstructor
@@ -136,7 +134,7 @@ public class SpecialOrderServiceImpl implements SpecialOrderService {
 
         SpecialOrder specialOrder = specialOrderRepository.create(new SpecialOrder(
                         SpecialOrderId.defaultId(),
-                        SpecialOrderState.Issued,
+                        SpecialOrderState.ISSUED,
                         new ClientId(clientId),
                         ManagerId.defaultId(),
                         new CarId(carId),

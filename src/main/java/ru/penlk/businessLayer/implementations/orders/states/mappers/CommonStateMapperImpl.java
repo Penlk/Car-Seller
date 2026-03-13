@@ -14,13 +14,13 @@ public class CommonStateMapperImpl implements CommonStateMapper {
     @Override
     public CommonOrderStateHandler map(CommonOrderState state) {
         return switch (state) {
-            case CommonOrderState.Issued -> new CommonIssuedState();
-            case CommonOrderState.Agreed -> new CommonConfirmedState();
-            case CommonOrderState.WaitingPayment -> new CommonWaitingPurchaseState();
-            case CommonOrderState.Paid -> new CommonPurchasedState();
-            case CommonOrderState.CarIsReady -> new CommonCarReadyToTakeState();
-            case CommonOrderState.Canceled -> new CommonCanceledState();
-            case CommonOrderState.Done -> new CommonCompletedState();
+            case CommonOrderState.ISSUED -> new CommonIssuedState();
+            case CommonOrderState.AGREED -> new CommonConfirmedState();
+            case CommonOrderState.WAITING_PAYMENT -> new CommonWaitingPurchaseState();
+            case CommonOrderState.PAID -> new CommonPurchasedState();
+            case CommonOrderState.CAR_IS_READY -> new CommonCarReadyToTakeState();
+            case CommonOrderState.CANCELED -> new CommonCanceledState();
+            case CommonOrderState.DONE -> new CommonCompletedState();
         };
     }
 }

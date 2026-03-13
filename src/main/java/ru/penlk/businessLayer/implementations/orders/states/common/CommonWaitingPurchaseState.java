@@ -5,7 +5,7 @@ import ru.penlk.dataAcessLayer.entities.orders.commonOrder.CommonOrderState;
 public class CommonWaitingPurchaseState extends CommonDraftState {
     @Override
     public CommonOrderState getState() {
-        return CommonOrderState.WaitingPayment;
+        return CommonOrderState.WAITING_PAYMENT;
     }
 
     @Override

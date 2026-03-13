@@ -3,20 +3,20 @@ package ru.penlk.businessLayer.contracts.cars.models;
 import ru.penlk.dataAcessLayer.entities.cars.GearShiftBox;
 
 public enum GearShiftBoxContract {
-    Manual,
-    Automatic;
+    MANUAL,
+    AUTOMATIC;
 
     public static GearShiftBoxContract mapToContract(GearShiftBox gearShiftBox) {
         return switch (gearShiftBox) {
-            case GearShiftBox.Manual -> GearShiftBoxContract.Manual;
-            case GearShiftBox.Automatic -> GearShiftBoxContract.Automatic;
+            case GearShiftBox.MANUAL -> GearShiftBoxContract.MANUAL;
+            case GearShiftBox.AUTOMATIC -> GearShiftBoxContract.AUTOMATIC;
         };
     }
 
     public static GearShiftBox mapToGearShiftBox(GearShiftBoxContract gearShiftBoxContract) {
         return switch (gearShiftBoxContract) {
-            case GearShiftBoxContract.Manual -> GearShiftBox.Manual;
-            case GearShiftBoxContract.Automatic -> GearShiftBox.Automatic;
+            case GearShiftBoxContract.MANUAL -> GearShiftBox.MANUAL;
+            case GearShiftBoxContract.AUTOMATIC -> GearShiftBox.AUTOMATIC;
         };
     }
 }

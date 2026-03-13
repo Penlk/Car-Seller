@@ -6,6 +6,6 @@ public class CommonCanceledState extends CommonDraftState {
 
     @Override
     public CommonOrderState getState() {
-        return CommonOrderState.Canceled;
+        return CommonOrderState.CANCELED;
     }
 }

@@ -5,7 +5,7 @@ import ru.penlk.dataAcessLayer.entities.orders.commonOrder.CommonOrderState;
 public class CommonPurchasedState extends CommonDraftState {
     @Override
     public CommonOrderState getState() {
-        return CommonOrderState.Paid;
+        return CommonOrderState.PAID;
     }
 
     @Override

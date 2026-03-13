@@ -5,7 +5,7 @@ import ru.penlk.dataAcessLayer.entities.orders.specialOrder.SpecialOrderState;
 public class SpecialWaitingPurchaseState extends SpecialDraftState {
     @Override
     public SpecialOrderState getState() {
-        return SpecialOrderState.WaitingPayment;
+        return SpecialOrderState.WAITING_PAYMENT;
     }
 
     @Override

@@ -5,7 +5,7 @@ import ru.penlk.dataAcessLayer.entities.orders.commonOrder.CommonOrderState;
 public class CommonCarReadyToTakeState extends CommonDraftState {
     @Override
     public CommonOrderState getState() {
-        return CommonOrderState.CarIsReady;
+        return CommonOrderState.CAR_IS_READY;
     }
 
     @Override

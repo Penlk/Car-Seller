@@ -3,23 +3,23 @@ package ru.penlk.businessLayer.contracts.cars.models;
 import ru.penlk.dataAcessLayer.entities.cars.CarDrive;
 
 public enum CarDriveContract {
-    Front,
-    Rear,
-    Full;
+    FRONT,
+    REAR,
+    FULL;
 
     public static CarDriveContract mapToContract(CarDrive carDrive) {
         return switch (carDrive) {
-            case CarDrive.Front -> CarDriveContract.Front;
-            case CarDrive.Rear -> CarDriveContract.Rear;
-            case CarDrive.Full -> CarDriveContract.Full;
+            case CarDrive.FRONT -> CarDriveContract.FRONT;
+            case CarDrive.REAR -> CarDriveContract.REAR;
+            case CarDrive.FULL -> CarDriveContract.FULL;
         };
     }
 
     public static CarDrive mapToCarDrive(CarDriveContract carDriveContract) {
         return switch (carDriveContract) {
-            case CarDriveContract.Front -> CarDrive.Front;
-            case CarDriveContract.Rear -> CarDrive.Rear;
-            case CarDriveContract.Full -> CarDrive.Full;
+            case CarDriveContract.FRONT -> CarDrive.FRONT;
+            case CarDriveContract.REAR -> CarDrive.REAR;
+            case CarDriveContract.FULL -> CarDrive.FULL;
         };
     }
 }

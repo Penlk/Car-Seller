@@ -21,6 +21,6 @@ public class SpecialIssuedState extends SpecialDraftState {
 
     @Override
     public SpecialOrderState getState() {
-        return SpecialOrderState.Agreed;
+        return SpecialOrderState.AGREED;
     }
 }

@@ -130,7 +130,7 @@ public class CommonOrderServiceImpl implements CommonOrderService {
         return IssueCommonOrderDto.mapToDto(
                 commonOrderRepository.create(new CommonOrder(
                                 CommonOrderId.defaultId(),
-                                CommonOrderState.Issued,
+                                CommonOrderState.ISSUED,
                                 new ClientId(clientId),
                                 ManagerId.defaultId(),
                                 new CarId(carId)

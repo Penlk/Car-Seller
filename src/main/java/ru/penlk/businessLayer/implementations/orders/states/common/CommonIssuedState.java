@@ -21,6 +21,6 @@ public class CommonIssuedState extends CommonDraftState {
 
     @Override
     public CommonOrderState getState() {
-        return CommonOrderState.Agreed;
+        return CommonOrderState.AGREED;
     }
 }
