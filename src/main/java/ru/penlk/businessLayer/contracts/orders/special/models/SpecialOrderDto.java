@@ -1,0 +1,40 @@
+package ru.penlk.businessLayer.contracts.orders.special.models;
+
+import ru.penlk.dao.entities.cars.CarId;
+import ru.penlk.dao.entities.orders.specialOrder.SpecialOrder;
+import ru.penlk.dao.entities.orders.specialOrder.SpecialOrderId;
+import ru.penlk.dao.entities.users.clients.ClientId;
+import ru.penlk.dao.entities.users.managers.ManagerId;
+import ru.penlk.dao.entities.valueObjects.Price;
+
+import java.math.BigDecimal;
+
+public record SpecialOrderDto(long orderId,
+                              SpecialOrderStateContract state,
+                              long clientId,
+                              long managerId,
+                              long carId,
+                              BigDecimal price) {
+
+    public static SpecialOrderDto mapToDto(SpecialOrder specialOrder) {
+        return new SpecialOrderDto(
+                specialOrder.getId().id(),
+                SpecialOrderStateContract.mapToContract(specialOrder.getState()),
+                specialOrder.getClientId().id(),
+                specialOrder.getManagerId().id(),
+                specialOrder.getCarId().id(),
+                specialOrder.getPrice().value()
+        );
+    }
+
+    public static SpecialOrder mapToModel(SpecialOrderDto dto) {
+        return new SpecialOrder(
+                new SpecialOrderId(dto.orderId()),
+                SpecialOrderStateContract.mapToSpecialOrderState(dto.state()),
+                new ClientId(dto.clientId()),
+                new ManagerId(dto.managerId()),
+                new CarId(dto.carId()),
+                new Price(dto.price())
+        );
+    }
+}

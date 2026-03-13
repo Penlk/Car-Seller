@@ -1,10 +1,10 @@
 package ru.penlk.businessLayer.contracts.cars.models;
 
-import ru.penlk.dataAcessLayer.entities.cars.Car;
-import ru.penlk.dataAcessLayer.entities.cars.CarId;
-import ru.penlk.dataAcessLayer.entities.cars.EnginePower;
-import ru.penlk.dataAcessLayer.entities.cars.EngineVolume;
-import ru.penlk.dataAcessLayer.entities.valueObjects.Price;
+import ru.penlk.dao.entities.cars.Car;
+import ru.penlk.dao.entities.cars.CarId;
+import ru.penlk.dao.entities.cars.EnginePower;
+import ru.penlk.dao.entities.cars.EngineVolume;
+import ru.penlk.dao.entities.valueObjects.Price;
 
 import java.math.BigDecimal;
 

@@ -8,7 +8,7 @@ import ru.penlk.businessLayer.implementations.orders.states.common.CommonIssuedS
 import ru.penlk.businessLayer.implementations.orders.states.common.CommonOrderStateHandler;
 import ru.penlk.businessLayer.implementations.orders.states.common.CommonPurchasedState;
 import ru.penlk.businessLayer.implementations.orders.states.common.CommonWaitingPurchaseState;
-import ru.penlk.dataAcessLayer.entities.orders.commonOrder.CommonOrderState;
+import ru.penlk.dao.entities.orders.commonOrder.CommonOrderState;
 
 public class CommonStateMapperImpl implements CommonStateMapper {
     @Override

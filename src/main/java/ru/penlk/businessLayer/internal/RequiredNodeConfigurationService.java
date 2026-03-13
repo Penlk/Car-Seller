@@ -2,8 +2,8 @@ package ru.penlk.businessLayer.internal;
 
 import ru.penlk.businessLayer.contracts.DomainValidationException;
 import ru.penlk.businessLayer.contracts.ServiceException;
-import ru.penlk.dataAcessLayer.entities.carParts.CarPart;
-import ru.penlk.dataAcessLayer.entities.cars.Car;
+import ru.penlk.dao.entities.carParts.CarPart;
+import ru.penlk.dao.entities.cars.Car;
 
 import java.util.Collection;
 

@@ -1,6 +1,6 @@
 package ru.penlk.businessLayer.contracts.cars.models;
 
-import ru.penlk.dataAcessLayer.entities.cars.GearShiftBox;
+import ru.penlk.dao.entities.cars.GearShiftBox;
 
 public enum GearShiftBoxContract {
     MANUAL,

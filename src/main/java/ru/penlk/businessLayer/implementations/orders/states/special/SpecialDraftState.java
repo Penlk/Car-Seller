@@ -1,6 +1,6 @@
 package ru.penlk.businessLayer.implementations.orders.states.special;
 
-import ru.penlk.dataAcessLayer.entities.users.managers.ManagerId;
+import ru.penlk.dao.entities.users.managers.ManagerId;
 
 public abstract class SpecialDraftState implements SpecialOrderStateHandler {
     @Override

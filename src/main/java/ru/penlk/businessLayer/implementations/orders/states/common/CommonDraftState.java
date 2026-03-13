@@ -1,6 +1,6 @@
 package ru.penlk.businessLayer.implementations.orders.states.common;
 
-import ru.penlk.dataAcessLayer.entities.users.managers.ManagerId;
+import ru.penlk.dao.entities.users.managers.ManagerId;
 
 public abstract class CommonDraftState implements CommonOrderStateHandler {
     @Override

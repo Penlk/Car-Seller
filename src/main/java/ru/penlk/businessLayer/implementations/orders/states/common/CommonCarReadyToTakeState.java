@@ -1,6 +1,6 @@
 package ru.penlk.businessLayer.implementations.orders.states.common;
 
-import ru.penlk.dataAcessLayer.entities.orders.commonOrder.CommonOrderState;
+import ru.penlk.dao.entities.orders.commonOrder.CommonOrderState;
 
 public class CommonCarReadyToTakeState extends CommonDraftState {
     @Override

@@ -1,6 +1,6 @@
 package ru.penlk.businessLayer.contracts.cars.models;
 
-import ru.penlk.dataAcessLayer.entities.cars.CarDrive;
+import ru.penlk.dao.entities.cars.CarDrive;
 
 public enum CarDriveContract {
     FRONT,

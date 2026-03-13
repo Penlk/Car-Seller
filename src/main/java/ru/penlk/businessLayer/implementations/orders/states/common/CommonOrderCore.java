@@ -2,8 +2,8 @@ package ru.penlk.businessLayer.implementations.orders.states.common;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import ru.penlk.dataAcessLayer.entities.orders.commonOrder.CommonOrder;
-import ru.penlk.dataAcessLayer.entities.users.managers.ManagerId;
+import ru.penlk.dao.entities.orders.commonOrder.CommonOrder;
+import ru.penlk.dao.entities.users.managers.ManagerId;
 
 @AllArgsConstructor
 @Getter

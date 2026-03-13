@@ -1,7 +1,7 @@
 package ru.penlk.businessLayer.implementations.orders.states.common;
 
-import ru.penlk.dataAcessLayer.entities.orders.commonOrder.CommonOrderState;
-import ru.penlk.dataAcessLayer.entities.users.managers.ManagerId;
+import ru.penlk.dao.entities.orders.commonOrder.CommonOrderState;
+import ru.penlk.dao.entities.users.managers.ManagerId;
 
 public interface CommonOrderStateHandler {
     Boolean tryConfirm(CommonOrderCore core, ManagerId managerId);

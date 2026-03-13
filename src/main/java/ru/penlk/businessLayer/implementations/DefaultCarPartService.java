@@ -2,14 +2,14 @@ package ru.penlk.businessLayer.implementations;
 
 import lombok.AllArgsConstructor;
 import ru.penlk.businessLayer.contracts.ServiceException;
-import ru.penlk.businessLayer.contracts.carParts.CarPartService;
-import ru.penlk.businessLayer.contracts.carParts.models.CarPartDto;
-import ru.penlk.businessLayer.contracts.carParts.models.CreateCarPartDto;
-import ru.penlk.dataAcessLayer.entities.carParts.CarPart;
-import ru.penlk.dataAcessLayer.entities.carParts.CarPartId;
-import ru.penlk.dataAcessLayer.entities.nodes.NodeId;
-import ru.penlk.dataAcessLayer.repositories.interfaces.carParts.CarPartNotFoundException;
-import ru.penlk.dataAcessLayer.repositories.interfaces.carParts.CarPartRepository;
+import ru.penlk.businessLayer.contracts.cars.parts.CarPartService;
+import ru.penlk.businessLayer.contracts.cars.parts.models.CarPartDto;
+import ru.penlk.businessLayer.contracts.cars.parts.models.CreateCarPartDto;
+import ru.penlk.dao.entities.carParts.CarPart;
+import ru.penlk.dao.entities.carParts.CarPartId;
+import ru.penlk.dao.entities.nodes.NodeId;
+import ru.penlk.dao.repositories.interfaces.cars.parts.CarPartNotFoundException;
+import ru.penlk.dao.repositories.interfaces.cars.parts.CarPartRepository;
 
 import java.util.Optional;
 

@@ -5,10 +5,10 @@ import ru.penlk.businessLayer.contracts.ServiceException;
 import ru.penlk.businessLayer.contracts.cars.CarService;
 import ru.penlk.businessLayer.contracts.cars.models.CarDto;
 import ru.penlk.businessLayer.contracts.cars.models.CreateCarDto;
-import ru.penlk.dataAcessLayer.entities.cars.Car;
-import ru.penlk.dataAcessLayer.entities.cars.CarId;
-import ru.penlk.dataAcessLayer.repositories.interfaces.cars.CarNotFoundException;
-import ru.penlk.dataAcessLayer.repositories.interfaces.cars.CarRepository;
+import ru.penlk.dao.entities.cars.Car;
+import ru.penlk.dao.entities.cars.CarId;
+import ru.penlk.dao.repositories.interfaces.cars.CarNotFoundException;
+import ru.penlk.dao.repositories.interfaces.cars.CarRepository;
 
 import java.util.Optional;
 

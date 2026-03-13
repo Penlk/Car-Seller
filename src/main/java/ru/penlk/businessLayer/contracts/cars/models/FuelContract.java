@@ -1,6 +1,6 @@
 package ru.penlk.businessLayer.contracts.cars.models;
 
-import ru.penlk.dataAcessLayer.entities.cars.Fuel;
+import ru.penlk.dao.entities.cars.Fuel;
 
 public enum FuelContract {
     PETROL,

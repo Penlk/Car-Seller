@@ -1,6 +1,6 @@
 package ru.penlk.businessLayer.implementations.orders.states.special;
 
-import ru.penlk.dataAcessLayer.entities.orders.specialOrder.SpecialOrderState;
+import ru.penlk.dao.entities.orders.specialOrder.SpecialOrderState;
 
 public class SpecialConfirmedState extends SpecialDraftState {
     @Override

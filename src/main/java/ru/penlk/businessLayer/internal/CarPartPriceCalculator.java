@@ -1,9 +1,9 @@
 package ru.penlk.businessLayer.internal;
 
 import ru.penlk.businessLayer.contracts.ServiceException;
-import ru.penlk.dataAcessLayer.entities.carParts.CarPart;
-import ru.penlk.dataAcessLayer.entities.cars.CarId;
-import ru.penlk.dataAcessLayer.entities.valueObjects.Price;
+import ru.penlk.dao.entities.carParts.CarPart;
+import ru.penlk.dao.entities.cars.CarId;
+import ru.penlk.dao.entities.valueObjects.Price;
 
 import java.util.Collection;
 

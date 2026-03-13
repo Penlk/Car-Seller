@@ -8,7 +8,7 @@ import ru.penlk.businessLayer.implementations.orders.states.special.SpecialIssue
 import ru.penlk.businessLayer.implementations.orders.states.special.SpecialOrderStateHandler;
 import ru.penlk.businessLayer.implementations.orders.states.special.SpecialPurchasedState;
 import ru.penlk.businessLayer.implementations.orders.states.special.SpecialWaitingPurchaseState;
-import ru.penlk.dataAcessLayer.entities.orders.specialOrder.SpecialOrderState;
+import ru.penlk.dao.entities.orders.specialOrder.SpecialOrderState;
 
 public class SpecialStateMapperImpl implements SpecialStateMapper {
     @Override

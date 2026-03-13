@@ -2,8 +2,8 @@ package ru.penlk.businessLayer.implementations.orders.states.special;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import ru.penlk.dataAcessLayer.entities.orders.specialOrder.SpecialOrder;
-import ru.penlk.dataAcessLayer.entities.users.managers.ManagerId;
+import ru.penlk.dao.entities.orders.specialOrder.SpecialOrder;
+import ru.penlk.dao.entities.users.managers.ManagerId;
 
 @AllArgsConstructor
 @Getter
