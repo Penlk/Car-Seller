@@ -1,4 +1,4 @@
-package org.example;
+package ru.penlk;
 
 import org.junit.jupiter.api.Test;
 import org.testcontainers.containers.PostgreSQLContainer;

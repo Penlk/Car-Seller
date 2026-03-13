@@ -8,6 +8,7 @@ import ru.penlk.dao.repositories.interfaces.cars.parts.CarPartRepository;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -18,6 +19,11 @@ public class InMemoryCarPartRepository implements CarPartRepository {
     @Override
     public Collection<CarPart> findAll() {
         return Collections.unmodifiableCollection(carParts.values());
+    }
+
+    @Override
+    public Collection<CarPart> query(Collection<CarPartId> ids) throws CarPartNotFoundException {
+        return ids.stream().map(x -> carParts.get(x)).toList();
     }
 
     @Override
