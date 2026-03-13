@@ -7,5 +7,5 @@ import ru.penlk.dataAcessLayer.entities.orders.specialOrder.SpecialOrderId;
 @Getter
 @AllArgsConstructor
 public class SpecialOrderNotFoundException extends RuntimeException {
-    private final SpecialOrderId specialOrderId;
+    private final SpecialOrderId id;
 }

@@ -16,14 +16,14 @@ public record SpecialOrderDto(long orderId,
                               long carId,
                               BigDecimal price) {
 
-    public static SpecialOrderDto mapToDto(SpecialOrder specialOrder, Price price) {
+    public static SpecialOrderDto mapToDto(SpecialOrder specialOrder) {
         return new SpecialOrderDto(
                 specialOrder.getId().id(),
                 SpecialOrderStateContract.mapToContract(specialOrder.getState()),
                 specialOrder.getClientId().id(),
                 specialOrder.getManagerId().id(),
                 specialOrder.getCarId().id(),
-                price.value()
+                specialOrder.getPrice().value()
         );
     }
 
@@ -33,7 +33,8 @@ public record SpecialOrderDto(long orderId,
                 SpecialOrderStateContract.mapToSpecialOrderState(dto.state()),
                 new ClientId(dto.clientId()),
                 new ManagerId(dto.managerId()),
-                new CarId(dto.carId())
+                new CarId(dto.carId()),
+                new Price(dto.price())
         );
     }
 }

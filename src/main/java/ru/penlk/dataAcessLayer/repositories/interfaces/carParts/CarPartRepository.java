@@ -9,6 +9,8 @@ import java.util.Optional;
 public interface CarPartRepository {
     Collection<CarPart> findAll();
 
+    Collection<CarPart> query(Collection<CarPartId> ids) throws CarPartNotFoundException;
+
     Optional<CarPart> findById(CarPartId id);
 
     void delete(CarPartId id) throws CarPartNotFoundException;

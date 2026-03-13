@@ -24,6 +24,7 @@ import ru.penlk.dataAcessLayer.entities.users.clients.ClientId;
 import ru.penlk.dataAcessLayer.entities.users.managers.Manager;
 import ru.penlk.dataAcessLayer.entities.users.managers.ManagerId;
 import ru.penlk.dataAcessLayer.entities.valueObjects.Price;
+import ru.penlk.dataAcessLayer.repositories.interfaces.carParts.CarPartNotFoundException;
 import ru.penlk.dataAcessLayer.repositories.interfaces.carParts.CarPartRepository;
 import ru.penlk.dataAcessLayer.repositories.interfaces.cars.CarRepository;
 import ru.penlk.dataAcessLayer.repositories.interfaces.orders.commonConfigurations.CommonConfigurationRepository;
@@ -106,9 +107,13 @@ public class CommonOrderServiceImpl implements CommonOrderService {
 
         Collection<CarPartId> carPartIds = commonConfigurationRepository.findByCarId(new CarId(carId));
 
-        List<CarPart> carParts = carPartRepository.findAll().stream()
-                .filter(x -> carPartIds.contains(x.getId()))
-                .toList();
+        Collection<CarPart> carParts;
+
+        try {
+            carParts = carPartRepository.query(carPartIds);
+        } catch (CarPartNotFoundException e) {
+            throw new ServiceException(e.getMessage());
+        }
 
         List<NodeId> nodeIds = carParts.stream()
                 .map(CarPart::getNodeId)
@@ -117,15 +122,7 @@ public class CommonOrderServiceImpl implements CommonOrderService {
         List<NodeId> missingNodeIds = nodeIds.stream().filter(x -> !requireNodeIds.contains(x)).toList();
 
         if (!missingNodeIds.isEmpty()) {
-            StringBuilder missingNodeIdsString = new StringBuilder("Missing required nodes: [\n");
-
-            missingNodeIds.forEach(missingNodeId -> {
-                missingNodeIdsString.append(String.format("%s,\n", missingNodeId));
-            });
-
-            missingNodeIdsString.append("]\n");
-
-            throw new DomainValidationException(missingNodeIdsString.toString());
+            throw new DomainValidationException("Missing required nodes: " + missingNodeIds);
         }
 
         Price price = carOptional.get().getPrice();

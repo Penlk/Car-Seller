@@ -6,6 +6,7 @@ import lombok.Setter;
 import ru.penlk.dataAcessLayer.entities.cars.CarId;
 import ru.penlk.dataAcessLayer.entities.users.clients.ClientId;
 import ru.penlk.dataAcessLayer.entities.users.managers.ManagerId;
+import ru.penlk.dataAcessLayer.entities.valueObjects.Price;
 
 @AllArgsConstructor
 @Getter
@@ -16,4 +17,5 @@ public class SpecialOrder {
     private ClientId clientId;
     private ManagerId managerId;
     private CarId carId;
+    private Price price;
 }
