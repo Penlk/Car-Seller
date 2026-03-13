@@ -24,8 +24,8 @@ import ru.penlk.dao.entities.users.clients.ClientId;
 import ru.penlk.dao.entities.users.managers.Manager;
 import ru.penlk.dao.entities.users.managers.ManagerId;
 import ru.penlk.dao.entities.valueObjects.Price;
-import ru.penlk.dao.repositories.interfaces.cars.parts.CarPartAlreadyInException;
 import ru.penlk.dao.repositories.interfaces.cars.CarRepository;
+import ru.penlk.dao.repositories.interfaces.cars.parts.CarPartAlreadyInException;
 import ru.penlk.dao.repositories.interfaces.orders.special.SpecialOrderNotFoundException;
 import ru.penlk.dao.repositories.interfaces.orders.special.SpecialOrderRepository;
 import ru.penlk.dao.repositories.interfaces.orders.special.nodeset.NodeSetRepository;
@@ -127,7 +127,7 @@ public class SpecialOrderServiceImpl implements SpecialOrderService {
         Collection<CarPart> carParts = carPartConfigurationService.getCarParts(car, carPartIds);
 
         Collection<CarPart> carPartsAddition = requiredNodeConfigurationService.completeRequireNodes(
-            car, carParts
+                car, carParts
         );
 
         Price totalPrice = carPartPriceCalculator.getSpecialCarPartsPrice(car.getId(), carParts).add(car.getPrice());

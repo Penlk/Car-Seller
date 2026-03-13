@@ -16,13 +16,13 @@ public class CarPartPriceCalculatorImpl implements CarPartPriceCalculator {
 
     @Override
     public Price getSpecialCarPartsPrice(CarId carId, Collection<CarPart> specialCarParts) {
-            Collection<SpecialConfiguration> specialConfigurations = specialConfigurationRepository.findByCarId(carId);
+        Collection<SpecialConfiguration> specialConfigurations = specialConfigurationRepository.findByCarId(carId);
 
-            return specialConfigurations.stream()
-                    .filter(x ->
-                            specialCarParts.stream().anyMatch(y -> x.getCarPartId().equals(y.getId()))
-                    )
-                    .map(SpecialConfiguration::getPrice)
-                    .reduce(Price.ZERO, Price::add);
+        return specialConfigurations.stream()
+                .filter(x ->
+                        specialCarParts.stream().anyMatch(y -> x.getCarPartId().equals(y.getId()))
+                )
+                .map(SpecialConfiguration::getPrice)
+                .reduce(Price.ZERO, Price::add);
     }
 }

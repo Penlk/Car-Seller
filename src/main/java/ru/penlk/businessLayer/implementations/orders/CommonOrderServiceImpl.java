@@ -24,13 +24,13 @@ import ru.penlk.dao.entities.users.clients.ClientId;
 import ru.penlk.dao.entities.users.managers.Manager;
 import ru.penlk.dao.entities.users.managers.ManagerId;
 import ru.penlk.dao.entities.valueObjects.Price;
+import ru.penlk.dao.repositories.interfaces.cars.CarRepository;
 import ru.penlk.dao.repositories.interfaces.cars.parts.CarPartNotFoundException;
 import ru.penlk.dao.repositories.interfaces.cars.parts.CarPartRepository;
-import ru.penlk.dao.repositories.interfaces.cars.CarRepository;
-import ru.penlk.dao.repositories.interfaces.orders.common.configurations.CommonConfigurationRepository;
+import ru.penlk.dao.repositories.interfaces.nodes.require.RequireNodeRepository;
 import ru.penlk.dao.repositories.interfaces.orders.common.CommonOrderNotFoundException;
 import ru.penlk.dao.repositories.interfaces.orders.common.CommonOrderRepository;
-import ru.penlk.dao.repositories.interfaces.nodes.require.RequireNodeRepository;
+import ru.penlk.dao.repositories.interfaces.orders.common.configurations.CommonConfigurationRepository;
 import ru.penlk.dao.repositories.interfaces.users.clients.ClientRepository;
 import ru.penlk.dao.repositories.interfaces.users.managers.ManagerRepository;
 
