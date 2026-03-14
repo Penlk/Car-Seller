@@ -11,9 +11,7 @@ import ru.penlk.business.contracts.cars.models.CreateCarDto;
 import ru.penlk.business.contracts.cars.models.FuelContract;
 import ru.penlk.business.contracts.cars.models.GearShiftBoxContract;
 import ru.penlk.business.contracts.cars.models.CarDriveContract;
-import ru.penlk.dao.entities.cars.Car;
 import ru.penlk.dao.entities.cars.CarId;
-import ru.penlk.dao.entities.valueObjects.Price;
 import ru.penlk.dao.repositories.interfaces.cars.CarNotFoundException;
 import ru.penlk.dao.repositories.interfaces.cars.CarRepository;
 
@@ -31,7 +29,7 @@ class DefaultCarServiceTest {
     CarRepository carRepository;
 
     @InjectMocks
-    DefaultCarService service;
+    CarServiceImpl service;
 
     private CreateCarDto makeCreate() {
         return new CreateCarDto(new BigDecimal("1"), "b", "m", "body", FuelContract.PETROL, new BigDecimal("1"), new BigDecimal("1"), GearShiftBoxContract.MANUAL, CarDriveContract.FRONT, "c");

@@ -27,7 +27,7 @@ class DefaultCarPartServiceTest {
     CarPartRepository repo;
 
     @InjectMocks
-    DefaultCarPartService service;
+    CarPartServiceImpl service;
 
     @Test
     void create_returnsDto() {

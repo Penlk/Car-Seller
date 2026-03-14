@@ -13,7 +13,7 @@ import ru.penlk.dao.repositories.interfaces.cars.CarRepository;
 import java.util.Optional;
 
 @AllArgsConstructor
-public class DefaultCarService implements CarService {
+public class CarServiceImpl implements CarService {
     private final CarRepository carRepository;
 
     @Override
