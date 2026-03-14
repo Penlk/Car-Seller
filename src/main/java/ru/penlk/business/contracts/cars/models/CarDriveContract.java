@@ -1,4 +1,4 @@
-package ru.penlk.businessLayer.contracts.cars.models;
+package ru.penlk.business.contracts.cars.models;
 
 import ru.penlk.dao.entities.cars.CarDrive;
 

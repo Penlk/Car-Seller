@@ -1,10 +1,10 @@
-package ru.penlk.businessLayer.contracts.orders.common;
+package ru.penlk.business.contracts.orders.common;
 
-import ru.penlk.businessLayer.contracts.DomainValidationException;
-import ru.penlk.businessLayer.contracts.ServiceException;
-import ru.penlk.businessLayer.contracts.orders.common.models.CommonOrderDto;
-import ru.penlk.businessLayer.contracts.orders.common.models.CreateCommonOrderDto;
-import ru.penlk.businessLayer.contracts.orders.common.models.IssueCommonOrderDto;
+import ru.penlk.business.contracts.DomainValidationException;
+import ru.penlk.business.contracts.ServiceException;
+import ru.penlk.business.contracts.orders.common.models.CommonOrderDto;
+import ru.penlk.business.contracts.orders.common.models.CreateCommonOrderDto;
+import ru.penlk.business.contracts.orders.common.models.IssueCommonOrderDto;
 
 public interface CommonOrderService {
     CommonOrderDto create(CreateCommonOrderDto request);

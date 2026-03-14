@@ -1,4 +1,4 @@
-package ru.penlk.businessLayer.contracts;
+package ru.penlk.business.contracts;
 
 public class IncompatibleComponentException extends RuntimeException {
     public IncompatibleComponentException(String message) {

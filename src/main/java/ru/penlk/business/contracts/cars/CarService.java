@@ -1,8 +1,8 @@
-package ru.penlk.businessLayer.contracts.cars;
+package ru.penlk.business.contracts.cars;
 
-import ru.penlk.businessLayer.contracts.ServiceException;
-import ru.penlk.businessLayer.contracts.cars.models.CarDto;
-import ru.penlk.businessLayer.contracts.cars.models.CreateCarDto;
+import ru.penlk.business.contracts.ServiceException;
+import ru.penlk.business.contracts.cars.models.CarDto;
+import ru.penlk.business.contracts.cars.models.CreateCarDto;
 
 public interface CarService {
     CarDto create(CreateCarDto request);

@@ -1,13 +1,13 @@
-package ru.penlk.businessLayer.implementations.orders.states.mappers;
+package ru.penlk.business.implementations.orders.states.mappers;
 
-import ru.penlk.businessLayer.implementations.orders.states.common.CommonCanceledState;
-import ru.penlk.businessLayer.implementations.orders.states.common.CommonCarReadyToTakeState;
-import ru.penlk.businessLayer.implementations.orders.states.common.CommonCompletedState;
-import ru.penlk.businessLayer.implementations.orders.states.common.CommonConfirmedState;
-import ru.penlk.businessLayer.implementations.orders.states.common.CommonIssuedState;
-import ru.penlk.businessLayer.implementations.orders.states.common.CommonOrderStateHandler;
-import ru.penlk.businessLayer.implementations.orders.states.common.CommonPurchasedState;
-import ru.penlk.businessLayer.implementations.orders.states.common.CommonWaitingPurchaseState;
+import ru.penlk.business.implementations.orders.states.common.CommonCanceledState;
+import ru.penlk.business.implementations.orders.states.common.CommonCarReadyToTakeState;
+import ru.penlk.business.implementations.orders.states.common.CommonCompletedState;
+import ru.penlk.business.implementations.orders.states.common.CommonConfirmedState;
+import ru.penlk.business.implementations.orders.states.common.CommonIssuedState;
+import ru.penlk.business.implementations.orders.states.common.CommonOrderStateHandler;
+import ru.penlk.business.implementations.orders.states.common.CommonPurchasedState;
+import ru.penlk.business.implementations.orders.states.common.CommonWaitingPurchaseState;
 import ru.penlk.dao.entities.orders.commonOrder.CommonOrderState;
 
 public class CommonStateMapperImpl implements CommonStateMapper {

@@ -1,4 +1,4 @@
-package ru.penlk.businessLayer.implementations.orders.states.special;
+package ru.penlk.business.implementations.orders.states.special;
 
 import lombok.AllArgsConstructor;
 import ru.penlk.dao.entities.orders.specialOrder.SpecialOrder;

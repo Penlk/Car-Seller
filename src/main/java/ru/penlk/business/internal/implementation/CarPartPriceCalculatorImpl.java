@@ -1,7 +1,7 @@
-package ru.penlk.businessLayer.internal.implementation;
+package ru.penlk.business.internal.implementation;
 
 import lombok.AllArgsConstructor;
-import ru.penlk.businessLayer.internal.CarPartPriceCalculator;
+import ru.penlk.business.internal.CarPartPriceCalculator;
 import ru.penlk.dao.entities.carParts.CarPart;
 import ru.penlk.dao.entities.cars.CarId;
 import ru.penlk.dao.entities.orders.specialConfigurations.SpecialConfiguration;

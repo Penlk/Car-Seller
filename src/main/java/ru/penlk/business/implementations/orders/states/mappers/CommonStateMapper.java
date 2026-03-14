@@ -1,6 +1,6 @@
-package ru.penlk.businessLayer.implementations.orders.states.mappers;
+package ru.penlk.business.implementations.orders.states.mappers;
 
-import ru.penlk.businessLayer.implementations.orders.states.common.CommonOrderStateHandler;
+import ru.penlk.business.implementations.orders.states.common.CommonOrderStateHandler;
 import ru.penlk.dao.entities.orders.commonOrder.CommonOrderState;
 
 public interface CommonStateMapper {

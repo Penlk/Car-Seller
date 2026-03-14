@@ -1,4 +1,4 @@
-package ru.penlk.businessLayer.implementations.orders.states.common;
+package ru.penlk.business.implementations.orders.states.common;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

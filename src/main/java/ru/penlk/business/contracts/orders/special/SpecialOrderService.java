@@ -1,11 +1,11 @@
-package ru.penlk.businessLayer.contracts.orders.special;
+package ru.penlk.business.contracts.orders.special;
 
-import ru.penlk.businessLayer.contracts.DomainValidationException;
-import ru.penlk.businessLayer.contracts.IncompatibleComponentException;
-import ru.penlk.businessLayer.contracts.ServiceException;
-import ru.penlk.businessLayer.contracts.orders.special.models.CreateSpecialOrderDto;
-import ru.penlk.businessLayer.contracts.orders.special.models.IssueSpecialOrderDto;
-import ru.penlk.businessLayer.contracts.orders.special.models.SpecialOrderDto;
+import ru.penlk.business.contracts.DomainValidationException;
+import ru.penlk.business.contracts.IncompatibleComponentException;
+import ru.penlk.business.contracts.ServiceException;
+import ru.penlk.business.contracts.orders.special.models.CreateSpecialOrderDto;
+import ru.penlk.business.contracts.orders.special.models.IssueSpecialOrderDto;
+import ru.penlk.business.contracts.orders.special.models.SpecialOrderDto;
 
 import java.util.Collection;
 

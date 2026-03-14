@@ -1,9 +1,9 @@
-package ru.penlk.businessLayer.internal.implementation;
+package ru.penlk.business.internal.implementation;
 
 import lombok.AllArgsConstructor;
-import ru.penlk.businessLayer.contracts.IncompatibleComponentException;
-import ru.penlk.businessLayer.contracts.ServiceException;
-import ru.penlk.businessLayer.internal.CarPartConfigurationService;
+import ru.penlk.business.contracts.IncompatibleComponentException;
+import ru.penlk.business.contracts.ServiceException;
+import ru.penlk.business.internal.CarPartConfigurationService;
 import ru.penlk.dao.entities.carParts.CarPart;
 import ru.penlk.dao.entities.carParts.CarPartId;
 import ru.penlk.dao.entities.cars.Car;

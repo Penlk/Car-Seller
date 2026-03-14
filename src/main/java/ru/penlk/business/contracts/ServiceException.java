@@ -1,4 +1,4 @@
-package ru.penlk.businessLayer.contracts;
+package ru.penlk.business.contracts;
 
 public class ServiceException extends RuntimeException {
     public ServiceException(String message) {

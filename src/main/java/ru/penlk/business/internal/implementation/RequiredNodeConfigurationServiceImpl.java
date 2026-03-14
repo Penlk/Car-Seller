@@ -1,8 +1,8 @@
-package ru.penlk.businessLayer.internal.implementation;
+package ru.penlk.business.internal.implementation;
 
 import lombok.AllArgsConstructor;
-import ru.penlk.businessLayer.contracts.DomainValidationException;
-import ru.penlk.businessLayer.internal.RequiredNodeConfigurationService;
+import ru.penlk.business.contracts.DomainValidationException;
+import ru.penlk.business.internal.RequiredNodeConfigurationService;
 import ru.penlk.dao.entities.carParts.CarPart;
 import ru.penlk.dao.entities.carParts.CarPartId;
 import ru.penlk.dao.entities.cars.Car;

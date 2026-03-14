@@ -1,6 +1,6 @@
-package ru.penlk.businessLayer.internal;
+package ru.penlk.business.internal;
 
-import ru.penlk.businessLayer.contracts.ServiceException;
+import ru.penlk.business.contracts.ServiceException;
 import ru.penlk.dao.entities.carParts.CarPart;
 import ru.penlk.dao.entities.cars.CarId;
 import ru.penlk.dao.entities.valueObjects.Price;

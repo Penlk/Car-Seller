@@ -1,19 +1,19 @@
-package ru.penlk.businessLayer.implementations.orders;
+package ru.penlk.business.implementations.orders;
 
 import lombok.AllArgsConstructor;
-import ru.penlk.businessLayer.contracts.ServiceException;
-import ru.penlk.businessLayer.contracts.orders.special.SpecialOrderService;
-import ru.penlk.businessLayer.contracts.orders.special.models.CreateSpecialOrderDto;
-import ru.penlk.businessLayer.contracts.orders.special.models.IssueSpecialOrderDto;
-import ru.penlk.businessLayer.contracts.orders.special.models.SpecialOrderDto;
-import ru.penlk.businessLayer.implementations.orders.states.mappers.SpecialStateMapper;
-import ru.penlk.businessLayer.implementations.orders.states.special.SpecialOrderCore;
-import ru.penlk.businessLayer.implementations.orders.states.special.SpecialOrderFacade;
-import ru.penlk.businessLayer.implementations.orders.states.special.SpecialOrderStateHandler;
-import ru.penlk.businessLayer.implementations.orders.strategies.ManagerSelectionStrategy;
-import ru.penlk.businessLayer.internal.CarPartConfigurationService;
-import ru.penlk.businessLayer.internal.CarPartPriceCalculator;
-import ru.penlk.businessLayer.internal.RequiredNodeConfigurationService;
+import ru.penlk.business.contracts.ServiceException;
+import ru.penlk.business.contracts.orders.special.SpecialOrderService;
+import ru.penlk.business.contracts.orders.special.models.CreateSpecialOrderDto;
+import ru.penlk.business.contracts.orders.special.models.IssueSpecialOrderDto;
+import ru.penlk.business.contracts.orders.special.models.SpecialOrderDto;
+import ru.penlk.business.implementations.orders.states.mappers.SpecialStateMapper;
+import ru.penlk.business.implementations.orders.states.special.SpecialOrderCore;
+import ru.penlk.business.implementations.orders.states.special.SpecialOrderFacade;
+import ru.penlk.business.implementations.orders.states.special.SpecialOrderStateHandler;
+import ru.penlk.business.implementations.orders.strategies.ManagerSelectionStrategy;
+import ru.penlk.business.internal.CarPartConfigurationService;
+import ru.penlk.business.internal.CarPartPriceCalculator;
+import ru.penlk.business.internal.RequiredNodeConfigurationService;
 import ru.penlk.dao.entities.carParts.CarPart;
 import ru.penlk.dao.entities.cars.Car;
 import ru.penlk.dao.entities.cars.CarId;
@@ -32,6 +32,7 @@ import ru.penlk.dao.repositories.interfaces.orders.special.nodeset.NodeSetReposi
 import ru.penlk.dao.repositories.interfaces.users.clients.ClientRepository;
 import ru.penlk.dao.repositories.interfaces.users.managers.ManagerRepository;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Optional;
 
@@ -124,11 +125,11 @@ public class SpecialOrderServiceImpl implements SpecialOrderService {
 
         Car car = optionalCar.get();
 
-        Collection<CarPart> carParts = carPartConfigurationService.getCarParts(car, carPartIds);
+        Collection<CarPart> carParts = new ArrayList<>(carPartConfigurationService.getCarParts(car, carPartIds));
 
-        Collection<CarPart> carPartsAddition = requiredNodeConfigurationService.completeRequireNodes(
+        Collection<CarPart> carPartsAddition = new ArrayList<>(requiredNodeConfigurationService.completeRequireNodes(
                 car, carParts
-        );
+        ));
 
         Price totalPrice = carPartPriceCalculator.getSpecialCarPartsPrice(car.getId(), carParts).add(car.getPrice());
 

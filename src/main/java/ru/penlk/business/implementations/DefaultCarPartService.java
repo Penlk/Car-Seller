@@ -1,10 +1,10 @@
-package ru.penlk.businessLayer.implementations;
+package ru.penlk.business.implementations;
 
 import lombok.AllArgsConstructor;
-import ru.penlk.businessLayer.contracts.ServiceException;
-import ru.penlk.businessLayer.contracts.cars.parts.CarPartService;
-import ru.penlk.businessLayer.contracts.cars.parts.models.CarPartDto;
-import ru.penlk.businessLayer.contracts.cars.parts.models.CreateCarPartDto;
+import ru.penlk.business.contracts.ServiceException;
+import ru.penlk.business.contracts.cars.parts.CarPartService;
+import ru.penlk.business.contracts.cars.parts.models.CarPartDto;
+import ru.penlk.business.contracts.cars.parts.models.CreateCarPartDto;
 import ru.penlk.dao.entities.carParts.CarPart;
 import ru.penlk.dao.entities.carParts.CarPartId;
 import ru.penlk.dao.entities.nodes.NodeId;

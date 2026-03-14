@@ -1,4 +1,4 @@
-package ru.penlk.businessLayer.contracts.orders.special.models;
+package ru.penlk.business.contracts.orders.special.models;
 
 import ru.penlk.dao.entities.orders.specialOrder.SpecialOrder;
 import ru.penlk.dao.entities.valueObjects.Price;

@@ -1,4 +1,4 @@
-package ru.penlk.businessLayer.implementations.orders.strategies;
+package ru.penlk.business.implementations.orders.strategies;
 
 import ru.penlk.dao.entities.users.managers.Manager;
 
