@@ -14,4 +14,4 @@ CREATE TABLE IF NOT EXISTS common_orders (
     client_id BIGINT REFERENCES clients(id),
     manager_id BIGINT REFERENCES managers(id),
     car_id BIGINT REFERENCES cars(id) NOT NULL
-)
+);

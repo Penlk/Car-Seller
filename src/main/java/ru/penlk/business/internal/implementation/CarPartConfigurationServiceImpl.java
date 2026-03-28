@@ -54,7 +54,7 @@ public class CarPartConfigurationServiceImpl implements CarPartConfigurationServ
 
     private void validateUniqueNodeIds(Car car, Collection<CarPart> carParts) {
         long countUniqueNodeIds = carParts.stream()
-                .map(CarPart::getNodeId)
+                .map(CarPart::getNode)
                 .distinct()
                 .count();
 

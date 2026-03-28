@@ -16,10 +16,10 @@ CREATE TABLE IF NOT EXISTS cars (
     gear_shift_box gear_shift_box_type NOT NULL,
     car_drive car_drive_type NOT NULL,
     colour TEXT NOT NULL
-)
+);
 
 CREATE TABLE IF NOT EXISTS require_nodes (
     node_id BIGINT REFERENCES nodes(id),
     car_id BIGINT REFERENCES cars(id),
-    PRIMARY (node_id, car_id)
-)
+    PRIMARY KEY (node_id, car_id)
+);

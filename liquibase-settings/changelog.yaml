@@ -1,0 +1,55 @@
+databaseChangeLog:
+  - changeSet:
+      id: 0001
+      author: penlk
+      changes:
+        - sqlFile:
+            path: migrations/0001_create_car_parts.up.sql
+      rollback:
+        - sqlFile:
+            path: migrations/0001_create_car_parts.down.sql
+  - changeSet:
+      id: 0002
+      author: penlk
+      changes:
+        - sqlFile:
+            path: migrations/0002_create_cars.up.sql
+      rollback:
+        - sqlFile:
+            path: migrations/0002_create_cars.down.sql
+  - changeSet:
+      id: 0003
+      author: penlk
+      changes:
+        - sqlFile:
+            path: migrations/0003_create_default_configurations.up.sql
+      rollback:
+        - sqlFile:
+            path: migrations/0003_create_default_configurations.down.sql
+  - changeSet:
+      id: 0004
+      author: penlk
+      changes:
+        - sqlFile:
+            path: migrations/0004_create_users.up.sql
+      rollback:
+        - sqlFile:
+            path: migrations/0004_create_users.down.sql
+  - changeSet:
+      id: 0005
+      author: penlk
+      changes:
+        - sqlFile:
+            path: migrations/0005_create_common_orders.up.sql
+      rollback:
+        - sqlFile:
+            path: migrations/0005_create_common_orders.down.sql
+  - changeSet:
+      id: 0006
+      author: penlk
+      changes:
+        - sqlFile:
+            path: migrations/0006_create_special_orders.up.sql
+      rollback:
+        - sqlFile:
+            path: migrations/0006_create_special_orders.down.sql

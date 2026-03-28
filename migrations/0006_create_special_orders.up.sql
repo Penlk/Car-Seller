@@ -22,11 +22,11 @@ CREATE TABLE IF NOT EXISTS special_configurations (
     car_id BIGINT REFERENCES cars(id) NOT NULL,
     car_part_id BIGINT REFERENCES car_parts(id) NOT NULL,
     price MONEY NOT NULL,
-    PRIMARY(car_id, car_part_id)
+    PRIMARY KEY (car_id, car_part_id)
 );
 
 CREATE TABLE IF NOT EXISTS node_sets (
     special_order_id BIGINT REFERENCES special_orders(id) NOT NULL,
     car_part_id BIGINT REFERENCES car_parts(id) NOT NULL,
-    PRIMARY(special_order_id, car_part_id)
+    PRIMARY KEY (special_order_id, car_part_id)
 );

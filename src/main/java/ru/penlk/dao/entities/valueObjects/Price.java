@@ -1,9 +1,11 @@
 package ru.penlk.dao.entities.valueObjects;
 
+import jakarta.persistence.Embeddable;
 import lombok.NonNull;
 
 import java.math.BigDecimal;
 
+@Embeddable
 public record Price(BigDecimal value) implements Comparable<Price> {
     public final static Price ZERO = new Price(BigDecimal.ZERO);
 

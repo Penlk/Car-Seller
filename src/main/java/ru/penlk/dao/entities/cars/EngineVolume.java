@@ -1,5 +1,6 @@
 package ru.penlk.dao.entities.cars;
 
+import jakarta.persistence.Embeddable;
 import lombok.NonNull;
 
 import java.math.BigDecimal;
@@ -8,6 +9,7 @@ import java.math.BigDecimal;
  *
  * @param value measured in watts
  */
+@Embeddable
 public record EngineVolume(BigDecimal value) implements Comparable<EngineVolume> {
     public EngineVolume {
         if (value.compareTo(new BigDecimal(0)) < 0) {

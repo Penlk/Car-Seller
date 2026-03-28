@@ -7,6 +7,6 @@ public record CarPartDto(long id,
                          long nodeId) {
 
     public static CarPartDto MapToDto(CarPart carPart) {
-        return new CarPartDto(carPart.getId().id(), carPart.getNamePart(), carPart.getNodeId().id());
+        return new CarPartDto(carPart.getId().id(), carPart.getNamePart(), carPart.getNode().id());
     }
 }

@@ -1,15 +1,28 @@
 package ru.penlk.dao.entities.carParts;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
-import ru.penlk.dao.entities.nodes.NodeId;
+import ru.penlk.dao.entities.BaseEntity;
+import ru.penlk.dao.entities.nodes.Node;
 
 @AllArgsConstructor
 @Getter
 @Setter
-public class CarPart {
-    private CarPartId id;
+@Entity
+@Table(name = "car_parts")
+@NoArgsConstructor
+public class CarPart extends BaseEntity {
+    @Column(name = "name", nullable = false)
     private String namePart;
-    private NodeId nodeId;
+
+    @JoinColumn(name = "node_id", nullable = false)
+    @OneToOne(optional = false)
+    private Node node;
 }

@@ -116,7 +116,7 @@ public class CommonOrderServiceImpl implements CommonOrderService {
         }
 
         List<NodeId> nodeIds = carParts.stream()
-                .map(CarPart::getNodeId)
+                .map(CarPart::getNode)
                 .toList();
 
         List<NodeId> missingNodeIds = nodeIds.stream().filter(x -> !requireNodeIds.contains(x)).toList();

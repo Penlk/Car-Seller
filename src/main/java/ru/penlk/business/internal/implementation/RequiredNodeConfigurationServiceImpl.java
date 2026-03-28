@@ -35,8 +35,8 @@ public class RequiredNodeConfigurationServiceImpl implements RequiredNodeConfigu
 
         List<CarPart> completedCarParts = carPartRepository.findAll().stream()
                 .filter(x -> commonConfigurationCarPartIds.contains(x.getId()))
-                .filter(x -> copyMissingNodeIds.contains(x.getNodeId()))
-                .peek(x -> copyMissingNodeIds.remove(x.getNodeId()))
+                .filter(x -> copyMissingNodeIds.contains(x.getNode()))
+                .peek(x -> copyMissingNodeIds.remove(x.getNode()))
                 .toList();
 
         if (!copyMissingNodeIds.isEmpty()) {
@@ -50,7 +50,7 @@ public class RequiredNodeConfigurationServiceImpl implements RequiredNodeConfigu
         Collection<NodeId> requireNodeIds = requireNodeRepository.findByCarId(car.getId());
 
         List<NodeId> nodeIds = specialCarParts.stream()
-                .map(CarPart::getNodeId)
+                .map(CarPart::getNode)
                 .toList();
 
         return requireNodeIds.stream().filter(x -> !nodeIds.contains(x)).toList();
