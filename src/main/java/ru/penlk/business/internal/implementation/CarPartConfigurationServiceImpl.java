@@ -7,7 +7,7 @@ import ru.penlk.business.internal.CarPartConfigurationService;
 import ru.penlk.dao.entities.carParts.CarPart;
 import ru.penlk.dao.entities.carParts.CarPartId;
 import ru.penlk.dao.entities.cars.Car;
-import ru.penlk.dao.entities.orders.specialConfigurations.SpecialConfiguration;
+import ru.penlk.dao.entities.orders.specialAllowedParts.SpecialAllowedPart;
 import ru.penlk.dao.repositories.interfaces.cars.parts.CarPartNotFoundException;
 import ru.penlk.dao.repositories.interfaces.cars.parts.CarPartRepository;
 import ru.penlk.dao.repositories.interfaces.orders.special.configurators.SpecialConfigurationRepository;
@@ -40,7 +40,7 @@ public class CarPartConfigurationServiceImpl implements CarPartConfigurationServ
     }
 
     private void checkIncompatibleParts(Car car, Collection<CarPart> carParts) {
-        Collection<SpecialConfiguration> specialConfigurations = specialConfigurationRepository.findByCarId(car.getId());
+        Collection<SpecialAllowedPart> specialConfigurations = specialConfigurationRepository.findByCarId(car.getId());
 
         List<CarPart> wrongCarParts = carParts.stream()
                 .filter(x ->

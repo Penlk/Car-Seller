@@ -3,7 +3,7 @@ package ru.penlk.dao.entities.carParts;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -23,6 +23,6 @@ public class CarPart extends BaseEntity {
     private String namePart;
 
     @JoinColumn(name = "node_id", nullable = false)
-    @OneToOne(optional = false)
+    @ManyToOne(optional = false)
     private Node node;
 }

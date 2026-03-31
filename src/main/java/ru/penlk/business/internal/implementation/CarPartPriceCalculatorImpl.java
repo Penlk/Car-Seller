@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import ru.penlk.business.internal.CarPartPriceCalculator;
 import ru.penlk.dao.entities.carParts.CarPart;
 import ru.penlk.dao.entities.cars.CarId;
-import ru.penlk.dao.entities.orders.specialConfigurations.SpecialConfiguration;
+import ru.penlk.dao.entities.orders.specialAllowedParts.SpecialAllowedPart;
 import ru.penlk.dao.entities.valueObjects.Price;
 import ru.penlk.dao.repositories.interfaces.orders.special.configurators.SpecialConfigurationRepository;
 
@@ -16,13 +16,13 @@ public class CarPartPriceCalculatorImpl implements CarPartPriceCalculator {
 
     @Override
     public Price getSpecialCarPartsPrice(CarId carId, Collection<CarPart> specialCarParts) {
-        Collection<SpecialConfiguration> specialConfigurations = specialConfigurationRepository.findByCarId(carId);
+        Collection<SpecialAllowedPart> specialConfigurations = specialConfigurationRepository.findByCarId(carId);
 
         return specialConfigurations.stream()
                 .filter(x ->
                         specialCarParts.stream().anyMatch(y -> x.getCarPartId().equals(y.getId()))
                 )
-                .map(SpecialConfiguration::getPrice)
+                .map(SpecialAllowedPart::getPrice)
                 .reduce(Price.ZERO, Price::add);
     }
 }

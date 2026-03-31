@@ -8,7 +8,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import ru.penlk.dao.entities.carParts.CarPart;
 import ru.penlk.dao.entities.carParts.CarPartId;
 import ru.penlk.dao.entities.cars.CarId;
-import ru.penlk.dao.entities.orders.specialConfigurations.SpecialConfiguration;
+import ru.penlk.dao.entities.orders.specialAllowedParts.SpecialAllowedPart;
 import ru.penlk.dao.entities.valueObjects.Price;
 import ru.penlk.dao.repositories.interfaces.orders.special.configurators.SpecialConfigurationRepository;
 
@@ -32,8 +32,8 @@ class CarPartPriceCalculatorImplTest {
         CarPart p1 = new CarPart(new CarPartId(1), "p1", null);
         CarPart p2 = new CarPart(new CarPartId(2), "p2", null);
 
-        SpecialConfiguration s1 = new SpecialConfiguration(carId, new CarPartId(1), new Price(new BigDecimal("10")));
-        SpecialConfiguration s2 = new SpecialConfiguration(carId, new CarPartId(3), new Price(new BigDecimal("5")));
+        SpecialAllowedPart s1 = new SpecialAllowedPart(carId, new CarPartId(1), new Price(new BigDecimal("10")));
+        SpecialAllowedPart s2 = new SpecialAllowedPart(carId, new CarPartId(3), new Price(new BigDecimal("5")));
 
         when(specialConfigurationRepository.findByCarId(carId)).thenReturn(List.of(s1, s2));
 

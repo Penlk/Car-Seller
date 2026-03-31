@@ -1,10 +1,16 @@
 package ru.penlk.dao.entities.users.managers;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import ru.penlk.dao.entities.BaseEntity;
 
 @AllArgsConstructor
 @Getter
-public class Manager {
-    private ManagerId id;
-}
+@NoArgsConstructor
+@Entity
+@Table(name = "managers")
+public class Manager extends BaseEntity { }

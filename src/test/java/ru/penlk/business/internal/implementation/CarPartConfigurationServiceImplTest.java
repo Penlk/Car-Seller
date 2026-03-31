@@ -12,7 +12,7 @@ import ru.penlk.dao.entities.carParts.CarPartId;
 import ru.penlk.dao.entities.cars.Car;
 import ru.penlk.dao.entities.cars.CarId;
 import ru.penlk.dao.entities.nodes.NodeId;
-import ru.penlk.dao.entities.orders.specialConfigurations.SpecialConfiguration;
+import ru.penlk.dao.entities.orders.specialAllowedParts.SpecialAllowedPart;
 import ru.penlk.dao.entities.valueObjects.Price;
 import ru.penlk.dao.repositories.interfaces.cars.parts.CarPartNotFoundException;
 import ru.penlk.dao.repositories.interfaces.cars.parts.CarPartRepository;
@@ -50,8 +50,8 @@ class CarPartConfigurationServiceImplTest {
         when(carPartRepository.query(any())).thenReturn(List.of(p1, p2));
         when(specialConfigurationRepository.findByCarId(car.getId()))
                 .thenReturn(List.of(
-                        new SpecialConfiguration(car.getId(), new CarPartId(1), new Price(new BigDecimal("1"))),
-                        new SpecialConfiguration(car.getId(), new CarPartId(2), new Price(new BigDecimal("2")))
+                        new SpecialAllowedPart(car.getId(), new CarPartId(1), new Price(new BigDecimal("1"))),
+                        new SpecialAllowedPart(car.getId(), new CarPartId(2), new Price(new BigDecimal("2")))
                 ));
 
         var result = service.getCarParts(car, List.of(1L, 2L));
@@ -86,8 +86,8 @@ class CarPartConfigurationServiceImplTest {
         when(carPartRepository.query(any())).thenReturn(List.of(p1, p2));
         when(specialConfigurationRepository.findByCarId(car.getId()))
                 .thenReturn(List.of(
-                        new SpecialConfiguration(car.getId(), new CarPartId(1), new Price(new BigDecimal("1"))),
-                        new SpecialConfiguration(car.getId(), new CarPartId(2), new Price(new BigDecimal("2")))
+                        new SpecialAllowedPart(car.getId(), new CarPartId(1), new Price(new BigDecimal("1"))),
+                        new SpecialAllowedPart(car.getId(), new CarPartId(2), new Price(new BigDecimal("2")))
                 ));
 
         assertThrows(ServiceException.class, () -> service.getCarParts(car, List.of(1L, 2L)));

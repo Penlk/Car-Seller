@@ -1,5 +1,6 @@
 package ru.penlk.dao.entities.nodes;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -15,5 +16,6 @@ import ru.penlk.dao.entities.BaseEntity;
 @Table(name = "nodes")
 @NoArgsConstructor
 public class Node extends BaseEntity {
+    @Column(nullable = false)
     private String name;
 }
