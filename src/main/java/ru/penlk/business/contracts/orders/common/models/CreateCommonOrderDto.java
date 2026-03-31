@@ -1,8 +1,7 @@
 package ru.penlk.business.contracts.orders.common.models;
 
-import ru.penlk.dao.entities.cars.CarId;
-import ru.penlk.dao.entities.orders.commonOrder.CommonOrder;
-import ru.penlk.dao.entities.orders.commonOrder.CommonOrderId;
+import ru.penlk.dao.entities.orders.common.CommonOrder;
+import ru.penlk.dao.entities.orders.common.CommonOrderId;
 import ru.penlk.dao.entities.users.clients.ClientId;
 import ru.penlk.dao.entities.users.managers.ManagerId;
 

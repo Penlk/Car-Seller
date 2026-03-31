@@ -1,4 +1,4 @@
-package ru.penlk.dao.entities.orders.specialOrder;
+package ru.penlk.dao.entities.orders.special;
 
 public record SpecialOrderId(long id) {
     public SpecialOrderId {

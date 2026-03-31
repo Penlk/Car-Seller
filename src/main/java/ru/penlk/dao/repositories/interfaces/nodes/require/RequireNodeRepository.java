@@ -1,7 +1,5 @@
 package ru.penlk.dao.repositories.interfaces.nodes.require;
 
-import ru.penlk.dao.entities.cars.CarId;
-import ru.penlk.dao.entities.nodes.NodeId;
 import ru.penlk.dao.repositories.interfaces.cars.CarNotFoundException;
 import ru.penlk.dao.repositories.interfaces.nodes.NodeNotFoundException;
 

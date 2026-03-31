@@ -10,14 +10,11 @@ import ru.penlk.business.contracts.orders.special.models.CreateSpecialOrderDto;
 import ru.penlk.business.internal.CarPartConfigurationService;
 import ru.penlk.business.internal.CarPartPriceCalculator;
 import ru.penlk.business.internal.RequiredNodeConfigurationService;
-import ru.penlk.dao.entities.carParts.CarPart;
-import ru.penlk.dao.entities.carParts.CarPartId;
+import ru.penlk.dao.entities.cars.CarPart;
 import ru.penlk.dao.entities.cars.Car;
-import ru.penlk.dao.entities.cars.CarId;
-import ru.penlk.dao.entities.nodes.NodeId;
 import ru.penlk.dao.entities.users.clients.Client;
 import ru.penlk.dao.entities.users.clients.ClientId;
-import ru.penlk.dao.entities.valueObjects.Price;
+import ru.penlk.dao.entities.vo.Price;
 import ru.penlk.dao.repositories.interfaces.cars.CarRepository;
 import ru.penlk.dao.repositories.interfaces.orders.special.SpecialOrderRepository;
 import ru.penlk.dao.repositories.interfaces.orders.special.nodeset.NodeSetRepository;
@@ -25,7 +22,6 @@ import ru.penlk.dao.repositories.interfaces.users.clients.ClientRepository;
 import ru.penlk.dao.repositories.interfaces.users.managers.ManagerRepository;
 
 import java.math.BigDecimal;
-import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 

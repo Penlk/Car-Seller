@@ -1,8 +1,8 @@
 package ru.penlk.business.implementations.orders.states.common;
 
 import lombok.AllArgsConstructor;
-import ru.penlk.dao.entities.orders.commonOrder.CommonOrder;
-import ru.penlk.dao.entities.orders.commonOrder.CommonOrderState;
+import ru.penlk.dao.entities.orders.common.CommonOrder;
+import ru.penlk.dao.entities.orders.common.CommonOrderState;
 import ru.penlk.dao.entities.users.managers.ManagerId;
 
 @AllArgsConstructor

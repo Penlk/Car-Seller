@@ -1,4 +1,4 @@
-package ru.penlk.dao.entities.requireNodes;
+package ru.penlk.dao.entities.nodes;
 
 import lombok.AllArgsConstructor;
 
@@ -6,6 +6,6 @@ import java.io.Serializable;
 
 @AllArgsConstructor
 public class RequireNodeId implements Serializable {
-    private Long nodeId;
-    private Long carId;
+    private Long node;
+    private Long car;
 }

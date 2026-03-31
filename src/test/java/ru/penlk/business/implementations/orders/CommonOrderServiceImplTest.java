@@ -8,16 +8,14 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import ru.penlk.business.contracts.DomainValidationException;
 import ru.penlk.business.contracts.ServiceException;
 import ru.penlk.business.contracts.orders.common.models.CreateCommonOrderDto;
-import ru.penlk.business.contracts.orders.common.models.CommonOrderDto;
 import ru.penlk.dao.entities.cars.Car;
-import ru.penlk.dao.entities.cars.CarId;
-import ru.penlk.dao.entities.nodes.NodeId;
-import ru.penlk.dao.entities.orders.commonOrder.CommonOrder;
-import ru.penlk.dao.entities.orders.commonOrder.CommonOrderId;
-import ru.penlk.dao.entities.orders.commonOrder.CommonOrderState;
+import ru.penlk.dao.entities.cars.CarPart;
+import ru.penlk.dao.entities.orders.common.CommonOrder;
+import ru.penlk.dao.entities.orders.common.CommonOrderId;
+import ru.penlk.dao.entities.orders.common.CommonOrderState;
 import ru.penlk.dao.entities.users.clients.ClientId;
 import ru.penlk.dao.entities.users.managers.ManagerId;
-import ru.penlk.dao.entities.valueObjects.Price;
+import ru.penlk.dao.entities.vo.Price;
 import ru.penlk.dao.repositories.interfaces.cars.CarRepository;
 import ru.penlk.dao.repositories.interfaces.cars.parts.CarPartRepository;
 import ru.penlk.dao.repositories.interfaces.nodes.require.RequireNodeRepository;
@@ -27,7 +25,6 @@ import ru.penlk.dao.repositories.interfaces.users.clients.ClientRepository;
 import ru.penlk.dao.repositories.interfaces.users.managers.ManagerRepository;
 import ru.penlk.business.implementations.orders.strategies.ManagerSelectionStrategy;
 import ru.penlk.business.implementations.orders.states.mappers.CommonStateMapper;
-import ru.penlk.business.implementations.orders.states.common.CommonOrderStateHandler;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -98,7 +95,7 @@ class CommonOrderServiceImplTest {
 
         when(requireNodeRepository.findByCarId(new CarId(1))).thenReturn(List.of(new NodeId(1)));
         when(commonConfigurationRepository.findByCarId(new CarId(1))).thenReturn(List.of(new ru.penlk.dao.entities.carParts.CarPartId(5)));
-        when(carPartRepository.query(any())).thenReturn(List.of(new ru.penlk.dao.entities.carParts.CarPart(new ru.penlk.dao.entities.carParts.CarPartId(5), "p", new NodeId(7))));
+        when(carPartRepository.query(any())).thenReturn(List.of(new CarPart(new ru.penlk.dao.entities.carParts.CarPartId(5), "p", new NodeId(7))));
 
         assertThrows(DomainValidationException.class, () -> service.issue(1L, 1L));
     }

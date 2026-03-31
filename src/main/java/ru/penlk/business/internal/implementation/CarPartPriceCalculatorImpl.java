@@ -2,10 +2,9 @@ package ru.penlk.business.internal.implementation;
 
 import lombok.AllArgsConstructor;
 import ru.penlk.business.internal.CarPartPriceCalculator;
-import ru.penlk.dao.entities.carParts.CarPart;
-import ru.penlk.dao.entities.cars.CarId;
-import ru.penlk.dao.entities.orders.specialAllowedParts.SpecialAllowedPart;
-import ru.penlk.dao.entities.valueObjects.Price;
+import ru.penlk.dao.entities.cars.CarPart;
+import ru.penlk.dao.entities.orders.special.SpecialAllowedPart;
+import ru.penlk.dao.entities.vo.Price;
 import ru.penlk.dao.repositories.interfaces.orders.special.configurators.SpecialConfigurationRepository;
 
 import java.util.Collection;

@@ -1,6 +1,6 @@
 package ru.penlk.business.contracts.orders.special.models;
 
-import ru.penlk.dao.entities.orders.specialOrder.SpecialOrderState;
+import ru.penlk.dao.entities.orders.special.SpecialOrderState;
 
 public enum SpecialOrderStateContract {
     Issued,

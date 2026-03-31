@@ -1,4 +1,4 @@
-package ru.penlk.dao.entities.orders.defaultConfigurations;
+package ru.penlk.dao.entities.configurations.defaults;
 
 import lombok.AllArgsConstructor;
 

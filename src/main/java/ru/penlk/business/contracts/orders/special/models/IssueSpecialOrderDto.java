@@ -1,7 +1,7 @@
 package ru.penlk.business.contracts.orders.special.models;
 
-import ru.penlk.dao.entities.orders.specialOrder.SpecialOrder;
-import ru.penlk.dao.entities.valueObjects.Price;
+import ru.penlk.dao.entities.orders.special.SpecialOrder;
+import ru.penlk.dao.entities.vo.Price;
 
 import java.math.BigDecimal;
 

@@ -1,4 +1,4 @@
-package ru.penlk.dao.entities.orders.specialOrder;
+package ru.penlk.dao.entities.configurations.specials;
 
 import lombok.AllArgsConstructor;
 
@@ -6,6 +6,6 @@ import java.io.Serializable;
 
 @AllArgsConstructor
 public class SpecialConfigurationId implements Serializable {
-    private Long specialOrderId;
-    private Long carPartId;
+    private Long specialOrder;
+    private Long carPart;
 }

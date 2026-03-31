@@ -1,4 +1,4 @@
-package ru.penlk.dao.entities.valueObjects;
+package ru.penlk.dao.entities.vo;
 
 import jakarta.persistence.Embeddable;
 import lombok.NonNull;

@@ -5,11 +5,9 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import ru.penlk.dao.entities.carParts.CarPart;
-import ru.penlk.dao.entities.carParts.CarPartId;
-import ru.penlk.dao.entities.cars.CarId;
-import ru.penlk.dao.entities.orders.specialAllowedParts.SpecialAllowedPart;
-import ru.penlk.dao.entities.valueObjects.Price;
+import ru.penlk.dao.entities.cars.CarPart;
+import ru.penlk.dao.entities.orders.special.SpecialAllowedPart;
+import ru.penlk.dao.entities.vo.Price;
 import ru.penlk.dao.repositories.interfaces.orders.special.configurators.SpecialConfigurationRepository;
 
 import java.math.BigDecimal;

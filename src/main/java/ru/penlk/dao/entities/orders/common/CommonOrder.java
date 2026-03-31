@@ -1,13 +1,9 @@
-package ru.penlk.dao.entities.orders.commonOrder;
+package ru.penlk.dao.entities.orders.common;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -15,11 +11,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import ru.penlk.dao.entities.BaseEntity;
 import ru.penlk.dao.entities.cars.Car;
-import ru.penlk.dao.entities.cars.CarId;
 import ru.penlk.dao.entities.users.clients.Client;
-import ru.penlk.dao.entities.users.clients.ClientId;
 import ru.penlk.dao.entities.users.managers.Manager;
-import ru.penlk.dao.entities.users.managers.ManagerId;
 
 @AllArgsConstructor
 @NoArgsConstructor

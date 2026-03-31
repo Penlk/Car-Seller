@@ -1,7 +1,6 @@
 package ru.penlk.dao.repositories.interfaces.orders.special.configurators;
 
-import ru.penlk.dao.entities.cars.CarId;
-import ru.penlk.dao.entities.orders.specialAllowedParts.SpecialAllowedPart;
+import ru.penlk.dao.entities.orders.special.SpecialAllowedPart;
 import ru.penlk.dao.repositories.interfaces.cars.CarNotFoundException;
 import ru.penlk.dao.repositories.interfaces.cars.parts.CarPartAlreadyInException;
 import ru.penlk.dao.repositories.interfaces.cars.parts.CarPartNotFoundException;

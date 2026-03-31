@@ -1,4 +1,4 @@
-package ru.penlk.dao.entities.orders.commonOrder;
+package ru.penlk.dao.entities.orders.common;
 
 public record CommonOrderId(long id) {
     public CommonOrderId {

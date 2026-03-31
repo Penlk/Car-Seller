@@ -1,7 +1,7 @@
 package ru.penlk.dao.repositories.interfaces.orders.common;
 
-import ru.penlk.dao.entities.orders.commonOrder.CommonOrder;
-import ru.penlk.dao.entities.orders.commonOrder.CommonOrderId;
+import ru.penlk.dao.entities.orders.common.CommonOrder;
+import ru.penlk.dao.entities.orders.common.CommonOrderId;
 
 import java.util.Collection;
 import java.util.Optional;

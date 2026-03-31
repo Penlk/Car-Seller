@@ -2,7 +2,7 @@ package ru.penlk.business.implementations.orders.states.special;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import ru.penlk.dao.entities.orders.specialOrder.SpecialOrder;
+import ru.penlk.dao.entities.orders.special.SpecialOrder;
 import ru.penlk.dao.entities.users.managers.ManagerId;
 
 @AllArgsConstructor

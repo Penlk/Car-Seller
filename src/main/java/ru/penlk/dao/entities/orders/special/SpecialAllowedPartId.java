@@ -1,4 +1,4 @@
-package ru.penlk.dao.entities.orders.specialAllowedParts;
+package ru.penlk.dao.entities.orders.special;
 
 
 import lombok.AllArgsConstructor;

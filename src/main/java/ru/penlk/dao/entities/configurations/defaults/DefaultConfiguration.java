@@ -1,4 +1,4 @@
-package ru.penlk.dao.entities.orders.defaultConfigurations;
+package ru.penlk.dao.entities.configurations.defaults;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -10,7 +10,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import ru.penlk.dao.entities.carParts.CarPart;
+import ru.penlk.dao.entities.cars.CarPart;
 import ru.penlk.dao.entities.cars.Car;
 
 @AllArgsConstructor

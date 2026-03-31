@@ -1,6 +1,6 @@
-package ru.penlk.dao.entities.orders.specialOrder;
+package ru.penlk.dao.entities.orders.common;
 
-public enum SpecialOrderState {
+public enum CommonOrderState {
     ISSUED,
     AGREED,
     WAITING_PAYMENT,

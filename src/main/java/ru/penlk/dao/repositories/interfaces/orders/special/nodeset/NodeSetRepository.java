@@ -1,7 +1,6 @@
 package ru.penlk.dao.repositories.interfaces.orders.special.nodeset;
 
-import ru.penlk.dao.entities.carParts.CarPartId;
-import ru.penlk.dao.entities.orders.specialOrder.SpecialOrderId;
+import ru.penlk.dao.entities.orders.special.SpecialOrderId;
 import ru.penlk.dao.repositories.interfaces.cars.parts.CarPartAlreadyInException;
 import ru.penlk.dao.repositories.interfaces.cars.parts.CarPartNotFoundException;
 import ru.penlk.dao.repositories.interfaces.orders.special.SpecialOrderNotFoundException;

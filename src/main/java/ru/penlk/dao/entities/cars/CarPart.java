@@ -1,4 +1,4 @@
-package ru.penlk.dao.entities.carParts;
+package ru.penlk.dao.entities.cars;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

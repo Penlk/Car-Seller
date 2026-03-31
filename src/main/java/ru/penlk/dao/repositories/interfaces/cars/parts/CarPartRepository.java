@@ -1,7 +1,6 @@
 package ru.penlk.dao.repositories.interfaces.cars.parts;
 
-import ru.penlk.dao.entities.carParts.CarPart;
-import ru.penlk.dao.entities.carParts.CarPartId;
+import ru.penlk.dao.entities.cars.CarPart;
 
 import java.util.Collection;
 import java.util.Optional;

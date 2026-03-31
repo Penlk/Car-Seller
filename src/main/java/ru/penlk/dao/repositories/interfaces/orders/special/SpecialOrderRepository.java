@@ -1,7 +1,7 @@
 package ru.penlk.dao.repositories.interfaces.orders.special;
 
-import ru.penlk.dao.entities.orders.specialOrder.SpecialOrder;
-import ru.penlk.dao.entities.orders.specialOrder.SpecialOrderId;
+import ru.penlk.dao.entities.orders.special.SpecialOrder;
+import ru.penlk.dao.entities.orders.special.SpecialOrderId;
 
 import java.util.Collection;
 import java.util.Optional;

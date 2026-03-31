@@ -1,7 +1,6 @@
 package ru.penlk.dao.repositories.interfaces.nodes;
 
 import ru.penlk.dao.entities.nodes.Node;
-import ru.penlk.dao.entities.nodes.NodeId;
 
 import java.util.Collection;
 import java.util.Optional;

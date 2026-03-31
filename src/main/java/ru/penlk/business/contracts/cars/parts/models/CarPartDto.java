@@ -1,6 +1,6 @@
 package ru.penlk.business.contracts.cars.parts.models;
 
-import ru.penlk.dao.entities.carParts.CarPart;
+import ru.penlk.dao.entities.cars.CarPart;
 
 public record CarPartDto(long id,
                          String namePart,
