@@ -2,8 +2,6 @@ package ru.penlk.business.contracts.orders.special.models;
 
 import ru.penlk.dao.entities.orders.special.SpecialOrder;
 import ru.penlk.dao.entities.orders.special.SpecialOrderId;
-import ru.penlk.dao.entities.users.clients.ClientId;
-import ru.penlk.dao.entities.users.managers.ManagerId;
 import ru.penlk.dao.entities.vo.Price;
 
 import java.math.BigDecimal;

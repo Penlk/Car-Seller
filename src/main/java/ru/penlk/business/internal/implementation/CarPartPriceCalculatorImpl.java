@@ -5,7 +5,7 @@ import ru.penlk.business.internal.CarPartPriceCalculator;
 import ru.penlk.dao.entities.cars.CarPart;
 import ru.penlk.dao.entities.orders.special.SpecialAllowedPart;
 import ru.penlk.dao.entities.vo.Price;
-import ru.penlk.dao.repositories.interfaces.orders.special.configurators.SpecialConfigurationRepository;
+import ru.penlk.dao.repositories.interfaces.configurations.SpecialConfigurationRepository;
 
 import java.util.Collection;
 

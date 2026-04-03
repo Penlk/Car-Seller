@@ -1,8 +1,8 @@
 package ru.penlk.business.contracts.cars.models;
 
 import ru.penlk.dao.entities.cars.Car;
-import ru.penlk.dao.entities.cars.EnginePower;
-import ru.penlk.dao.entities.cars.EngineVolume;
+import ru.penlk.dao.entities.vo.EnginePower;
+import ru.penlk.dao.entities.vo.EngineVolume;
 import ru.penlk.dao.entities.vo.Price;
 
 import java.math.BigDecimal;

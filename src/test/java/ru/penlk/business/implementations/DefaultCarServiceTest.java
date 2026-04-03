@@ -11,7 +11,6 @@ import ru.penlk.business.contracts.cars.models.CreateCarDto;
 import ru.penlk.business.contracts.cars.models.FuelContract;
 import ru.penlk.business.contracts.cars.models.GearShiftBoxContract;
 import ru.penlk.business.contracts.cars.models.CarDriveContract;
-import ru.penlk.dao.repositories.interfaces.cars.CarNotFoundException;
 import ru.penlk.dao.repositories.interfaces.cars.CarRepository;
 
 import java.math.BigDecimal;

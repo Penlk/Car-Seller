@@ -5,9 +5,9 @@ import ru.penlk.business.contracts.DomainValidationException;
 import ru.penlk.business.internal.RequiredNodeConfigurationService;
 import ru.penlk.dao.entities.cars.CarPart;
 import ru.penlk.dao.entities.cars.Car;
-import ru.penlk.dao.repositories.interfaces.cars.parts.CarPartRepository;
-import ru.penlk.dao.repositories.interfaces.nodes.require.RequireNodeRepository;
-import ru.penlk.dao.repositories.interfaces.orders.common.configurations.CommonConfigurationRepository;
+import ru.penlk.dao.repositories.interfaces.cars.CarPartRepository;
+import ru.penlk.dao.repositories.interfaces.nodes.RequireNodeRepository;
+import ru.penlk.dao.repositories.interfaces.configurations.CommonConfigurationRepository;
 
 import java.util.ArrayList;
 import java.util.Collection;

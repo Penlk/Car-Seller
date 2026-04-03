@@ -1,19 +1,8 @@
 package ru.penlk.dao.repositories.interfaces.orders.special;
 
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 import ru.penlk.dao.entities.orders.special.SpecialOrder;
-import ru.penlk.dao.entities.orders.special.SpecialOrderId;
 
-import java.util.Collection;
-import java.util.Optional;
-
-public interface SpecialOrderRepository {
-    Optional<SpecialOrder> findById(SpecialOrderId specialOrderId);
-
-    Collection<SpecialOrder> findAll();
-
-    void delete(SpecialOrderId specialOrderId) throws SpecialOrderNotFoundException;
-
-    SpecialOrder update(SpecialOrder specialOrder) throws SpecialOrderNotFoundException;
-
-    SpecialOrder create(SpecialOrder order) throws SpecialOrderAlreadyInException;
-}
+@Repository
+public interface SpecialOrderRepository extends JpaRepository<SpecialOrder, Long> { }

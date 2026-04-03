@@ -1,4 +1,4 @@
-package ru.penlk.dao.entities.cars;
+package ru.penlk.dao.entities.vo;
 
 import jakarta.persistence.Embeddable;
 import lombok.NonNull;

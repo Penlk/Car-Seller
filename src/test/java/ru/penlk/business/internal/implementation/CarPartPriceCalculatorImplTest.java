@@ -8,7 +8,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import ru.penlk.dao.entities.cars.CarPart;
 import ru.penlk.dao.entities.orders.special.SpecialAllowedPart;
 import ru.penlk.dao.entities.vo.Price;
-import ru.penlk.dao.repositories.interfaces.orders.special.configurators.SpecialConfigurationRepository;
+import ru.penlk.dao.repositories.interfaces.configurations.SpecialConfigurationRepository;
 
 import java.math.BigDecimal;
 import java.util.List;

@@ -1,7 +1,5 @@
 package ru.penlk.business.implementations.orders.states.common;
 
-import ru.penlk.dao.entities.users.managers.ManagerId;
-
 public abstract class CommonDraftState implements CommonOrderStateHandler {
     @Override
     public Boolean tryConfirm(CommonOrderCore core, ManagerId managerId) {

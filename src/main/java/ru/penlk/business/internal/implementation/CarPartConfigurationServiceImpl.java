@@ -7,9 +7,8 @@ import ru.penlk.business.internal.CarPartConfigurationService;
 import ru.penlk.dao.entities.cars.CarPart;
 import ru.penlk.dao.entities.cars.Car;
 import ru.penlk.dao.entities.orders.special.SpecialAllowedPart;
-import ru.penlk.dao.repositories.interfaces.cars.parts.CarPartNotFoundException;
-import ru.penlk.dao.repositories.interfaces.cars.parts.CarPartRepository;
-import ru.penlk.dao.repositories.interfaces.orders.special.configurators.SpecialConfigurationRepository;
+import ru.penlk.dao.repositories.interfaces.cars.CarPartRepository;
+import ru.penlk.dao.repositories.interfaces.configurations.SpecialConfigurationRepository;
 
 import java.util.Collection;
 import java.util.List;

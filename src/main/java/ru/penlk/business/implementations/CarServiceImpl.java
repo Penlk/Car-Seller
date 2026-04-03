@@ -6,7 +6,6 @@ import ru.penlk.business.contracts.cars.CarService;
 import ru.penlk.business.contracts.cars.models.CarDto;
 import ru.penlk.business.contracts.cars.models.CreateCarDto;
 import ru.penlk.dao.entities.cars.Car;
-import ru.penlk.dao.repositories.interfaces.cars.CarNotFoundException;
 import ru.penlk.dao.repositories.interfaces.cars.CarRepository;
 
 import java.util.Optional;

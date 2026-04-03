@@ -6,8 +6,7 @@ import ru.penlk.business.contracts.cars.parts.CarPartService;
 import ru.penlk.business.contracts.cars.parts.models.CarPartDto;
 import ru.penlk.business.contracts.cars.parts.models.CreateCarPartDto;
 import ru.penlk.dao.entities.cars.CarPart;
-import ru.penlk.dao.repositories.interfaces.cars.parts.CarPartNotFoundException;
-import ru.penlk.dao.repositories.interfaces.cars.parts.CarPartRepository;
+import ru.penlk.dao.repositories.interfaces.cars.CarPartRepository;
 
 import java.util.Optional;
 

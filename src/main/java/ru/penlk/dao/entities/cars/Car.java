@@ -13,6 +13,8 @@ import ru.penlk.dao.entities.BaseEntity;
 import ru.penlk.dao.entities.configurations.defaults.DefaultConfiguration;
 import ru.penlk.dao.entities.orders.special.SpecialAllowedPart;
 import ru.penlk.dao.entities.nodes.RequireNode;
+import ru.penlk.dao.entities.vo.EnginePower;
+import ru.penlk.dao.entities.vo.EngineVolume;
 import ru.penlk.dao.entities.vo.Price;
 
 import java.util.HashSet;

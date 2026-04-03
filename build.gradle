@@ -21,6 +21,7 @@ repositories {
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     compileOnly 'org.projectlombok:lombok:1.18.42'
+    runtimeOnly 'org.postgresql:postgresql'
     testCompileOnly 'org.projectlombok:lombok:1.18.42'
     testImplementation platform('org.junit:junit-bom:5.10.0')
     testImplementation 'org.junit.jupiter:junit-jupiter'

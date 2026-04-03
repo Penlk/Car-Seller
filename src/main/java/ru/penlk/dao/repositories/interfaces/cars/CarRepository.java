@@ -1,18 +1,13 @@
 package ru.penlk.dao.repositories.interfaces.cars;
 
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
 import ru.penlk.dao.entities.cars.Car;
 
 import java.util.Collection;
 import java.util.Optional;
 
-public interface CarRepository {
-    Collection<Car> query(CarQuery query);
-
-    Optional<Car> findById(CarId id);
-
-    void delete(CarId id) throws CarNotFoundException;
-
-    Car update(Car car) throws CarNotFoundException;
-
-    Car create(Car car) throws CarAlreadyInException;
-}
+@Repository
+public interface CarRepository extends JpaRepository<Car, Long>, JpaSpecificationExecutor<Car> { }
