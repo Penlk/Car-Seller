@@ -1,0 +1,157 @@
+Enum fuel_type {
+  PETROL
+  DIESEL
+  ELECTRICITY
+}
+
+Enum gear_shift_box_type {
+  MANUAL
+  AUTOMATIC
+}
+
+Enum car_drive_type {
+  FRONT
+  REAR
+  FULL
+}
+
+Enum common_order_state {
+  ISSUED
+  AGREED
+  WAITING_PAYMENT
+  PAID
+  CAR_IS_READY
+  CANCELED
+  DONE
+}
+
+Enum special_order_state {
+  ISSUED
+  AGREED
+  WAITING_PAYMENT
+  PAID
+  CAR_IS_READY
+  CANCELED
+  DONE
+}
+
+Table nodes {
+  id bigint [pk, increment, not null]
+  created_at timestamptz [not null, default: `NOW()`]
+  updated_at timestamptz [not null, default: `NOW()`]
+  removed boolean [not null, default: false]
+  name text [not null]
+}
+
+Table car_parts {
+  id bigint [pk, increment, not null]
+  created_at timestamptz [not null, default: `NOW()`]
+  updated_at timestamptz [not null, default: `NOW()`]
+  removed boolean [not null, default: false]
+  name text [not null]
+  node_id bigint [not null, ref: > nodes.id]
+}
+
+Table cars {
+  id bigint [pk, increment, not null]
+  created_at timestamptz [not null, default: `NOW()`]
+  updated_at timestamptz [not null, default: `NOW()`]
+  removed boolean [not null, default: false]
+  price money [not null]
+  brand text [not null]
+  model text [not null]
+  body text [not null]
+  fuel fuel_type [not null]
+  engine_power double [not null]
+  engine_volume double [not null]
+  gear_shift_box gear_shift_box_type [not null]
+  car_drive car_drive_type [not null]
+  colour text [not null]
+}
+
+Table require_nodes {
+  node_id bigint [pk, not null, ref: > nodes.id]
+  car_id bigint [pk, not null, ref: > cars.id]
+}
+
+Table default_configurations {
+  car_id bigint [pk, not null, ref: > cars.id]
+  car_part_id bigint [pk, not null, ref: > car_parts.id]
+}
+
+Table clients {
+  id bigint [pk, increment, not null]
+  created_at timestamptz [not null, default: `NOW()`]
+  updated_at timestamptz [not null, default: `NOW()`]
+  removed boolean [not null, default: false]
+}
+
+Table composition_admins {
+  id bigint [pk, increment, not null]
+  created_at timestamptz [not null, default: `NOW()`]
+  updated_at timestamptz [not null, default: `NOW()`]
+  removed boolean [not null, default: false]
+}
+
+Table managers {
+  id bigint [pk, increment, not null]
+  created_at timestamptz [not null, default: `NOW()`]
+  updated_at timestamptz [not null, default: `NOW()`]
+  removed boolean [not null, default: false]
+}
+
+Table system_admins {
+  id bigint [pk, increment, not null]
+  created_at timestamptz [not null, default: `NOW()`]
+  updated_at timestamptz [not null, default: `NOW()`]
+  removed boolean [not null, default: false]
+}
+
+Table common_orders {
+  id bigint [pk, increment, not null]
+  created_at timestamptz [not null, default: `NOW()`]
+  updated_at timestamptz [not null, default: `NOW()`]
+  removed boolean [not null, default: false]
+  state common_order_state [not null]
+  client_id bigint [ref: > clients.id]
+  manager_id bigint [ref: > managers.id]
+  car_id bigint [not null, ref: > cars.id]
+}
+
+Table special_orders {
+  id bigint [pk, increment, not null]
+  created_at timestamptz [not null, default: `NOW()`]
+  updated_at timestamptz [not null, default: `NOW()`]
+  removed boolean [not null, default: false]
+  state special_order_state [not null]
+  client_id bigint [ref: > clients.id]
+  manager_id bigint [ref: > managers.id]
+  car_id bigint [not null, ref: > cars.id]
+  price money [not null]
+}
+
+Table special_allowed_parts {
+  id bigint [pk, increment, not null]
+  car_id bigint [not null, ref: > cars.id]
+  car_part_id bigint [not null, ref: > car_parts.id]
+  price money [not null]
+}
+
+Table configurations {
+  id bigint [pk, increment, not null]
+  created_at timestamptz [not null, default: `NOW()`]
+  updated_at timestamptz [not null, default: `NOW()`]
+  removed boolean [not null, default: false]
+  car_id bigint [not null, ref: > cars.id]
+  is_finished boolean [not null, default: false]
+}
+
+Table special_configurations {
+  configurator_id bigint [pk, not null, ref: > configurations.id]
+  special_allowed_part_id bigint [pk, not null, ref: > special_allowed_parts.id]
+}
+
+Table configuration_car_parts {
+  configuration_id bigint [pk, not null, ref: > configurations.id]
+  car_part_id bigint [pk, not null, ref: > car_parts.id]
+}

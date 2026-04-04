@@ -31,6 +31,6 @@ public class SpecialConfiguration {
 
     @Id
     @ManyToOne(optional = false)
-    @JoinColumn(name = "car_part_id")
+    @JoinColumn(name = "special_allowed_parts")
     private SpecialAllowedPart specialAllowedPart;
 }

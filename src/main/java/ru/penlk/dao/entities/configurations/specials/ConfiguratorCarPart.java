@@ -19,7 +19,7 @@ import ru.penlk.dao.entities.cars.CarPart;
 @Getter
 @Setter
 @IdClass(ConfiguratorCarPartId.class)
-@Table(name = "configuratos_car_parts")
+@Table(name = "configurations_car_parts")
 public class ConfiguratorCarPart {
     @Id
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
