@@ -13,6 +13,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import ru.penlk.dao.entities.BaseEntity;
 import ru.penlk.dao.entities.cars.Car;
+import ru.penlk.dao.entities.configurations.specials.Configurator;
 import ru.penlk.dao.entities.configurations.specials.SpecialConfiguration;
 import ru.penlk.dao.entities.users.clients.Client;
 import ru.penlk.dao.entities.users.managers.Manager;
@@ -43,8 +44,9 @@ public class SpecialOrder extends BaseEntity {
     @ManyToOne(optional = false)
     private Car car;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "special_allowed_parts")
-    private Set<SpecialConfiguration> specialConfiguration = new HashSet<>();
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "configurator_id", nullable = false)
+    private Configurator configurator;
 
     @Column(nullable = false)
     private Price price;

@@ -1,4 +1,4 @@
-package ru.penlk.dao.entities.nodes;
+package ru.penlk.dao.entities.configurations.specials;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -11,23 +11,23 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import ru.penlk.dao.entities.cars.Car;
+import ru.penlk.dao.entities.cars.CarPart;
 
+@Entity
+@NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
-@NoArgsConstructor
-@Entity
-@Table(name = "require_nodes")
-@IdClass(RequireNodeId.class)
-public class RequireNode {
+@IdClass(ConfiguratorCarPartId.class)
+@Table(name = "configuratos_car_parts")
+public class ConfiguratorCarPart {
     @Id
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "node_id")
-    private Node node;
+    @JoinColumn(name = "configurator_id")
+    private Configurator configurator;
 
     @Id
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "car_id")
-    private Car car;
+    @JoinColumn(name = "car_part_id")
+    private CarPart carPart;
 }

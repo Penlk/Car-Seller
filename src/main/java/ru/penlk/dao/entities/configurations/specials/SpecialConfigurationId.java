@@ -6,6 +6,6 @@ import java.io.Serializable;
 
 @AllArgsConstructor
 public class SpecialConfigurationId implements Serializable {
-    private Long specialOrder;
+    private Long configurator;
     private Long carPart;
 }

@@ -2,8 +2,10 @@ package ru.penlk.dao.entities.orders.special;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
 import jakarta.persistence.IdClass;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -23,11 +25,13 @@ import ru.penlk.dao.entities.vo.Price;
 @Table(name = "special_allowed_parts")
 public class SpecialAllowedPart {
     @Id
-    @ManyToOne(optional = false)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "car_id")
     private Car car;
 
     @Id
-    @ManyToOne(optional = false)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "car_part_id")
     private CarPart carPart;
 
     @Column
