@@ -8,7 +8,6 @@ import ru.penlk.dao.entities.cars.CarPart;
 import ru.penlk.dao.entities.cars.Car;
 import ru.penlk.dao.entities.orders.special.SpecialAllowedPart;
 import ru.penlk.dao.repositories.interfaces.cars.CarPartRepository;
-import ru.penlk.dao.repositories.interfaces.configurations.SpecialConfigurationRepository;
 
 import java.util.Collection;
 import java.util.List;

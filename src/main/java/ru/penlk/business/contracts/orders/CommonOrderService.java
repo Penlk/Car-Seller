@@ -1,31 +1,33 @@
-package ru.penlk.business.contracts.orders.common;
+package ru.penlk.business.contracts.orders;
 
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.penlk.business.contracts.DomainValidationException;
 import ru.penlk.business.contracts.ServiceException;
-import ru.penlk.business.contracts.orders.common.models.CommonOrderDto;
-import ru.penlk.business.contracts.orders.common.models.CreateCommonOrderDto;
-import ru.penlk.business.contracts.orders.common.models.IssueCommonOrderDto;
+import ru.penlk.dao.entities.orders.common.CommonOrder;
 
+@Service
+@Transactional
 public interface CommonOrderService {
-    CommonOrderDto create(CreateCommonOrderDto request);
+    CommonOrder create(CommonOrder request);
 
-    CommonOrderDto read(Long id) throws ServiceException;
+    CommonOrder read(Long orderId) throws ServiceException;
 
-    CommonOrderDto update(CommonOrderDto request) throws ServiceException;
+    CommonOrder update(CommonOrder request) throws ServiceException;
 
-    void delete(Long id) throws ServiceException;
+    void delete(Long orderId) throws ServiceException;
 
-    IssueCommonOrderDto issue(Long clientId, Long carId) throws ServiceException, DomainValidationException;
+    CommonOrder issue(Long clientId, Long carId) throws ServiceException, DomainValidationException;
 
-    CommonOrderDto confirm(Long orderId) throws ServiceException;
+    CommonOrder confirm(Long orderId) throws ServiceException;
 
-    CommonOrderDto waitPurchase(Long orderId) throws ServiceException;
+    CommonOrder waitPurchase(Long orderId) throws ServiceException;
 
-    CommonOrderDto purchase(Long orderId) throws ServiceException;
+    CommonOrder purchase(Long orderId) throws ServiceException;
 
-    CommonOrderDto carReadyToTake(Long orderId) throws ServiceException;
+    CommonOrder carReadyToTake(Long orderId) throws ServiceException;
 
-    CommonOrderDto complete(Long orderId) throws ServiceException;
+    CommonOrder complete(Long orderId) throws ServiceException;
 
-    void cancel(Long orderId) throws ServiceException;
+    CommonOrder cancel(Long orderId) throws ServiceException;
 }

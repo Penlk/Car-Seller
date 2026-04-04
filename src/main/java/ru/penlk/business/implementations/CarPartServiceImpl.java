@@ -2,9 +2,9 @@ package ru.penlk.business.implementations;
 
 import lombok.AllArgsConstructor;
 import ru.penlk.business.contracts.ServiceException;
-import ru.penlk.business.contracts.cars.parts.CarPartService;
-import ru.penlk.business.contracts.cars.parts.models.CarPartDto;
-import ru.penlk.business.contracts.cars.parts.models.CreateCarPartDto;
+import ru.penlk.business.contracts.cars.CarPartService;
+import ru.penlk.presentation.cars.parts.models.CarPartDto;
+import ru.penlk.presentation.cars.parts.models.CreateCarPartDto;
 import ru.penlk.dao.entities.cars.CarPart;
 import ru.penlk.dao.repositories.interfaces.cars.CarPartRepository;
 
@@ -53,11 +53,11 @@ public class CarPartServiceImpl implements CarPartService {
     }
 
     @Override
-    public void delete(Long id) throws ServiceException {
+    public void delete(Long carPartId) throws ServiceException {
         try {
-            carPartRepository.delete(new CarPartId(id));
+            carPartRepository.delete(new CarPartId(carPartId));
         } catch (CarPartNotFoundException e) {
-            throw new ServiceException(String.format("CarPart with id: {%d} not found", id));
+            throw new ServiceException(String.format("CarPart with carPartId: {%d} not found", carPartId));
         }
     }
 }

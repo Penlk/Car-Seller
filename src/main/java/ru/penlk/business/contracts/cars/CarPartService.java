@@ -1,15 +1,18 @@
-package ru.penlk.business.contracts.cars.parts;
+package ru.penlk.business.contracts.cars;
 
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.penlk.business.contracts.ServiceException;
-import ru.penlk.business.contracts.cars.parts.models.CarPartDto;
-import ru.penlk.business.contracts.cars.parts.models.CreateCarPartDto;
+import ru.penlk.dao.entities.cars.CarPart;
 
+@Service
+@Transactional
 public interface CarPartService {
-    CarPartDto create(CreateCarPartDto request);
+    CarPart create(CarPart request);
 
-    CarPartDto read(Long id) throws ServiceException;
+    CarPart read(Long carPartId) throws ServiceException;
 
-    CarPartDto update(CarPartDto request) throws ServiceException;
+    CarPart update(CarPart request) throws ServiceException;
 
-    void delete(Long id) throws ServiceException;
+    void delete(Long carPartId) throws ServiceException;
 }

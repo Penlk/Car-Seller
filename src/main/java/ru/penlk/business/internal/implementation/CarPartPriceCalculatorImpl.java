@@ -5,22 +5,14 @@ import ru.penlk.business.internal.CarPartPriceCalculator;
 import ru.penlk.dao.entities.cars.CarPart;
 import ru.penlk.dao.entities.orders.special.SpecialAllowedPart;
 import ru.penlk.dao.entities.vo.Price;
-import ru.penlk.dao.repositories.interfaces.configurations.SpecialConfigurationRepository;
 
 import java.util.Collection;
 
 @AllArgsConstructor
 public class CarPartPriceCalculatorImpl implements CarPartPriceCalculator {
-    private final SpecialConfigurationRepository specialConfigurationRepository;
-
     @Override
-    public Price getSpecialCarPartsPrice(CarId carId, Collection<CarPart> specialCarParts) {
-        Collection<SpecialAllowedPart> specialConfigurations = specialConfigurationRepository.findByCarId(carId);
-
-        return specialConfigurations.stream()
-                .filter(x ->
-                        specialCarParts.stream().anyMatch(y -> x.getCarPartId().equals(y.getId()))
-                )
+    public Price getSpecialCarPartsPrice(Collection<SpecialAllowedPart> specialAllowedParts) {
+        return specialAllowedParts.stream()
                 .map(SpecialAllowedPart::getPrice)
                 .reduce(Price.ZERO, Price::add);
     }

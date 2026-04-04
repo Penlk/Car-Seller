@@ -2,10 +2,14 @@ package ru.penlk.business.implementations.orders;
 
 import lombok.AllArgsConstructor;
 import ru.penlk.business.contracts.ServiceException;
-import ru.penlk.business.contracts.orders.special.SpecialOrderService;
-import ru.penlk.business.contracts.orders.special.models.CreateSpecialOrderDto;
-import ru.penlk.business.contracts.orders.special.models.IssueSpecialOrderDto;
-import ru.penlk.business.contracts.orders.special.models.SpecialOrderDto;
+import ru.penlk.business.contracts.orders.SpecialOrderService;
+import ru.penlk.dao.entities.configurations.specials.Configurator;
+import ru.penlk.dao.entities.configurations.specials.ConfiguratorCarPart;
+import ru.penlk.dao.entities.configurations.specials.SpecialConfiguration;
+import ru.penlk.dao.entities.orders.special.SpecialAllowedPart;
+import ru.penlk.dao.entities.orders.special.SpecialOrder;
+import ru.penlk.dao.entities.users.clients.Client;
+import ru.penlk.dao.repositories.interfaces.configurations.ConfiguratorRepository;
 import ru.penlk.business.implementations.orders.states.mappers.SpecialStateMapper;
 import ru.penlk.business.implementations.orders.states.special.SpecialOrderCore;
 import ru.penlk.business.implementations.orders.states.special.SpecialOrderFacade;
@@ -16,20 +20,19 @@ import ru.penlk.business.internal.CarPartPriceCalculator;
 import ru.penlk.business.internal.RequiredNodeConfigurationService;
 import ru.penlk.dao.entities.cars.CarPart;
 import ru.penlk.dao.entities.cars.Car;
-import ru.penlk.dao.entities.orders.special.SpecialOrder;
-import ru.penlk.dao.entities.orders.special.SpecialOrderId;
 import ru.penlk.dao.entities.orders.special.SpecialOrderState;
 import ru.penlk.dao.entities.users.managers.Manager;
 import ru.penlk.dao.entities.vo.Price;
 import ru.penlk.dao.repositories.interfaces.cars.CarRepository;
 import ru.penlk.dao.repositories.interfaces.orders.special.SpecialOrderRepository;
-import ru.penlk.dao.repositories.interfaces.orders.special.NodeSetRepository;
 import ru.penlk.dao.repositories.interfaces.users.clients.ClientRepository;
 import ru.penlk.dao.repositories.interfaces.users.managers.ManagerRepository;
 
-import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @AllArgsConstructor
 public class SpecialOrderServiceImpl implements SpecialOrderService {
@@ -37,7 +40,7 @@ public class SpecialOrderServiceImpl implements SpecialOrderService {
     private final ManagerRepository managerRepository;
     private final ClientRepository clientRepository;
     private final CarRepository carRepository;
-    private final NodeSetRepository nodeSetRepository;
+    private final ConfiguratorRepository configuratorRepository;
 
     private final CarPartConfigurationService carPartConfigurationService;
     private final RequiredNodeConfigurationService requiredNodeConfigurationService;
@@ -47,106 +50,75 @@ public class SpecialOrderServiceImpl implements SpecialOrderService {
     private final SpecialStateMapper specialStateMapper;
 
     @Override
-    public SpecialOrderDto create(CreateSpecialOrderDto request) {
-        Optional<Car> optionalCar = carRepository.findById(new CarId(request.carId()));
+    public SpecialOrder read(Long orderId) throws ServiceException {
+        Optional<SpecialOrder> specialOrderOptional = specialOrderRepository.findById(orderId);
 
-        if (optionalCar.isEmpty()) {
-            throw new ServiceException(String.format("Car not found with id {%d}", request.carId()));
+        if (specialOrderOptional.isPresent()) {
+            return specialOrderOptional.get();
         }
 
-        Car car = optionalCar.get();
-
-        Collection<CarPart> carParts = carPartConfigurationService.getCarParts(car, request.specialCarPartIds());
-
-        Collection<CarPart> carPartsAddition = requiredNodeConfigurationService.completeRequireNodes(
-                car, carParts
-        );
-
-        carPartsAddition.addAll(carParts);
-
-        Price price = carPartPriceCalculator.getSpecialCarPartsPrice(car.getId(), carParts).add(car.getPrice());
-
-        SpecialOrder specialOrder = specialOrderRepository.create(CreateSpecialOrderDto.mapToModel(request, price));
-
-        this.createNodeSet(specialOrder.getId(), carPartsAddition);
-
-        return SpecialOrderDto.mapToDto(specialOrder);
-    }
-
-    @Override
-    public SpecialOrderDto read(Long id) throws ServiceException {
-        Optional<SpecialOrder> carOptional = specialOrderRepository.findById(new SpecialOrderId(id));
-
-        if (carOptional.isPresent()) {
-            return SpecialOrderDto.mapToDto(carOptional.get());
-        }
-
-        throw new ServiceException(String.format("SpecialOrder with id: {%d} not found", id));
-    }
-
-    @Override
-    public SpecialOrderDto update(SpecialOrderDto request) throws ServiceException {
-        try {
-            SpecialOrder mappingSpecialOrder = SpecialOrderDto.mapToModel(request);
-
-            return SpecialOrderDto.mapToDto(
-                    specialOrderRepository.update(mappingSpecialOrder)
-            );
-        } catch (SpecialOrderNotFoundException e) {
-            throw new ServiceException(String.format("SpecialOrder with id: {%d} not found", e.getId().id()));
-        }
+        throw new ServiceException(String.format("SpecialOrder with orderId: {%d} not found", orderId));
     }
 
     @Override
     public void delete(Long id) throws ServiceException {
-        try {
-            specialOrderRepository.delete(new SpecialOrderId(id));
-        } catch (SpecialOrderNotFoundException e) {
-            throw new ServiceException(String.format("SpecialOrder with id: {%d} not found", id));
-        }
+        specialOrderRepository.deleteById(id);
     }
 
     @Override
-    public IssueSpecialOrderDto issue(Long clientId, Long carId, Collection<Long> carPartIds) {
-        if (clientRepository.findById(new ClientId(clientId)).isEmpty()) {
+    public SpecialOrder issue(Long clientId, Long configuratorId) {
+        Optional<Client> clientOptional = clientRepository.findById(clientId);
+
+        if (clientOptional.isEmpty()) {
             throw new ServiceException(String.format("Client with id: {%d} not found", clientId));
         }
 
-        Optional<Car> optionalCar = carRepository.findById(new CarId(carId));
+        Optional<Configurator> optionalConfigurator = configuratorRepository.findById(configuratorId);
 
-        if (optionalCar.isEmpty()) {
-            throw new ServiceException(String.format("Car with id: {%d} not found", carId));
+        if (optionalConfigurator.isEmpty()) {
+            throw new ServiceException(String.format("Configurator with id: {%d} not found", configuratorId));
         }
 
-        Car car = optionalCar.get();
+        if (optionalConfigurator.get().isFinished()) {
+            throw new ServiceException(String.format("Configurator with id: {%d} is finished", configuratorId));
+        }
 
-        Collection<CarPart> carParts = new ArrayList<>(carPartConfigurationService.getCarParts(car, carPartIds));
+        Car car = optionalConfigurator.get().getCar();
 
-        Collection<CarPart> carPartsAddition = new ArrayList<>(requiredNodeConfigurationService.completeRequireNodes(
+        Collection<CarPart> carParts = optionalConfigurator.get().getSpecialConfigurations().stream()
+                .map(x -> x.getSpecialAllowedPart().getCarPart())
+                .toList();
+
+        Set<ConfiguratorCarPart> carPartsAddition = new HashSet<>(
+            requiredNodeConfigurationService.completeRequireNodes(
                 car, carParts
-        ));
+            ).stream()
+                    .map(x -> new ConfiguratorCarPart(optionalConfigurator.get(), x))
+                    .toList()
+        );
 
-        Price totalPrice = carPartPriceCalculator.getSpecialCarPartsPrice(car.getId(), carParts).add(car.getPrice());
+        optionalConfigurator.get().setCarParts(carPartsAddition);
+        optionalConfigurator.get().setFinished(true);
 
-        SpecialOrder specialOrder = specialOrderRepository.create(new SpecialOrder(
-                        SpecialOrderId.defaultId(),
+        List<SpecialAllowedPart> specialCarParts = optionalConfigurator.get().getSpecialConfigurations().stream()
+                .map(SpecialConfiguration::getSpecialAllowedPart)
+                .toList();
+
+        Price totalPrice = carPartPriceCalculator.getSpecialCarPartsPrice(specialCarParts).add(car.getPrice());
+
+        return specialOrderRepository.save(new SpecialOrder(
                         SpecialOrderState.ISSUED,
-                        new ClientId(clientId),
-                        ManagerId.defaultId(),
-                        new CarId(carId),
+                        clientOptional.get(),
+                        null,
+                        car,
+                        optionalConfigurator.get(),
                         totalPrice
                 )
         );
-
-        carPartsAddition.addAll(carParts);
-
-        this.createNodeSet(specialOrder.getId(), carPartsAddition);
-
-        return IssueSpecialOrderDto.mapToDto(specialOrder, totalPrice);
     }
 
     @Override
-    public SpecialOrderDto confirm(Long orderId) throws ServiceException {
+    public SpecialOrder confirm(Long orderId) throws ServiceException {
         Optional<Manager> optionalManager = managerSelectionStrategy.findManager(managerRepository.findAll());
 
         if (optionalManager.isEmpty()) {
@@ -155,55 +127,55 @@ public class SpecialOrderServiceImpl implements SpecialOrderService {
 
         SpecialOrderFacade orderFacade = getFacade(orderId);
 
-        if (orderFacade.tryConfirm(optionalManager.get().getId()) == Boolean.FALSE) {
+        if (orderFacade.tryConfirm(optionalManager.get()) == Boolean.FALSE) {
             throw new ServiceException(String.format("SpecialOrder with id: {%d} impossible to confirm", orderId));
         }
 
-        return SpecialOrderDto.mapToDto(orderFacade.getOrder());
+        return specialOrderRepository.save(orderFacade.getOrder());
     }
 
     @Override
-    public SpecialOrderDto waitPurchase(Long orderId) throws ServiceException {
+    public SpecialOrder waitPurchase(Long orderId) throws ServiceException {
         SpecialOrderFacade orderFacade = getFacade(orderId);
 
         if (orderFacade.tryWaitPurchase() == Boolean.FALSE) {
             throw new ServiceException(String.format("SpecialOrder with id: {%d} impossible to waiting purchase", orderId));
         }
 
-        return SpecialOrderDto.mapToDto(orderFacade.getOrder());
+        return specialOrderRepository.save(orderFacade.getOrder());
     }
 
     @Override
-    public SpecialOrderDto purchase(Long orderId) throws ServiceException {
+    public SpecialOrder purchase(Long orderId) throws ServiceException {
         SpecialOrderFacade orderFacade = getFacade(orderId);
 
         if (orderFacade.tryPurchase() == Boolean.FALSE) {
             throw new ServiceException(String.format("SpecialOrder with id: {%d} impossible to purchase", orderId));
         }
 
-        return SpecialOrderDto.mapToDto(orderFacade.getOrder());
+        return specialOrderRepository.save(orderFacade.getOrder());
     }
 
     @Override
-    public SpecialOrderDto carReadyToTake(Long orderId) throws ServiceException {
+    public SpecialOrder carReadyToTake(Long orderId) throws ServiceException {
         SpecialOrderFacade orderFacade = getFacade(orderId);
 
         if (orderFacade.tryCarReadyToTake() == Boolean.FALSE) {
             throw new ServiceException(String.format("SpecialOrder with id: {%d} impossible to car take", orderId));
         }
 
-        return SpecialOrderDto.mapToDto(orderFacade.getOrder());
+        return specialOrderRepository.save(orderFacade.getOrder());
     }
 
     @Override
-    public SpecialOrderDto complete(Long orderId) throws ServiceException {
+    public SpecialOrder complete(Long orderId) throws ServiceException {
         SpecialOrderFacade orderFacade = getFacade(orderId);
 
         if (orderFacade.tryComplete() == Boolean.FALSE) {
             throw new ServiceException(String.format("SpecialOrder with id: {%d} impossible to complete", orderId));
         }
 
-        return SpecialOrderDto.mapToDto(orderFacade.getOrder());
+        return specialOrderRepository.save(orderFacade.getOrder());
     }
 
     @Override
@@ -216,7 +188,7 @@ public class SpecialOrderServiceImpl implements SpecialOrderService {
     }
 
     private SpecialOrderFacade getFacade(Long orderId) {
-        Optional<SpecialOrder> optionalOrder = specialOrderRepository.findById(new SpecialOrderId(orderId));
+        Optional<SpecialOrder> optionalOrder = specialOrderRepository.findById(orderId);
 
         if (optionalOrder.isEmpty()) {
             throw new ServiceException(String.format("SpecialOrder with id: {%d} not found", orderId));
@@ -226,13 +198,5 @@ public class SpecialOrderServiceImpl implements SpecialOrderService {
         SpecialOrderStateHandler state = specialStateMapper.map(order.getState());
 
         return new SpecialOrderFacade(new SpecialOrderCore(order, state));
-    }
-
-    private void createNodeSet(SpecialOrderId specialOrderId, Collection<CarPart> carParts) {
-        try {
-            carParts.forEach(x -> nodeSetRepository.create(specialOrderId, x.getId()));
-        } catch (CarPartAlreadyInException e) {
-            throw new ServiceException(e.getMessage());
-        }
     }
 }

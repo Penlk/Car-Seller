@@ -3,13 +3,14 @@ package ru.penlk.business.implementations.orders.states.common;
 import lombok.AllArgsConstructor;
 import ru.penlk.dao.entities.orders.common.CommonOrder;
 import ru.penlk.dao.entities.orders.common.CommonOrderState;
+import ru.penlk.dao.entities.users.managers.Manager;
 
 @AllArgsConstructor
 public class CommonOrderFacade {
     private final CommonOrderCore core;
 
-    public Boolean tryConfirm(ManagerId managerId) {
-        return core.getState().tryConfirm(core, managerId);
+    public Boolean tryConfirm(Manager manager) {
+        return core.getState().tryConfirm(core, manager);
     }
 
     public Boolean tryWaitPurchase() {

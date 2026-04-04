@@ -3,30 +3,26 @@ package ru.penlk.business.implementations.orders;
 import lombok.AllArgsConstructor;
 import ru.penlk.business.contracts.DomainValidationException;
 import ru.penlk.business.contracts.ServiceException;
-import ru.penlk.business.contracts.orders.common.CommonOrderService;
-import ru.penlk.business.contracts.orders.common.models.CommonOrderDto;
-import ru.penlk.business.contracts.orders.common.models.CreateCommonOrderDto;
-import ru.penlk.business.contracts.orders.common.models.IssueCommonOrderDto;
+import ru.penlk.business.contracts.orders.CommonOrderService;
 import ru.penlk.business.implementations.orders.states.common.CommonOrderCore;
 import ru.penlk.business.implementations.orders.states.common.CommonOrderFacade;
 import ru.penlk.business.implementations.orders.states.common.CommonOrderStateHandler;
 import ru.penlk.business.implementations.orders.states.mappers.CommonStateMapper;
 import ru.penlk.business.implementations.orders.strategies.ManagerSelectionStrategy;
-import ru.penlk.dao.entities.cars.CarPart;
+import ru.penlk.business.internal.RequiredNodeConfigurationService;
 import ru.penlk.dao.entities.cars.Car;
 import ru.penlk.dao.entities.orders.common.CommonOrder;
 import ru.penlk.dao.entities.orders.common.CommonOrderState;
+import ru.penlk.dao.entities.users.clients.Client;
 import ru.penlk.dao.entities.users.managers.Manager;
 import ru.penlk.dao.entities.vo.Price;
 import ru.penlk.dao.repositories.interfaces.cars.CarRepository;
 import ru.penlk.dao.repositories.interfaces.cars.CarPartRepository;
-import ru.penlk.dao.repositories.interfaces.nodes.RequireNodeRepository;
 import ru.penlk.dao.repositories.interfaces.orders.common.CommonOrderRepository;
-import ru.penlk.dao.repositories.interfaces.configurations.CommonConfigurationRepository;
 import ru.penlk.dao.repositories.interfaces.users.clients.ClientRepository;
 import ru.penlk.dao.repositories.interfaces.users.managers.ManagerRepository;
 
-import java.util.Collection;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -35,105 +31,74 @@ public class CommonOrderServiceImpl implements CommonOrderService {
     private final CommonOrderRepository commonOrderRepository;
     private final ManagerRepository managerRepository;
     private final ClientRepository clientRepository;
-    private final RequireNodeRepository requireNodeRepository;
-    private final CommonConfigurationRepository commonConfigurationRepository;
     private final CarPartRepository carPartRepository;
     private final CarRepository carRepository;
 
     private final ManagerSelectionStrategy managerSelectionStrategy;
     private final CommonStateMapper commonStateMapper;
+    private final RequiredNodeConfigurationService requiredNodeConfigurationService;
 
     @Override
-    public CommonOrderDto create(CreateCommonOrderDto request) {
-        CommonOrder car = commonOrderRepository.create(CreateCommonOrderDto.mapToModel(request));
-
-        return CommonOrderDto.mapToDto(car);
+    public CommonOrder create(CommonOrder request) {
+        return commonOrderRepository.save(request);
     }
 
     @Override
-    public CommonOrderDto read(Long id) throws ServiceException {
-        Optional<CommonOrder> carOptional = commonOrderRepository.findById(new CommonOrderId(id));
+    public CommonOrder read(Long orderId) throws ServiceException {
+        Optional<CommonOrder> carOptional = commonOrderRepository.findById(orderId);
 
         if (carOptional.isPresent()) {
-            return CommonOrderDto.mapToDto(carOptional.get());
+            return carOptional.get();
         }
 
-        throw new ServiceException(String.format("CommonOrder with id: {%d} not found", id));
+        throw new ServiceException(String.format("CommonOrder with orderId: {%d} not found", orderId));
     }
 
     @Override
-    public CommonOrderDto update(CommonOrderDto request) throws ServiceException {
-        try {
-            CommonOrder mappingCommonOrder = CommonOrderDto.mapToModel(request);
-
-            return CommonOrderDto.mapToDto(
-                    commonOrderRepository.update(mappingCommonOrder)
-            );
-        } catch (CommonOrderNotFoundException e) {
-            throw new ServiceException(String.format("CommonOrder with id: {%d} not found", e.getId().id()));
+    public CommonOrder update(CommonOrder request) throws ServiceException {
+        if (request.getId() == null) {
+            throw new ServiceException("Order id must not be null");
         }
+
+        CommonOrder order = commonOrderRepository.findById(request.getId())
+                    .orElseThrow(() -> new ServiceException("Order not found"));
+
+        order.setCar(request.getCar());
+        order.setClient(request.getClient());
+        order.setManager(request.getManager());
+        order.setState(request.getState());
+
+        return order;
     }
 
     @Override
-    public void delete(Long id) throws ServiceException {
-        try {
-            commonOrderRepository.delete(new CommonOrderId(id));
-        } catch (CommonOrderNotFoundException e) {
-            throw new ServiceException(String.format("CommonOrder with id: {%d} not found", id));
-        }
+    public void delete(Long orderId) throws ServiceException {
+        commonOrderRepository.deleteById(orderId);
     }
 
     @Override
-    public IssueCommonOrderDto issue(Long clientId, Long carId) throws ServiceException, DomainValidationException {
-        if (clientRepository.findById(new ClientId(clientId)).isEmpty()) {
+    public CommonOrder issue(Long clientId, Long carId) throws ServiceException, DomainValidationException {
+        Optional<Client> clientOptional = clientRepository.findById(clientId);
+
+        if (clientOptional.isEmpty()) {
             throw new ServiceException(String.format("Client with id: {%d} not found", clientId));
         }
 
-        Optional<Car> carOptional = carRepository.findById(new CarId(carId));
+        Optional<Car> carOptional = carRepository.findById(carId);
 
         if (carOptional.isEmpty()) {
             throw new ServiceException(String.format("Car with id: {%d} not found", carId));
         }
 
-        Collection<NodeId> requireNodeIds = requireNodeRepository.findByCarId(new CarId(carId));
+        requiredNodeConfigurationService.completeRequireNodes(carOptional.get(), new ArrayList<>());
 
-        Collection<CarPartId> carPartIds = commonConfigurationRepository.findByCarId(new CarId(carId));
+        CommonOrder order = new CommonOrder(CommonOrderState.ISSUED, clientOptional.get(), null, carOptional.get());
 
-        Collection<CarPart> carParts;
-
-        try {
-            carParts = carPartRepository.query(carPartIds);
-        } catch (CarPartNotFoundException e) {
-            throw new ServiceException(e.getMessage());
-        }
-
-        List<NodeId> nodeIds = carParts.stream()
-                .map(CarPart::getNode)
-                .toList();
-
-        List<NodeId> missingNodeIds = nodeIds.stream().filter(x -> !requireNodeIds.contains(x)).toList();
-
-        if (!missingNodeIds.isEmpty()) {
-            throw new DomainValidationException("Missing required nodes: " + missingNodeIds);
-        }
-
-        Price price = carOptional.get().getPrice();
-
-        return IssueCommonOrderDto.mapToDto(
-                commonOrderRepository.create(new CommonOrder(
-                                CommonOrderId.defaultId(),
-                                CommonOrderState.ISSUED,
-                                new ClientId(clientId),
-                                ManagerId.defaultId(),
-                                new CarId(carId)
-                        )
-                ),
-                price
-        );
+        return commonOrderRepository.save(order);
     }
 
     @Override
-    public CommonOrderDto confirm(Long orderId) throws ServiceException {
+    public CommonOrder confirm(Long orderId) throws ServiceException {
         Optional<Manager> optionalManager = managerSelectionStrategy.findManager(managerRepository.findAll());
 
         if (optionalManager.isEmpty()) {
@@ -142,68 +107,70 @@ public class CommonOrderServiceImpl implements CommonOrderService {
 
         CommonOrderFacade orderFacade = getFacade(orderId);
 
-        if (orderFacade.tryConfirm(optionalManager.get().getId()) == Boolean.FALSE) {
+        if (orderFacade.tryConfirm(optionalManager.get()) == Boolean.FALSE) {
             throw new ServiceException(String.format("CommonOrder with id: {%d} impossible to confirm", orderId));
         }
 
-        return CommonOrderDto.mapToDto(orderFacade.getOrder());
+        return commonOrderRepository.save(orderFacade.getOrder());
     }
 
     @Override
-    public CommonOrderDto waitPurchase(Long orderId) throws ServiceException {
+    public CommonOrder waitPurchase(Long orderId) throws ServiceException {
         CommonOrderFacade orderFacade = getFacade(orderId);
 
         if (orderFacade.tryWaitPurchase() == Boolean.FALSE) {
             throw new ServiceException(String.format("CommonOrder with id: {%d} impossible to waiting purchase", orderId));
         }
 
-        return CommonOrderDto.mapToDto(orderFacade.getOrder());
+        return commonOrderRepository.save(orderFacade.getOrder());
     }
 
     @Override
-    public CommonOrderDto purchase(Long orderId) throws ServiceException {
+    public CommonOrder purchase(Long orderId) throws ServiceException {
         CommonOrderFacade orderFacade = getFacade(orderId);
 
         if (orderFacade.tryPurchase() == Boolean.FALSE) {
             throw new ServiceException(String.format("CommonOrder with id: {%d} impossible to purchase", orderId));
         }
 
-        return CommonOrderDto.mapToDto(orderFacade.getOrder());
+        return commonOrderRepository.save(orderFacade.getOrder());
     }
 
     @Override
-    public CommonOrderDto carReadyToTake(Long orderId) throws ServiceException {
+    public CommonOrder carReadyToTake(Long orderId) throws ServiceException {
         CommonOrderFacade orderFacade = getFacade(orderId);
 
         if (orderFacade.tryCarReadyToTake() == Boolean.FALSE) {
             throw new ServiceException(String.format("CommonOrder with id: {%d} impossible to car take", orderId));
         }
 
-        return CommonOrderDto.mapToDto(orderFacade.getOrder());
+        return commonOrderRepository.save(orderFacade.getOrder());
     }
 
     @Override
-    public CommonOrderDto complete(Long orderId) throws ServiceException {
+    public CommonOrder complete(Long orderId) throws ServiceException {
         CommonOrderFacade orderFacade = getFacade(orderId);
 
         if (orderFacade.tryComplete() == Boolean.FALSE) {
             throw new ServiceException(String.format("CommonOrder with id: {%d} impossible to complete", orderId));
         }
 
-        return CommonOrderDto.mapToDto(orderFacade.getOrder());
+        return commonOrderRepository.save(orderFacade.getOrder());
     }
 
     @Override
-    public void cancel(Long orderId) throws ServiceException {
+    public CommonOrder cancel(Long orderId) throws ServiceException {
         CommonOrderFacade orderFacade = getFacade(orderId);
 
         if (orderFacade.tryCancel() == Boolean.FALSE) {
             throw new ServiceException(String.format("CommonOrder with id: {%d} cancelled", orderId));
         }
+
+        return commonOrderRepository.save(orderFacade.getOrder());
     }
 
     private CommonOrderFacade getFacade(Long orderId) {
-        Optional<CommonOrder> optionalOrder = commonOrderRepository.findById(new CommonOrderId(orderId));
+        Optional<CommonOrder> optionalOrder = commonOrderRepository.findById(orderId);
 
         if (optionalOrder.isEmpty()) {
             throw new ServiceException(String.format("CommonOrder with id: {%d} not found", orderId));
