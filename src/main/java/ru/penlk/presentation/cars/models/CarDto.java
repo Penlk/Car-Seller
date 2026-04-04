@@ -1,53 +1,27 @@
 package ru.penlk.presentation.cars.models;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
+import lombok.NonNull;
 import ru.penlk.dao.entities.cars.Car;
+import ru.penlk.dao.entities.cars.CarDrive;
+import ru.penlk.dao.entities.cars.Fuel;
+import ru.penlk.dao.entities.cars.GearShiftBox;
 import ru.penlk.dao.entities.vo.EnginePower;
 import ru.penlk.dao.entities.vo.EngineVolume;
 import ru.penlk.dao.entities.vo.Price;
 
 import java.math.BigDecimal;
 
-public record CarDto(long id,
-                     BigDecimal price,
-                     String brand,
-                     String model,
-                     String body,
-                     FuelContract fuel,
-                     BigDecimal enginePower,
-                     BigDecimal engineVolume,
-                     GearShiftBoxContract gearShiftBox,
-                     CarDriveContract carDrive,
-                     String colour) {
-
-    public static CarDto mapToDto(Car car) {
-        return new CarDto(
-                car.getId().id(),
-                car.getPrice().value(),
-                car.getBrand(),
-                car.getModel(),
-                car.getBody(),
-                FuelContract.mapToContract(car.getFuel()),
-                car.getEnginePower().value(),
-                car.getEngineVolume().value(),
-                GearShiftBoxContract.mapToContract(car.getGearShiftBox()),
-                CarDriveContract.mapToContract(car.getCarDrive()),
-                car.getColour()
-        );
-    }
-
-    public static Car mapToModel(CarDto carDto) {
-        return new Car(
-                new CarId(carDto.id()),
-                new Price(carDto.price()),
-                carDto.brand(),
-                carDto.model(),
-                carDto.body(),
-                FuelContract.mapToFuel(carDto.fuel()),
-                new EnginePower(carDto.enginePower()),
-                new EngineVolume(carDto.engineVolume()),
-                GearShiftBoxContract.mapToGearShiftBox(carDto.gearShiftBox()),
-                CarDriveContract.mapToCarDrive(carDto.carDrive()),
-                carDto.colour()
-        );
-    }
+public record CarDto(Long id,
+                     @NonNull BigDecimal price,
+                     @NotBlank String brand,
+                     @NotBlank String model,
+                     @NotBlank String body,
+                     @NonNull Fuel fuel,
+                     @NonNull BigDecimal enginePower,
+                     @NonNull BigDecimal engineVolume,
+                     @NonNull GearShiftBox gearShiftBox,
+                     @NonNull CarDrive carDrive,
+                     @Size(min = 3, max = 100) String colour) {
 }

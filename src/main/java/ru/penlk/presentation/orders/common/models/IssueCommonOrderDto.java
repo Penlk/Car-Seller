@@ -1,23 +1,15 @@
 package ru.penlk.presentation.orders.common.models;
 
+import jakarta.validation.constraints.NotNull;
 import ru.penlk.dao.entities.orders.common.CommonOrder;
+import ru.penlk.dao.entities.orders.common.CommonOrderState;
 import ru.penlk.dao.entities.vo.Price;
 
 import java.math.BigDecimal;
 
-public record IssueCommonOrderDto(long orderId,
-                                  CommonOrderStateContract state,
-                                  long clientId,
-                                  long carId,
-                                  BigDecimal price) {
-
-    public static IssueCommonOrderDto mapToDto(CommonOrder order, Price price) {
-        return new IssueCommonOrderDto(
-                order.getId().id(),
-                CommonOrderStateContract.mapToContract(order.getState()),
-                order.getClientId().id(),
-                order.getCarId().id(),
-                price.value()
-        );
-    }
+public record IssueCommonOrderDto(@NotNull Long orderId,
+                                  @NotNull CommonOrderState state,
+                                  @NotNull Long clientId,
+                                  @NotNull Long carId,
+                                  @NotNull BigDecimal price) {
 }

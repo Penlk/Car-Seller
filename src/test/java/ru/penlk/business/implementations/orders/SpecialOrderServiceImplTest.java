@@ -6,7 +6,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import ru.penlk.business.contracts.ServiceException;
-import ru.penlk.presentation.orders.special.models.models.CreateSpecialOrderDto;
+import ru.penlk.presentation.orders.special.models.CreateSpecialOrderDto;
 import ru.penlk.business.internal.CarPartConfigurationService;
 import ru.penlk.business.internal.CarPartPriceCalculator;
 import ru.penlk.business.internal.RequiredNodeConfigurationService;
@@ -19,7 +19,6 @@ import ru.penlk.dao.repositories.interfaces.orders.special.SpecialOrderRepositor
 import ru.penlk.dao.repositories.interfaces.orders.special.NodeSetRepository;
 import ru.penlk.dao.repositories.interfaces.users.clients.ClientRepository;
 import ru.penlk.dao.repositories.interfaces.users.managers.ManagerRepository;
-import ru.penlk.presentation.orders.special.models.models.SpecialOrderStateContract;
 
 import java.math.BigDecimal;
 import java.util.List;

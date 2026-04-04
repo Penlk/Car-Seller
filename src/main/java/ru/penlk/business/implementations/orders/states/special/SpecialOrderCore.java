@@ -3,6 +3,7 @@ package ru.penlk.business.implementations.orders.states.special;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import ru.penlk.dao.entities.orders.special.SpecialOrder;
+import ru.penlk.dao.entities.users.managers.Manager;
 
 @AllArgsConstructor
 @Getter
@@ -15,7 +16,7 @@ public class SpecialOrderCore {
         order.setState(state.getState());
     }
 
-    public void confirm(ManagerId managerId) {
-        order.setManagerId(managerId);
+    public void confirm(Manager manager) {
+        order.setManager(manager);
     }
 }

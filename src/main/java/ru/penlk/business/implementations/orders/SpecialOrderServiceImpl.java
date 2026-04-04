@@ -1,6 +1,8 @@
 package ru.penlk.business.implementations.orders;
 
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
+import org.springframework.stereotype.Service;
 import ru.penlk.business.contracts.ServiceException;
 import ru.penlk.business.contracts.orders.SpecialOrderService;
 import ru.penlk.dao.entities.configurations.specials.Configurator;
@@ -35,6 +37,8 @@ import java.util.Optional;
 import java.util.Set;
 
 @AllArgsConstructor
+@Service
+@Transactional
 public class SpecialOrderServiceImpl implements SpecialOrderService {
     private final SpecialOrderRepository specialOrderRepository;
     private final ManagerRepository managerRepository;
@@ -179,12 +183,14 @@ public class SpecialOrderServiceImpl implements SpecialOrderService {
     }
 
     @Override
-    public void cancel(Long orderId) throws ServiceException {
+    public SpecialOrder cancel(Long orderId) throws ServiceException {
         SpecialOrderFacade orderFacade = getFacade(orderId);
 
         if (orderFacade.tryCancel() == Boolean.FALSE) {
             throw new ServiceException(String.format("SpecialOrder with id: {%d} cancelled", orderId));
         }
+
+        return specialOrderRepository.save(orderFacade.getOrder());
     }
 
     private SpecialOrderFacade getFacade(Long orderId) {

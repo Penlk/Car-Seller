@@ -1,36 +1,26 @@
 package ru.penlk.presentation.cars.models;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
+import lombok.NonNull;
 import ru.penlk.dao.entities.cars.Car;
+import ru.penlk.dao.entities.cars.CarDrive;
+import ru.penlk.dao.entities.cars.Fuel;
+import ru.penlk.dao.entities.cars.GearShiftBox;
 import ru.penlk.dao.entities.vo.EnginePower;
 import ru.penlk.dao.entities.vo.EngineVolume;
 import ru.penlk.dao.entities.vo.Price;
 
 import java.math.BigDecimal;
 
-public record CreateCarDto(BigDecimal price,
-                           String brand,
-                           String model,
-                           String body,
-                           FuelContract fuel,
-                           BigDecimal enginePower,
-                           BigDecimal engineVolume,
-                           GearShiftBoxContract gearShiftBox,
-                           CarDriveContract carDrive,
-                           String colour) {
-
-    public static Car mapToModel(CreateCarDto createCarDto) {
-        return new Car(
-                CarId.defaultId(),
-                new Price(createCarDto.price()),
-                createCarDto.brand(),
-                createCarDto.model(),
-                createCarDto.body(),
-                FuelContract.mapToFuel(createCarDto.fuel()),
-                new EnginePower(createCarDto.enginePower()),
-                new EngineVolume(createCarDto.engineVolume()),
-                GearShiftBoxContract.mapToGearShiftBox(createCarDto.gearShiftBox()),
-                CarDriveContract.mapToCarDrive(createCarDto.carDrive()),
-                createCarDto.colour()
-        );
-    }
+public record CreateCarDto(@NonNull BigDecimal price,
+                           @NotBlank String brand,
+                           @NotBlank String model,
+                           @NotBlank String body,
+                           @NonNull Fuel fuel,
+                           @NonNull BigDecimal enginePower,
+                           @NonNull BigDecimal engineVolume,
+                           @NonNull GearShiftBox gearShiftBox,
+                           @NonNull CarDrive carDrive,
+                           @Size(min = 3, max = 100) String colour) {
 }

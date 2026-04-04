@@ -1,6 +1,8 @@
 package ru.penlk.business.internal.implementation;
 
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
+import org.springframework.stereotype.Service;
 import ru.penlk.business.contracts.IncompatibleComponentException;
 import ru.penlk.business.contracts.ServiceException;
 import ru.penlk.business.internal.CarPartConfigurationService;
@@ -13,20 +15,19 @@ import java.util.Collection;
 import java.util.List;
 
 @AllArgsConstructor
+@Service
+@Transactional
 public class CarPartConfigurationServiceImpl implements CarPartConfigurationService {
     private final CarPartRepository carPartRepository;
-    private final SpecialConfigurationRepository specialConfigurationRepository;
 
     @Override
     public Collection<CarPart> getCarParts(Car car, Collection<Long> carPartIds) {
         Collection<CarPart> carParts;
 
-        try {
-            carParts = carPartRepository.query(
-                    carPartIds.stream().map(CarPartId::new).toList()
-            );
-        } catch (CarPartNotFoundException e) {
-            throw new ServiceException(e.getMessage());
+        carParts = carPartRepository.findAllById(carPartIds);
+
+        if (carParts.size() != carPartIds.size()) {
+            throw new ServiceException("Cannot find all car parts");
         }
 
         checkIncompatibleParts(car, carParts);
@@ -37,11 +38,11 @@ public class CarPartConfigurationServiceImpl implements CarPartConfigurationServ
     }
 
     private void checkIncompatibleParts(Car car, Collection<CarPart> carParts) {
-        Collection<SpecialAllowedPart> specialConfigurations = specialConfigurationRepository.findByCarId(car.getId());
+        Collection<SpecialAllowedPart> specialConfigurations = car.getSpecialAllowedParts();
 
         List<CarPart> wrongCarParts = carParts.stream()
                 .filter(x ->
-                        specialConfigurations.stream().noneMatch(y -> x.getId().equals(y.getCarPartId())))
+                        specialConfigurations.stream().noneMatch(y -> x.getId().equals(y.getCarPart().getId())))
                 .toList();
 
         if (!wrongCarParts.isEmpty()) {

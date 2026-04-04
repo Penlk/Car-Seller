@@ -1,12 +1,9 @@
 package ru.penlk.presentation.cars.parts.models;
 
-import ru.penlk.dao.entities.cars.CarPart;
+import jakarta.validation.constraints.NotBlank;
+import lombok.NonNull;
 
-public record CarPartDto(long id,
-                         String namePart,
-                         long nodeId) {
-
-    public static CarPartDto MapToDto(CarPart carPart) {
-        return new CarPartDto(carPart.getId().id(), carPart.getNamePart(), carPart.getNode().id());
-    }
+public record CarPartDto(@NonNull Long id,
+                         @NotBlank String namePart,
+                         @NonNull Long nodeId) {
 }

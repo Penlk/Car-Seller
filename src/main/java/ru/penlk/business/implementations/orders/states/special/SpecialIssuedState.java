@@ -1,11 +1,12 @@
 package ru.penlk.business.implementations.orders.states.special;
 
 import ru.penlk.dao.entities.orders.special.SpecialOrderState;
+import ru.penlk.dao.entities.users.managers.Manager;
 
 public class SpecialIssuedState extends SpecialDraftState {
     @Override
-    public Boolean tryConfirm(SpecialOrderCore core, ManagerId managerId) {
-        core.confirm(managerId);
+    public Boolean tryConfirm(SpecialOrderCore core, Manager manager) {
+        core.confirm(manager);
         core.updateState(new SpecialConfirmedState());
 
         return true;

@@ -1,6 +1,8 @@
 package ru.penlk.business.implementations.orders;
 
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
+import org.springframework.stereotype.Service;
 import ru.penlk.business.contracts.DomainValidationException;
 import ru.penlk.business.contracts.ServiceException;
 import ru.penlk.business.contracts.orders.CommonOrderService;
@@ -27,6 +29,8 @@ import java.util.List;
 import java.util.Optional;
 
 @AllArgsConstructor
+@Service
+@Transactional
 public class CommonOrderServiceImpl implements CommonOrderService {
     private final CommonOrderRepository commonOrderRepository;
     private final ManagerRepository managerRepository;

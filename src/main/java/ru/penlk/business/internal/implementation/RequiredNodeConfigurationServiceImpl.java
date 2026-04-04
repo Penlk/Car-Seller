@@ -1,6 +1,7 @@
 package ru.penlk.business.internal.implementation;
 
 import lombok.AllArgsConstructor;
+import org.springframework.stereotype.Service;
 import ru.penlk.business.contracts.DomainValidationException;
 import ru.penlk.business.internal.RequiredNodeConfigurationService;
 import ru.penlk.dao.entities.cars.CarPart;
@@ -16,6 +17,7 @@ import java.util.List;
 import java.util.Set;
 
 @AllArgsConstructor
+@Service
 public class RequiredNodeConfigurationServiceImpl implements RequiredNodeConfigurationService {
     @Override
     public Collection<CarPart> completeRequireNodes(Car car, Collection<CarPart> specialCarParts) {

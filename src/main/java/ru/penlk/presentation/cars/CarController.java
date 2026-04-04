@@ -1,0 +1,67 @@
+package ru.penlk.presentation.cars;
+
+import jakarta.persistence.EntityNotFoundException;
+import lombok.AllArgsConstructor;
+import lombok.NonNull;
+import org.modelmapper.ModelMapper;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import ru.penlk.business.contracts.ServiceException;
+import ru.penlk.business.contracts.cars.CarService;
+import ru.penlk.dao.entities.cars.Car;
+import ru.penlk.presentation.cars.models.CarDto;
+import jakarta.validation.Valid;
+import ru.penlk.presentation.cars.models.CreateCarDto;
+
+@RestController
+@RequestMapping("/cars")
+@AllArgsConstructor
+public class CarController {
+    private final CarService carService;
+
+    @GetMapping("/{id}")
+    public ResponseEntity<CarDto> get(@PathVariable @NonNull Long id) {
+        ModelMapper mapper = new ModelMapper();
+        try {
+            return ResponseEntity.ok().body(mapper.map(carService.read(id), CarDto.class));
+        } catch (ServiceException e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @PostMapping
+    public ResponseEntity<CarDto> create(@RequestBody @Valid CarDto request) {
+        ModelMapper mapper = new ModelMapper();
+
+        return ResponseEntity.ok().body(mapper.map(carService.create(mapper.map(request, Car.class)), CarDto.class));
+    }
+
+    @PatchMapping
+    public ResponseEntity<CarDto> update(@RequestBody @Valid CreateCarDto request) {
+        ModelMapper mapper = new ModelMapper();
+
+        try {
+            return ResponseEntity.ok().body(mapper.map(carService.update(mapper.map(request, Car.class)), CarDto.class));
+        } catch (ServiceException e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> delete(@PathVariable @NonNull Long id) {
+
+        try {
+            carService.delete(id);
+            return ResponseEntity.ok().build();
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+}

@@ -1,63 +1,51 @@
 package ru.penlk.business.implementations;
 
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
+import org.springframework.stereotype.Service;
 import ru.penlk.business.contracts.ServiceException;
 import ru.penlk.business.contracts.cars.CarPartService;
-import ru.penlk.presentation.cars.parts.models.CarPartDto;
-import ru.penlk.presentation.cars.parts.models.CreateCarPartDto;
 import ru.penlk.dao.entities.cars.CarPart;
 import ru.penlk.dao.repositories.interfaces.cars.CarPartRepository;
 
 import java.util.Optional;
 
 @AllArgsConstructor
+@Service
+@Transactional
 public class CarPartServiceImpl implements CarPartService {
     private final CarPartRepository carPartRepository;
 
     @Override
-    public CarPartDto create(CreateCarPartDto request) {
-        CarPart carPart = carPartRepository.create(new CarPart(
-                CarPartId.defaultId(),
-                request.namePart(),
-                new NodeId(request.nodeId())
-        ));
-
-        return CarPartDto.MapToDto(carPart);
+    public CarPart create(CarPart request) {
+        return carPartRepository.save(request);
     }
 
     @Override
-    public CarPartDto read(Long id) throws ServiceException {
-        Optional<CarPart> carPartOptional = carPartRepository.findById(new CarPartId(id));
+    public CarPart read(Long id) throws ServiceException {
+        Optional<CarPart> carPartOptional = carPartRepository.findById(id);
 
         if (carPartOptional.isPresent()) {
-            return CarPartDto.MapToDto(carPartOptional.get());
+            return carPartOptional.get();
         }
 
         throw new ServiceException(String.format("CarPart with id: {%d} not found", id));
     }
 
     @Override
-    public CarPartDto update(CarPartDto request) throws ServiceException {
-        try {
-            CarPart mappingCarPart = new CarPart(
-                    new CarPartId(request.id()),
-                    request.namePart(),
-                    new NodeId(request.nodeId()));
+    public CarPart update(CarPart request) throws ServiceException {
+        CarPart carPart = carPartRepository.findById(request.getId()).orElseThrow(
+                () -> new ServiceException(String.format("CarPart with id: {%d} not found", request.getId()))
+        );
 
-            return CarPartDto.MapToDto(
-                    carPartRepository.update(mappingCarPart)
-            );
-        } catch (CarPartNotFoundException e) {
-            throw new ServiceException(String.format("CarPart with id: {%d} not found", e.getId().id()));
-        }
+        carPart.setNamePart(request.getNamePart());
+        carPart.setNode(request.getNode());
+
+        return carPartRepository.save(carPart);
     }
 
     @Override
     public void delete(Long carPartId) throws ServiceException {
-        try {
-            carPartRepository.delete(new CarPartId(carPartId));
-        } catch (CarPartNotFoundException e) {
-            throw new ServiceException(String.format("CarPart with carPartId: {%d} not found", carPartId));
-        }
+        carPartRepository.deleteById(carPartId);
     }
 }

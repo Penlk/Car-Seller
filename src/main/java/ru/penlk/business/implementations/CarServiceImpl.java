@@ -1,56 +1,74 @@
 package ru.penlk.business.implementations;
 
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
+import org.springframework.stereotype.Service;
 import ru.penlk.business.contracts.ServiceException;
 import ru.penlk.business.contracts.cars.CarService;
-import ru.penlk.presentation.cars.models.CarDto;
-import ru.penlk.presentation.cars.models.CreateCarDto;
 import ru.penlk.dao.entities.cars.Car;
 import ru.penlk.dao.repositories.interfaces.cars.CarRepository;
 
 import java.util.Optional;
 
 @AllArgsConstructor
+@Service
+@Transactional
 public class CarServiceImpl implements CarService {
     private final CarRepository carRepository;
 
     @Override
-    public CarDto create(CreateCarDto request) {
-        Car car = carRepository.create(CreateCarDto.mapToModel(request));
-
-        return CarDto.mapToDto(car);
+    public Car create(Car request) {
+        return carRepository.save(request);
     }
 
     @Override
-    public CarDto read(Long id) throws ServiceException {
-        Optional<Car> carOptional = carRepository.findById(new CarId(id));
+    public Car read(Long id) throws ServiceException {
+        Optional<Car> carOptional = carRepository.findById(id);
 
         if (carOptional.isPresent()) {
-            return CarDto.mapToDto(carOptional.get());
+            return carOptional.get();
         }
 
         throw new ServiceException(String.format("Car with id: {%d} not found", id));
     }
 
     @Override
-    public CarDto update(CarDto request) throws ServiceException {
-        try {
-            Car mappingCar = CarDto.mapToModel(request);
+    public Car update(Car request) throws ServiceException {
+        Car car = carRepository.findById(request.getId()).orElseThrow(
+                () -> new ServiceException(String.format("Car with id: {%d} not found", request.getId()))
+        );
 
-            return CarDto.mapToDto(
-                    carRepository.update(mappingCar)
-            );
-        } catch (CarNotFoundException e) {
-            throw new ServiceException(String.format("Car with id: {%d} not found", e.getId().id()));
-        }
+        car.setPrice(request.getPrice());
+
+        car.setBrand(request.getBrand());
+
+        car.setModel(request.getModel());
+
+        car.setBody(request.getBody());
+
+        car.setFuel(request.getFuel());
+
+        car.setEnginePower(request.getEnginePower());
+
+        car.setEngineVolume(request.getEngineVolume());
+
+        car.setGearShiftBox(request.getGearShiftBox());
+
+        car.setCarDrive(request.getCarDrive());
+
+        car.setColour(request.getColour());
+
+        car.setDefaultConfiguration(request.getDefaultConfiguration());
+
+        car.setSpecialAllowedParts(request.getSpecialAllowedParts());
+
+        car.setRequireNodes(request.getRequireNodes());
+
+        return carRepository.save(car);
     }
 
     @Override
     public void delete(Long id) throws ServiceException {
-        try {
-            carRepository.delete(new CarId(id));
-        } catch (CarNotFoundException e) {
-            throw new ServiceException(String.format("Car with id: {%d} not found", id));
-        }
+        carRepository.deleteById(id);
     }
 }

@@ -29,5 +29,5 @@ public interface SpecialOrderService {
 
     SpecialOrder complete(Long orderId) throws ServiceException;
 
-    void cancel(Long orderId) throws ServiceException;
+    SpecialOrder cancel(Long orderId) throws ServiceException;
 }

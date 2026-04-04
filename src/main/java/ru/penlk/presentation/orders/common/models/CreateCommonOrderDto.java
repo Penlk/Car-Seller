@@ -1,20 +1,10 @@
 package ru.penlk.presentation.orders.common.models;
 
-import ru.penlk.dao.entities.orders.common.CommonOrder;
+import jakarta.validation.constraints.NotNull;
+import ru.penlk.dao.entities.orders.common.CommonOrderState;
 
-public record CreateCommonOrderDto(CommonOrderStateContract state,
-                                   long clientId,
-                                   long managerId,
-                                   long carId) {
-
-
-    public static CommonOrder mapToModel(CreateCommonOrderDto dto) {
-        return new CommonOrder(
-                CommonOrderId.defaultId(),
-                CommonOrderStateContract.mapToCommonOrderState(dto.state()),
-                new ClientId(dto.clientId()),
-                new ManagerId(dto.managerId()),
-                new CarId(dto.carId())
-        );
-    }
+public record CreateCommonOrderDto(@NotNull CommonOrderState state,
+                                   @NotNull Long clientId,
+                                   Long managerId,
+                                   @NotNull Long carId) {
 }
