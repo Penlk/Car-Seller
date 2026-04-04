@@ -6,8 +6,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import ru.penlk.business.contracts.ServiceException;
-import ru.penlk.business.contracts.cars.parts.models.CarPartDto;
-import ru.penlk.business.contracts.cars.parts.models.CreateCarPartDto;
+import ru.penlk.presentation.cars.parts.models.CarPartDto;
+import ru.penlk.presentation.cars.parts.models.CreateCarPartDto;
 import ru.penlk.dao.entities.cars.CarPart;
 import ru.penlk.dao.repositories.interfaces.cars.CarPartRepository;
 

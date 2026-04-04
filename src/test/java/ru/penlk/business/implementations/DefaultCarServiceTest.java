@@ -6,11 +6,11 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import ru.penlk.business.contracts.ServiceException;
-import ru.penlk.business.contracts.cars.models.CarDto;
-import ru.penlk.business.contracts.cars.models.CreateCarDto;
-import ru.penlk.business.contracts.cars.models.FuelContract;
-import ru.penlk.business.contracts.cars.models.GearShiftBoxContract;
-import ru.penlk.business.contracts.cars.models.CarDriveContract;
+import ru.penlk.presentation.cars.models.CarDto;
+import ru.penlk.presentation.cars.models.CreateCarDto;
+import ru.penlk.presentation.cars.models.FuelContract;
+import ru.penlk.presentation.cars.models.GearShiftBoxContract;
+import ru.penlk.presentation.cars.models.CarDriveContract;
 import ru.penlk.dao.repositories.interfaces.cars.CarRepository;
 
 import java.math.BigDecimal;

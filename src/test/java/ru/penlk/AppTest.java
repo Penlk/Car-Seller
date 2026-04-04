@@ -2,10 +2,10 @@ package ru.penlk;
 
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
-import ru.penlk.business.contracts.cars.models.CarDriveContract;
-import ru.penlk.business.contracts.cars.models.CreateCarDto;
-import ru.penlk.business.contracts.cars.models.FuelContract;
-import ru.penlk.business.contracts.cars.models.GearShiftBoxContract;
+import ru.penlk.presentation.cars.models.CarDriveContract;
+import ru.penlk.presentation.cars.models.CreateCarDto;
+import ru.penlk.presentation.cars.models.FuelContract;
+import ru.penlk.presentation.cars.models.GearShiftBoxContract;
 import ru.penlk.dao.repositories.interfaces.cars.CarRepository;
 
 import java.math.BigDecimal;

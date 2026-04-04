@@ -6,7 +6,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import ru.penlk.business.contracts.ServiceException;
-import ru.penlk.business.contracts.orders.special.models.CreateSpecialOrderDto;
+import ru.penlk.presentation.orders.special.models.models.CreateSpecialOrderDto;
 import ru.penlk.business.internal.CarPartConfigurationService;
 import ru.penlk.business.internal.CarPartPriceCalculator;
 import ru.penlk.business.internal.RequiredNodeConfigurationService;
@@ -19,6 +19,7 @@ import ru.penlk.dao.repositories.interfaces.orders.special.SpecialOrderRepositor
 import ru.penlk.dao.repositories.interfaces.orders.special.NodeSetRepository;
 import ru.penlk.dao.repositories.interfaces.users.clients.ClientRepository;
 import ru.penlk.dao.repositories.interfaces.users.managers.ManagerRepository;
+import ru.penlk.presentation.orders.special.models.models.SpecialOrderStateContract;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -61,7 +62,7 @@ class SpecialOrderServiceImplTest {
     void create_carMissing_throws() {
         when(carRepository.findById(new CarId(10))).thenReturn(Optional.empty());
 
-        var dto = new CreateSpecialOrderDto(ru.penlk.business.contracts.orders.special.models.SpecialOrderStateContract.Issued, 1L, 0L, 10L, List.of());
+        var dto = new CreateSpecialOrderDto(SpecialOrderStateContract.Issued, 1L, 0L, 10L, List.of());
 
         assertThrows(ServiceException.class, () -> service.create(dto));
     }

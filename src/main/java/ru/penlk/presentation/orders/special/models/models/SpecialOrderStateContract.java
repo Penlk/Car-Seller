@@ -1,4 +1,4 @@
-package ru.penlk.business.contracts.orders.special.models;
+package ru.penlk.presentation.orders.special.models.models;
 
 import ru.penlk.dao.entities.orders.special.SpecialOrderState;
 

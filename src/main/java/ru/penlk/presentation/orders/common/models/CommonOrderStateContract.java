@@ -1,4 +1,4 @@
-package ru.penlk.business.contracts.orders.common.models;
+package ru.penlk.presentation.orders.common.models;
 
 import ru.penlk.dao.entities.orders.common.CommonOrderState;
 

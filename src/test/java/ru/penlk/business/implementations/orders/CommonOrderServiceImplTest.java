@@ -7,7 +7,8 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import ru.penlk.business.contracts.DomainValidationException;
 import ru.penlk.business.contracts.ServiceException;
-import ru.penlk.business.contracts.orders.common.models.CreateCommonOrderDto;
+import ru.penlk.presentation.orders.common.models.CommonOrderStateContract;
+import ru.penlk.presentation.orders.common.models.CreateCommonOrderDto;
 import ru.penlk.dao.entities.cars.Car;
 import ru.penlk.dao.entities.cars.CarPart;
 import ru.penlk.dao.entities.orders.common.CommonOrder;
@@ -68,14 +69,14 @@ class CommonOrderServiceImplTest {
         CommonOrder order = new CommonOrder(CommonOrderId.defaultId(), CommonOrderState.ISSUED, new ClientId(1), ManagerId.defaultId(), new CarId(1));
         when(commonOrderRepository.create(any())).thenReturn(order);
 
-        var dto = service.create(new CreateCommonOrderDto(ru.penlk.business.contracts.orders.common.models.CommonOrderStateContract.Issued,1,0,1));
+        var dto = service.create(new CreateCommonOrderDto(CommonOrderStateContract.Issued,1,0,1));
 
         assertNotNull(dto);
         assertEquals(CommonOrderState.ISSUED, CommonOrderStateContractToState(dto.state()));
     }
 
-    private CommonOrderState CommonOrderStateContractToState(ru.penlk.business.contracts.orders.common.models.CommonOrderStateContract c) {
-        return ru.penlk.business.contracts.orders.common.models.CommonOrderStateContract.mapToCommonOrderState(c);
+    private CommonOrderState CommonOrderStateContractToState(CommonOrderStateContract c) {
+        return CommonOrderStateContract.mapToCommonOrderState(c);
     }
 
     @Test

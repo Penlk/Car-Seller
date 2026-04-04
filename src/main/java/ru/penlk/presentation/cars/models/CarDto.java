@@ -1,4 +1,4 @@
-package ru.penlk.business.contracts.cars.models;
+package ru.penlk.presentation.cars.models;
 
 import ru.penlk.dao.entities.cars.Car;
 import ru.penlk.dao.entities.vo.EnginePower;
