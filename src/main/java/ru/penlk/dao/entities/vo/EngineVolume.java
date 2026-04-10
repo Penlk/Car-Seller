@@ -7,18 +7,18 @@ import java.math.BigDecimal;
 
 /**
  *
- * @param value measured in watts
+ * @param engine_volume measured in watts
  */
 @Embeddable
-public record EngineVolume(BigDecimal value) implements Comparable<EngineVolume> {
+public record EngineVolume(BigDecimal engine_volume) implements Comparable<EngineVolume> {
     public EngineVolume {
-        if (value.compareTo(new BigDecimal(0)) < 0) {
+        if (engine_volume.compareTo(new BigDecimal(0)) < 0) {
             throw new IllegalArgumentException("Volume must be non-negative");
         }
     }
 
     @Override
     public int compareTo(@NonNull EngineVolume engineVolume) {
-        return value.compareTo(engineVolume.value);
+        return engine_volume.compareTo(engineVolume.engine_volume);
     }
 }

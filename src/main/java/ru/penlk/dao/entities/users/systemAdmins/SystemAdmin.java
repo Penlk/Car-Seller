@@ -7,8 +7,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import ru.penlk.dao.entities.BaseEntity;
 
-@AllArgsConstructor
 @Getter
-@NoArgsConstructor
 @Entity
 public class SystemAdmin extends BaseEntity { }

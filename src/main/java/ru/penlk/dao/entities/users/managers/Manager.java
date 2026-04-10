@@ -8,9 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import ru.penlk.dao.entities.BaseEntity;
 
-@AllArgsConstructor
 @Getter
-@NoArgsConstructor
 @Entity
 @Table(name = "managers")
 public class Manager extends BaseEntity { }

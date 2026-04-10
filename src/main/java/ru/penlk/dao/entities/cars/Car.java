@@ -2,6 +2,8 @@ package ru.penlk.dao.entities.cars;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
@@ -9,6 +11,10 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.JdbcType;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.annotations.Type;
+import org.hibernate.dialect.type.PostgreSQLEnumJdbcType;
 import ru.penlk.dao.entities.BaseEntity;
 import ru.penlk.dao.entities.configurations.defaults.DefaultConfiguration;
 import ru.penlk.dao.entities.orders.special.SpecialAllowedPart;
@@ -17,7 +23,9 @@ import ru.penlk.dao.entities.vo.EnginePower;
 import ru.penlk.dao.entities.vo.EngineVolume;
 import ru.penlk.dao.entities.vo.Price;
 
+import java.sql.Types;
 import java.util.HashSet;
+import java.util.Set;
 
 @AllArgsConstructor
 @Getter
@@ -38,7 +46,9 @@ public class Car extends BaseEntity {
     @Column(nullable = false)
     private String body;
 
-    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    @JdbcType(PostgreSQLEnumJdbcType.class)
+    @Column(columnDefinition = "fuel_type", nullable = false)
     private Fuel fuel;
 
     @Column(nullable = false)
@@ -47,23 +57,27 @@ public class Car extends BaseEntity {
     @Column(nullable = false)
     private EngineVolume engineVolume;
 
-    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    @JdbcType(PostgreSQLEnumJdbcType.class)
+    @Column(columnDefinition = "gear_shift_box_type", nullable = false)
     private GearShiftBox gearShiftBox;
 
-    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    @JdbcType(PostgreSQLEnumJdbcType.class)
+    @Column(columnDefinition = "car_drive_type", nullable = false)
     private CarDrive carDrive;
 
     @Column(nullable = false)
     private String colour;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "default_configurations")
-    private HashSet<DefaultConfiguration> defaultConfiguration = new HashSet<>();
+    @OneToMany(fetch = FetchType.EAGER, mappedBy="car")
+    private Set<DefaultConfiguration> defaultConfiguration = new HashSet<>();
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "special_allowed_parts")
-    private HashSet<SpecialAllowedPart> specialAllowedParts = new HashSet<>();
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "car")
+    private Set<SpecialAllowedPart> specialAllowedParts = new HashSet<>();
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "require_nodes")
-    private HashSet<RequireNode> requireNodes = new HashSet<>();
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "car")
+    private Set<RequireNode> requireNodes = new HashSet<>();
 }
 
 

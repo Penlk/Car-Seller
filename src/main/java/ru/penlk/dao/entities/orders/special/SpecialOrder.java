@@ -2,25 +2,25 @@ package ru.penlk.dao.entities.orders.special;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.JdbcType;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.dialect.type.PostgreSQLEnumJdbcType;
 import ru.penlk.dao.entities.BaseEntity;
 import ru.penlk.dao.entities.cars.Car;
 import ru.penlk.dao.entities.configurations.specials.Configurator;
-import ru.penlk.dao.entities.configurations.specials.SpecialConfiguration;
 import ru.penlk.dao.entities.users.clients.Client;
 import ru.penlk.dao.entities.users.managers.Manager;
 import ru.penlk.dao.entities.vo.Price;
-
-import java.util.HashSet;
-import java.util.Set;
 
 @AllArgsConstructor
 @Getter
@@ -29,7 +29,9 @@ import java.util.Set;
 @Entity
 @Table(name = "special_orders")
 public class SpecialOrder extends BaseEntity {
-    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    @JdbcType(PostgreSQLEnumJdbcType.class)
+    @Column(columnDefinition = "special_order_state", nullable = false)
     private SpecialOrderState state;
 
     @JoinColumn(name = "client_id", nullable = false)
@@ -44,7 +46,7 @@ public class SpecialOrder extends BaseEntity {
     @ManyToOne(optional = false)
     private Car car;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "configurator_id", nullable = false)
     private Configurator configurator;
 

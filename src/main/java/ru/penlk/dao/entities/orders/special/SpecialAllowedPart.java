@@ -3,6 +3,8 @@ package ru.penlk.dao.entities.orders.special;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.IdClass;
 import jakarta.persistence.JoinColumn;
@@ -21,16 +23,17 @@ import ru.penlk.dao.entities.vo.Price;
 @Getter
 @Setter
 @Entity
-@IdClass(SpecialAllowedPartId.class)
 @Table(name = "special_allowed_parts")
 public class SpecialAllowedPart {
     @Id
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "car_id")
     private Car car;
 
-    @Id
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "car_part_id")
     private CarPart carPart;
 

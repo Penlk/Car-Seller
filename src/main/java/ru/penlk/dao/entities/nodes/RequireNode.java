@@ -22,12 +22,12 @@ import ru.penlk.dao.entities.cars.Car;
 @IdClass(RequireNodeId.class)
 public class RequireNode {
     @Id
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "node_id")
     private Node node;
 
     @Id
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "car_id")
     private Car car;
 }

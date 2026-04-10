@@ -18,24 +18,24 @@ public class CarSpecification {
             List<Predicate> predicates = new ArrayList<>();
 
             if (query.getMinPrice() != null) {
-                predicates.add(cb.ge(root.get("price").get("value"), query.getMinPrice().value()));
+                predicates.add(cb.ge(root.get("price").get("engine_power"), query.getMinPrice().price()));
             }
             if (query.getMaxPrice() != null) {
-                predicates.add(cb.le(root.get("price").get("value"), query.getMaxPrice().value()));
+                predicates.add(cb.le(root.get("price").get("engine_power"), query.getMaxPrice().price()));
             }
 
             if (query.getMinEnginePower() != null) {
-                predicates.add(cb.ge(root.get("enginePower").get("value"), query.getMinEnginePower().value()));
+                predicates.add(cb.ge(root.get("enginePower").get("engine_power"), query.getMinEnginePower().engine_power()));
             }
             if (query.getMaxEnginePower() != null) {
-                predicates.add(cb.le(root.get("enginePower").get("value"), query.getMaxEnginePower().value()));
+                predicates.add(cb.le(root.get("enginePower").get("engine_power"), query.getMaxEnginePower().engine_power()));
             }
 
             if (query.getMinEngineVolume() != null) {
-                predicates.add(cb.ge(root.get("engineVolume").get("value"), query.getMinEngineVolume().value()));
+                predicates.add(cb.ge(root.get("engineVolume").get("engine_power"), query.getMinEngineVolume().engine_volume()));
             }
             if (query.getMaxEngineVolume() != null) {
-                predicates.add(cb.le(root.get("engineVolume").get("value"), query.getMaxEngineVolume().value()));
+                predicates.add(cb.le(root.get("engineVolume").get("engine_power"), query.getMaxEngineVolume().engine_volume()));
             }
 
             if (query.getBrands() != null && !query.getBrands().isEmpty()) {

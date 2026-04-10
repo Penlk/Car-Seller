@@ -24,14 +24,14 @@ import java.util.Set;
 @Setter
 @Table(name = "configurators")
 public class Configurator extends BaseEntity {
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "car_id")
     private Car car;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "special_configurations")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "configurator")
     private Set<SpecialConfiguration> specialConfigurations = new HashSet<>();
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "configurator_car_parts")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "configurator")
     private Set<ConfiguratorCarPart> carParts = new HashSet<>();
 
     @Column

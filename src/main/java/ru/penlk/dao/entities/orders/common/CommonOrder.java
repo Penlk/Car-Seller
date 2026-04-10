@@ -2,6 +2,8 @@ package ru.penlk.dao.entities.orders.common;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
@@ -9,10 +11,15 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.JdbcType;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.dialect.type.PostgreSQLEnumJdbcType;
 import ru.penlk.dao.entities.BaseEntity;
 import ru.penlk.dao.entities.cars.Car;
 import ru.penlk.dao.entities.users.clients.Client;
 import ru.penlk.dao.entities.users.managers.Manager;
+
+import java.sql.Types;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -21,7 +28,9 @@ import ru.penlk.dao.entities.users.managers.Manager;
 @Entity
 @Table(name = "common_orders")
 public class CommonOrder extends BaseEntity {
-    @Column(name = "state")
+    @Enumerated(EnumType.STRING)
+    @JdbcType(PostgreSQLEnumJdbcType.class)
+    @Column(columnDefinition = "common_order_state", nullable = false)
     private CommonOrderState state;
 
     @JoinColumn(name = "client_id", nullable = false)
