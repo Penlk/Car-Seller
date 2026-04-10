@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RestController;
 import ru.penlk.business.contracts.ServiceException;
 import ru.penlk.business.contracts.orders.CommonOrderService;
 import ru.penlk.dao.entities.orders.common.CommonOrder;
+import ru.penlk.presentation.mapping.orders.common.CommonOrderMapper;
+import ru.penlk.presentation.mapping.orders.common.CreateCommonOrderMapper;
 import ru.penlk.presentation.orders.common.models.CommonOrderDto;
 import ru.penlk.presentation.orders.common.models.CreateCommonOrderDto;
 
@@ -24,11 +26,13 @@ import ru.penlk.presentation.orders.common.models.CreateCommonOrderDto;
 @RequestMapping("/common-order")
 public class CommonOrderController {
     private final CommonOrderService service;
+    private final CommonOrderMapper commonOrderMapper;
+    private final CreateCommonOrderMapper createCommonOrderMapper;
 
     @GetMapping("/{id}")
     public ResponseEntity<?> get(@NotNull @PathVariable Long id) {
         try {
-            return ResponseEntity.ok(service.read(id));
+            return ResponseEntity.ok(commonOrderMapper.commonOrderToCommonOrderDto(service.read(id)));
         } catch (ServiceException e) {
             return ResponseEntity.notFound().build();
         }
@@ -43,11 +47,13 @@ public class CommonOrderController {
 
     @PatchMapping
     public ResponseEntity<CommonOrderDto> update(@NotNull @RequestBody @Valid CommonOrderDto request) {
-        ModelMapper mapper = new ModelMapper();
-
         try {
             return ResponseEntity.ok(
-                    mapper.map(service.update(mapper.map(request, CommonOrder.class)), CommonOrderDto.class)
+                    commonOrderMapper.commonOrderToCommonOrderDto(
+                            service.update(
+                                    commonOrderMapper.commonOrderDtoToCommonOrder(request)
+                            )
+                    )
             );
         } catch (ServiceException e) {
             return ResponseEntity.notFound().build();
@@ -56,21 +62,17 @@ public class CommonOrderController {
 
     @PostMapping
     public ResponseEntity<CommonOrderDto> create(@NotNull @RequestBody @Valid CreateCommonOrderDto request) {
-        ModelMapper mapper = new ModelMapper();
-
-        CommonOrder order = mapper.map(request,CommonOrder.class);
+        CommonOrder order = createCommonOrderMapper.createCommonOrderDtoToCommonOrder(request);
 
         return ResponseEntity.ok(
-                mapper.map(service.create(order), CommonOrderDto.class)
+                commonOrderMapper.commonOrderToCommonOrderDto(service.create(order))
         );
     }
 
     @PostMapping("/issue")
     public ResponseEntity<?> issue(@NotNull @RequestBody @Valid CreateCommonOrderDto request) {
-        ModelMapper mapper = new ModelMapper();
-
         try {
-            return ResponseEntity.ok(mapper.map(service.issue(request.clientId(), request.carId()), CommonOrderDto.class));
+            return ResponseEntity.ok(commonOrderMapper.commonOrderToCommonOrderDto(service.issue(request.clientId(), request.carId())));
         } catch (ServiceException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
@@ -78,9 +80,8 @@ public class CommonOrderController {
 
     @PostMapping("/confirm/{id}")
     public ResponseEntity<?> confirm(@NotNull @PathVariable Long id) {
-        ModelMapper mapper = new ModelMapper();
         try {
-            return ResponseEntity.ok(mapper.map(service.confirm(id), CommonOrderDto.class));
+            return ResponseEntity.ok(commonOrderMapper.commonOrderToCommonOrderDto(service.confirm(id)));
         } catch (ServiceException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
@@ -88,9 +89,8 @@ public class CommonOrderController {
 
     @PostMapping("/wait-purchase/{id}")
     public ResponseEntity<?> waitPurchase(@NotNull @PathVariable Long id) {
-        ModelMapper mapper = new ModelMapper();
         try {
-            return ResponseEntity.ok(mapper.map(service.waitPurchase(id), CommonOrderDto.class));
+            return ResponseEntity.ok(commonOrderMapper.commonOrderToCommonOrderDto(service.waitPurchase(id)));
         } catch (ServiceException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
@@ -98,9 +98,8 @@ public class CommonOrderController {
 
     @PostMapping("/purchase/{id}")
     public ResponseEntity<?> purchase(@NotNull @PathVariable Long id) {
-        ModelMapper mapper = new ModelMapper();
         try {
-            return ResponseEntity.ok(mapper.map(service.purchase(id), CommonOrderDto.class));
+            return ResponseEntity.ok(commonOrderMapper.commonOrderToCommonOrderDto(service.purchase(id)));
         } catch (ServiceException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
@@ -108,9 +107,8 @@ public class CommonOrderController {
 
     @PostMapping("/car-ready/{id}")
     public ResponseEntity<?> ready(@NotNull @PathVariable Long id) {
-        ModelMapper mapper = new ModelMapper();
         try {
-            return ResponseEntity.ok(mapper.map(service.carReadyToTake(id), CommonOrderDto.class));
+            return ResponseEntity.ok(commonOrderMapper.commonOrderToCommonOrderDto(service.carReadyToTake(id)));
         } catch (ServiceException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
@@ -118,10 +116,8 @@ public class CommonOrderController {
 
     @PostMapping("/complete/{id}")
     public ResponseEntity<?> complete(@NotNull @PathVariable Long id) {
-        ModelMapper mapper = new ModelMapper();
-
         try {
-            return ResponseEntity.ok(mapper.map(service.complete(id), CommonOrderDto.class));
+            return ResponseEntity.ok(commonOrderMapper.commonOrderToCommonOrderDto(service.complete(id)));
         } catch (ServiceException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
@@ -129,9 +125,8 @@ public class CommonOrderController {
 
     @PostMapping("/cancel/{id}")
     public ResponseEntity<?> cancel(@NotNull @PathVariable Long id) {
-        ModelMapper mapper = new ModelMapper();
         try {
-            return ResponseEntity.ok(mapper.map(service.cancel(id), CommonOrderDto.class));
+            return ResponseEntity.ok(commonOrderMapper.commonOrderToCommonOrderDto(service.cancel(id)));
         }  catch (ServiceException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }

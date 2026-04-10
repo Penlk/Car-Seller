@@ -19,6 +19,8 @@ import ru.penlk.business.contracts.cars.CarPartService;
 import ru.penlk.dao.entities.cars.CarPart;
 import ru.penlk.presentation.cars.parts.models.CarPartDto;
 import ru.penlk.presentation.cars.parts.models.CreateCarPartDto;
+import ru.penlk.presentation.mapping.cars.parts.CarPartMapper;
+import ru.penlk.presentation.mapping.cars.parts.CreateCarPartMapper;
 
 import java.util.List;
 
@@ -27,12 +29,12 @@ import java.util.List;
 @AllArgsConstructor
 public class CarPartController {
     private final CarPartService carPartService;
+    private final CreateCarPartMapper createCarPartMapper;
+    private final CarPartMapper carPartMapper;
 
     @GetMapping("/{id}")
     public ResponseEntity<CarPartDto> get(@NotNull @PathVariable Long id) {
-        ModelMapper mapper = new ModelMapper();
-
-        return ResponseEntity.ok(mapper.map(carPartService.read(id), CarPartDto.class));
+        return ResponseEntity.ok(carPartMapper.carPartToCarPartDto(carPartService.read(id)));
     }
 
     @DeleteMapping("/{id}")
@@ -44,10 +46,9 @@ public class CarPartController {
 
     @PatchMapping
     public ResponseEntity<?> update(@NotNull @RequestBody @Valid CarPartDto request) {
-        ModelMapper mapper = new ModelMapper();
-
         try {
-            return ResponseEntity.ok(mapper.map(carPartService.update(mapper.map(request, CarPart.class)), CarPartDto.class));
+            CarPart carPart = carPartMapper.carPartDtoToCarPart(request);
+            return ResponseEntity.ok(carPartMapper.carPartToCarPartDto(carPartService.update(carPart, request.nodeId())));
         } catch (ServiceException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
@@ -55,8 +56,9 @@ public class CarPartController {
 
     @PostMapping
     public ResponseEntity<CarPartDto> create(@NotNull @RequestBody @Valid CreateCarPartDto request) {
-        ModelMapper mapper = new ModelMapper();
+        CarPart carPart = createCarPartMapper.createCarPartDtoToCarPart(request);
+        CarPartDto result = carPartMapper.carPartToCarPartDto(carPartService.create(carPart, request.nodeId()));
 
-        return ResponseEntity.ok(mapper.map(carPartService.create(mapper.map(request, CarPart.class)), CarPartDto.class));
+        return ResponseEntity.ok().body(result);
     }
 }

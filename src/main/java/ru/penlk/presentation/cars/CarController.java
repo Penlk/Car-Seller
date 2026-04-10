@@ -3,7 +3,6 @@ package ru.penlk.presentation.cars;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
-import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,36 +18,45 @@ import ru.penlk.dao.entities.cars.Car;
 import ru.penlk.presentation.cars.models.CarDto;
 import jakarta.validation.Valid;
 import ru.penlk.presentation.cars.models.CreateCarDto;
+import ru.penlk.presentation.mapping.cars.CarMapper;
+import ru.penlk.presentation.mapping.cars.CreateCarMapper;
 
 @RestController
 @RequestMapping("/cars")
 @AllArgsConstructor
 public class CarController {
     private final CarService carService;
+    private final CreateCarMapper createCarMapper;
+    private final CarMapper carMapper;
 
     @GetMapping("/{id}")
     public ResponseEntity<CarDto> get(@PathVariable @NonNull Long id) {
-        ModelMapper mapper = new ModelMapper();
         try {
-            return ResponseEntity.ok().body(mapper.map(carService.read(id), CarDto.class));
+            return ResponseEntity.ok().body(carMapper.carToCarDto(carService.read(id)));
         } catch (ServiceException e) {
             return ResponseEntity.notFound().build();
         }
     }
 
     @PostMapping
-    public ResponseEntity<CarDto> create(@RequestBody @Valid CarDto request) {
-        ModelMapper mapper = new ModelMapper();
+    public ResponseEntity<CarDto> create(@RequestBody @Valid CreateCarDto request) {
+        Car car = createCarMapper.createCarDtoToCar(request);
 
-        return ResponseEntity.ok().body(mapper.map(carService.create(mapper.map(request, Car.class)), CarDto.class));
+        Car response = carService.create(car);
+
+        return ResponseEntity.ok().body(carMapper.carToCarDto(response));
     }
 
     @PatchMapping
-    public ResponseEntity<CarDto> update(@RequestBody @Valid CreateCarDto request) {
-        ModelMapper mapper = new ModelMapper();
-
+    public ResponseEntity<CarDto> update(@RequestBody @Valid CarDto request) {
         try {
-            return ResponseEntity.ok().body(mapper.map(carService.update(mapper.map(request, Car.class)), CarDto.class));
+            return ResponseEntity.ok().body(
+                    carMapper.carToCarDto(
+                        carService.update(
+                            carMapper.carDtoToCar(request)
+                        )
+                    )
+            );
         } catch (ServiceException e) {
             return ResponseEntity.notFound().build();
         }

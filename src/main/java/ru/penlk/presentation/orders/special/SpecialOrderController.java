@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ru.penlk.business.contracts.ServiceException;
 import ru.penlk.business.contracts.orders.SpecialOrderService;
+import ru.penlk.presentation.mapping.orders.special.CreateSpecialOrderMapper;
+import ru.penlk.presentation.mapping.orders.special.SpecialOrderMapper;
 import ru.penlk.presentation.orders.special.models.CreateSpecialOrderDto;
 import ru.penlk.presentation.orders.special.models.SpecialOrderDto;
 
@@ -22,11 +24,13 @@ import ru.penlk.presentation.orders.special.models.SpecialOrderDto;
 @RequestMapping("/special-order")
 public class SpecialOrderController {
     private final SpecialOrderService service;
+    private final SpecialOrderMapper specialOrderMapper;
+    private final CreateSpecialOrderMapper createSpecialOrderMapper;
 
     @GetMapping("/{id}")
     public ResponseEntity<?> get(@NotNull @PathVariable Long id) {
         try {
-            return ResponseEntity.ok(service.read(id));
+            return ResponseEntity.ok(specialOrderMapper.specialOrderToSpecialOrderDto(service.read(id)));
         } catch (ServiceException e) {
             return ResponseEntity.notFound().build();
         }
@@ -41,10 +45,8 @@ public class SpecialOrderController {
 
     @PostMapping("/issue")
     public ResponseEntity<?> issue(@NotNull @RequestBody @Valid CreateSpecialOrderDto request) {
-        ModelMapper mapper = new ModelMapper();
-
         try {
-            return ResponseEntity.ok(mapper.map(service.issue(request.clientId(), request.configurationId()), SpecialOrderDto.class));
+            return ResponseEntity.ok(specialOrderMapper.specialOrderToSpecialOrderDto(service.issue(request.clientId(), request.configurationId())));
         } catch (ServiceException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
@@ -52,9 +54,8 @@ public class SpecialOrderController {
 
     @PostMapping("/confirm/{id}")
     public ResponseEntity<?> confirm(@NotNull @PathVariable Long id) {
-        ModelMapper mapper = new ModelMapper();
         try {
-            return ResponseEntity.ok(mapper.map(service.confirm(id), SpecialOrderDto.class));
+            return ResponseEntity.ok(specialOrderMapper.specialOrderToSpecialOrderDto(service.confirm(id)));
         } catch (ServiceException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
@@ -62,9 +63,8 @@ public class SpecialOrderController {
 
     @PostMapping("/wait-purchase/{id}")
     public ResponseEntity<?> waitPurchase(@NotNull @PathVariable Long id) {
-        ModelMapper mapper = new ModelMapper();
         try {
-            return ResponseEntity.ok(mapper.map(service.waitPurchase(id), SpecialOrderDto.class));
+            return ResponseEntity.ok(specialOrderMapper.specialOrderToSpecialOrderDto(service.waitPurchase(id)));
         } catch (ServiceException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
@@ -72,9 +72,8 @@ public class SpecialOrderController {
 
     @PostMapping("/purchase/{id}")
     public ResponseEntity<?> purchase(@NotNull @PathVariable Long id) {
-        ModelMapper mapper = new ModelMapper();
         try {
-            return ResponseEntity.ok(mapper.map(service.purchase(id), SpecialOrderDto.class));
+            return ResponseEntity.ok(specialOrderMapper.specialOrderToSpecialOrderDto(service.purchase(id)));
         } catch (ServiceException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
@@ -82,9 +81,8 @@ public class SpecialOrderController {
 
     @PostMapping("/car-ready/{id}")
     public ResponseEntity<?> ready(@NotNull @PathVariable Long id) {
-        ModelMapper mapper = new ModelMapper();
         try {
-            return ResponseEntity.ok(mapper.map(service.carReadyToTake(id), SpecialOrderDto.class));
+            return ResponseEntity.ok(specialOrderMapper.specialOrderToSpecialOrderDto(service.carReadyToTake(id)));
         } catch (ServiceException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
@@ -92,10 +90,8 @@ public class SpecialOrderController {
 
     @PostMapping("/complete/{id}")
     public ResponseEntity<?> complete(@NotNull @PathVariable Long id) {
-        ModelMapper mapper = new ModelMapper();
-
         try {
-            return ResponseEntity.ok(mapper.map(service.complete(id), SpecialOrderDto.class));
+            return ResponseEntity.ok(specialOrderMapper.specialOrderToSpecialOrderDto(service.complete(id)));
         } catch (ServiceException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
@@ -103,9 +99,8 @@ public class SpecialOrderController {
 
     @PostMapping("/cancel/{id}")
     public ResponseEntity<?> cancel(@NotNull @PathVariable Long id) {
-        ModelMapper mapper = new ModelMapper();
         try {
-            return ResponseEntity.ok(mapper.map(service.cancel(id), SpecialOrderDto.class));
+            return ResponseEntity.ok(specialOrderMapper.specialOrderToSpecialOrderDto(service.cancel(id)));
         }  catch (ServiceException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }

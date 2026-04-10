@@ -1,5 +1,6 @@
 package ru.penlk.business.implementations.orders.states.mappers;
 
+import org.springframework.stereotype.Component;
 import ru.penlk.business.implementations.orders.states.common.CommonCanceledState;
 import ru.penlk.business.implementations.orders.states.common.CommonCarReadyToTakeState;
 import ru.penlk.business.implementations.orders.states.common.CommonCompletedState;
@@ -10,6 +11,7 @@ import ru.penlk.business.implementations.orders.states.common.CommonPurchasedSta
 import ru.penlk.business.implementations.orders.states.common.CommonWaitingPurchaseState;
 import ru.penlk.dao.entities.orders.common.CommonOrderState;
 
+@Component
 public class CommonStateMapperImpl implements CommonStateMapper {
     @Override
     public CommonOrderStateHandler map(CommonOrderState state) {

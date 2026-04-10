@@ -487,7 +487,49 @@ databaseChangeLog:
               CREATE TYPE special_order_state AS ENUM (
                 'ISSUED', 'AGREED', 'WAITING_PAYMENT', 'PAID', 'CAR_IS_READY', 'CANCELED', 'DONE'
               );
-
+        - createTable:
+            tableName: configurators
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+                    primaryKeyName: pk_configurators
+              - column:
+                  name: created_at
+                  type: TIMESTAMPTZ
+                  defaultValueComputed: NOW()
+                  constraints:
+                    nullable: false
+              - column:
+                  name: updated_at
+                  type: TIMESTAMPTZ
+                  defaultValueComputed: NOW()
+                  constraints:
+                    nullable: false
+              - column:
+                  name: removed
+                  type: BOOLEAN
+                  defaultValueBoolean: false
+                  constraints:
+                    nullable: false
+              - column:
+                  name: car_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_configurators_car
+                    referencedTableName: cars
+                    referencedColumnNames: id
+              - column:
+                  name: is_finished
+                  type: BOOLEAN
+                  defaultValueBoolean: false
+                  constraints:
+                    nullable: false
         - createTable:
             tableName: special_orders
             columns:
@@ -545,6 +587,14 @@ databaseChangeLog:
                     referencedTableName: cars
                     referencedColumnNames: id
               - column:
+                  name: configurator_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_special_orders_configurator
+                    referencedTableName: configurators
+                    referencedColumnNames: id
+              - column:
                   name: price
                   type: MONEY
                   constraints:
@@ -582,51 +632,6 @@ databaseChangeLog:
                   type: MONEY
                   constraints:
                     nullable: false
-
-        - createTable:
-            tableName: configurations
-            columns:
-              - column:
-                  name: id
-                  type: BIGINT
-                  autoIncrement: true
-                  constraints:
-                    primaryKey: true
-                    nullable: false
-                    primaryKeyName: pk_configurations
-              - column:
-                  name: created_at
-                  type: TIMESTAMPTZ
-                  defaultValueComputed: NOW()
-                  constraints:
-                    nullable: false
-              - column:
-                  name: updated_at
-                  type: TIMESTAMPTZ
-                  defaultValueComputed: NOW()
-                  constraints:
-                    nullable: false
-              - column:
-                  name: removed
-                  type: BOOLEAN
-                  defaultValueBoolean: false
-                  constraints:
-                    nullable: false
-              - column:
-                  name: car_id
-                  type: BIGINT
-                  constraints:
-                    nullable: false
-                    foreignKeyName: fk_configurations_car
-                    referencedTableName: cars
-                    referencedColumnNames: id
-              - column:
-                  name: is_finished
-                  type: BOOLEAN
-                  defaultValueBoolean: false
-                  constraints:
-                    nullable: false
-
         - createTable:
             tableName: special_configurations
             columns:
@@ -636,7 +641,7 @@ databaseChangeLog:
                   constraints:
                     nullable: false
                     foreignKeyName: fk_special_configurations_configurator
-                    referencedTableName: configurations
+                    referencedTableName: configurators
                     referencedColumnNames: id
               - column:
                   name: special_allowed_part_id
@@ -660,8 +665,8 @@ databaseChangeLog:
                   type: BIGINT
                   constraints:
                     nullable: false
-                    foreignKeyName: fk_configuration_car_parts_configuration
-                    referencedTableName: configurations
+                    foreignKeyName: fk_configuration_car_parts_configurator
+                    referencedTableName: configurators
                     referencedColumnNames: id
               - column:
                   name: car_part_id

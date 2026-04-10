@@ -17,16 +17,16 @@ services:
       timeout: 30s
       retries: 5
       start_period: 30s
-  migration:
-    build:
-      context: .
-      dockerfile: docker/Dockerfile.migration
-    image: java_migration
-    env_file:
-      - .env
-    depends_on:
-      db:
-        condition: service_healthy 
+#  migration:
+#    build:
+#      context: .
+#      dockerfile: docker/Dockerfile.migration
+#    image: java_migration
+#    env_file:
+#      - .env
+#    depends_on:
+#      db:
+#        condition: service_healthy
 
 volumes:
   data:

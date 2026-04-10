@@ -1,5 +1,6 @@
 package ru.penlk.business.implementations.orders.states.mappers;
 
+import org.springframework.stereotype.Component;
 import ru.penlk.business.implementations.orders.states.special.SpecialCanceledState;
 import ru.penlk.business.implementations.orders.states.special.SpecialCarReadyToTakeState;
 import ru.penlk.business.implementations.orders.states.special.SpecialCompletedState;
@@ -10,6 +11,7 @@ import ru.penlk.business.implementations.orders.states.special.SpecialPurchasedS
 import ru.penlk.business.implementations.orders.states.special.SpecialWaitingPurchaseState;
 import ru.penlk.dao.entities.orders.special.SpecialOrderState;
 
+@Component
 public class SpecialStateMapperImpl implements SpecialStateMapper {
     @Override
     public SpecialOrderStateHandler map(SpecialOrderState state) {
