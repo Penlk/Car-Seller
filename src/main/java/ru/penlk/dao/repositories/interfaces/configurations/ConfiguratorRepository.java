@@ -5,4 +5,5 @@ import org.springframework.stereotype.Repository;
 import ru.penlk.dao.entities.configurations.specials.Configurator;
 
 @Repository
-public interface ConfiguratorRepository extends JpaRepository<Configurator, Long> { }
+public interface ConfiguratorRepository extends JpaRepository<Configurator, Long> {
+}

@@ -11,10 +11,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import ru.penlk.dao.entities.cars.CarPart;
 import ru.penlk.dao.entities.orders.special.SpecialAllowedPart;
-import ru.penlk.dao.entities.orders.special.SpecialAllowedPartId;
-import ru.penlk.dao.entities.orders.special.SpecialOrder;
 
 @AllArgsConstructor
 @NoArgsConstructor

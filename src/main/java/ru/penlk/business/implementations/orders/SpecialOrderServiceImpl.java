@@ -5,13 +5,6 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.penlk.business.contracts.ServiceException;
 import ru.penlk.business.contracts.orders.SpecialOrderService;
-import ru.penlk.dao.entities.configurations.specials.Configurator;
-import ru.penlk.dao.entities.configurations.specials.ConfiguratorCarPart;
-import ru.penlk.dao.entities.configurations.specials.SpecialConfiguration;
-import ru.penlk.dao.entities.orders.special.SpecialAllowedPart;
-import ru.penlk.dao.entities.orders.special.SpecialOrder;
-import ru.penlk.dao.entities.users.clients.Client;
-import ru.penlk.dao.repositories.interfaces.configurations.ConfiguratorRepository;
 import ru.penlk.business.implementations.orders.states.mappers.SpecialStateMapper;
 import ru.penlk.business.implementations.orders.states.special.SpecialOrderCore;
 import ru.penlk.business.implementations.orders.states.special.SpecialOrderFacade;
@@ -20,12 +13,19 @@ import ru.penlk.business.implementations.orders.strategies.ManagerSelectionStrat
 import ru.penlk.business.internal.CarPartConfigurationService;
 import ru.penlk.business.internal.CarPartPriceCalculator;
 import ru.penlk.business.internal.RequiredNodeConfigurationService;
-import ru.penlk.dao.entities.cars.CarPart;
 import ru.penlk.dao.entities.cars.Car;
+import ru.penlk.dao.entities.cars.CarPart;
+import ru.penlk.dao.entities.configurations.specials.Configurator;
+import ru.penlk.dao.entities.configurations.specials.ConfiguratorCarPart;
+import ru.penlk.dao.entities.configurations.specials.SpecialConfiguration;
+import ru.penlk.dao.entities.orders.special.SpecialAllowedPart;
+import ru.penlk.dao.entities.orders.special.SpecialOrder;
 import ru.penlk.dao.entities.orders.special.SpecialOrderState;
+import ru.penlk.dao.entities.users.clients.Client;
 import ru.penlk.dao.entities.users.managers.Manager;
 import ru.penlk.dao.entities.vo.Price;
 import ru.penlk.dao.repositories.interfaces.cars.CarRepository;
+import ru.penlk.dao.repositories.interfaces.configurations.ConfiguratorRepository;
 import ru.penlk.dao.repositories.interfaces.orders.special.SpecialOrderRepository;
 import ru.penlk.dao.repositories.interfaces.users.clients.ClientRepository;
 import ru.penlk.dao.repositories.interfaces.users.managers.ManagerRepository;
@@ -61,7 +61,7 @@ public class SpecialOrderServiceImpl implements SpecialOrderService {
             return specialOrderOptional.get();
         }
 
-        throw new ServiceException(String.format("SpecialOrder with orderId: {%d} not found", orderId));
+        throw new ServiceException(String.format("SpecialOrder with id: {%d} not found", orderId));
     }
 
     @Override
@@ -94,11 +94,11 @@ public class SpecialOrderServiceImpl implements SpecialOrderService {
                 .toList();
 
         Set<ConfiguratorCarPart> carPartsAddition = new HashSet<>(
-            requiredNodeConfigurationService.completeRequireNodes(
-                car, carParts
-            ).stream()
-                    .map(x -> new ConfiguratorCarPart(optionalConfigurator.get(), x))
-                    .toList()
+                requiredNodeConfigurationService.completeRequireNodes(
+                                car, carParts
+                        ).stream()
+                        .map(x -> new ConfiguratorCarPart(optionalConfigurator.get(), x))
+                        .toList()
         );
 
         optionalConfigurator.get().setCarParts(carPartsAddition);

@@ -5,4 +5,5 @@ import org.springframework.stereotype.Repository;
 import ru.penlk.dao.entities.orders.common.CommonOrder;
 
 @Repository
-public interface CommonOrderRepository extends JpaRepository<CommonOrder, Long> { }
+public interface CommonOrderRepository extends JpaRepository<CommonOrder, Long> {
+}

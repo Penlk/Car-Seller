@@ -17,15 +17,13 @@ import ru.penlk.dao.entities.orders.common.CommonOrder;
 import ru.penlk.dao.entities.orders.common.CommonOrderState;
 import ru.penlk.dao.entities.users.clients.Client;
 import ru.penlk.dao.entities.users.managers.Manager;
-import ru.penlk.dao.entities.vo.Price;
-import ru.penlk.dao.repositories.interfaces.cars.CarRepository;
 import ru.penlk.dao.repositories.interfaces.cars.CarPartRepository;
+import ru.penlk.dao.repositories.interfaces.cars.CarRepository;
 import ru.penlk.dao.repositories.interfaces.orders.common.CommonOrderRepository;
 import ru.penlk.dao.repositories.interfaces.users.clients.ClientRepository;
 import ru.penlk.dao.repositories.interfaces.users.managers.ManagerRepository;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 @AllArgsConstructor
@@ -55,7 +53,7 @@ public class CommonOrderServiceImpl implements CommonOrderService {
             return carOptional.get();
         }
 
-        throw new ServiceException(String.format("CommonOrder with orderId: {%d} not found", orderId));
+        throw new ServiceException(String.format("CommonOrder with id: {%d} not found", orderId));
     }
 
     @Override
@@ -65,7 +63,7 @@ public class CommonOrderServiceImpl implements CommonOrderService {
         }
 
         CommonOrder order = commonOrderRepository.findById(request.getId())
-                    .orElseThrow(() -> new ServiceException("Order not found"));
+                .orElseThrow(() -> new ServiceException("Order not found"));
 
         order.setCar(request.getCar());
         order.setClient(request.getClient());

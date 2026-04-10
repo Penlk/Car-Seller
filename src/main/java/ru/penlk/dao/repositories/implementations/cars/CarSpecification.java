@@ -2,6 +2,7 @@ package ru.penlk.dao.repositories.implementations.cars;
 
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
 import org.springframework.data.jpa.domain.Specification;
 import ru.penlk.dao.entities.cars.Car;
@@ -9,7 +10,6 @@ import ru.penlk.dao.repositories.interfaces.cars.CarQuery;
 
 import java.util.ArrayList;
 import java.util.List;
-import jakarta.persistence.criteria.Predicate;
 
 public class CarSpecification {
 

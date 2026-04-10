@@ -1,5 +1,6 @@
 package ru.penlk.dao.entities.cars;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -12,18 +13,15 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.JdbcType;
-import org.hibernate.annotations.JdbcTypeCode;
-import org.hibernate.annotations.Type;
 import org.hibernate.dialect.type.PostgreSQLEnumJdbcType;
 import ru.penlk.dao.entities.BaseEntity;
 import ru.penlk.dao.entities.configurations.defaults.DefaultConfiguration;
-import ru.penlk.dao.entities.orders.special.SpecialAllowedPart;
 import ru.penlk.dao.entities.nodes.RequireNode;
+import ru.penlk.dao.entities.orders.special.SpecialAllowedPart;
 import ru.penlk.dao.entities.vo.EnginePower;
 import ru.penlk.dao.entities.vo.EngineVolume;
 import ru.penlk.dao.entities.vo.Price;
 
-import java.sql.Types;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -70,13 +68,13 @@ public class Car extends BaseEntity {
     @Column(nullable = false)
     private String colour;
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy="car")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "car", cascade = CascadeType.ALL)
     private Set<DefaultConfiguration> defaultConfiguration = new HashSet<>();
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "car")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "car", cascade = CascadeType.ALL)
     private Set<SpecialAllowedPart> specialAllowedParts = new HashSet<>();
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "car")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "car", cascade = CascadeType.ALL)
     private Set<RequireNode> requireNodes = new HashSet<>();
 }
 

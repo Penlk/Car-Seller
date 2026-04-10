@@ -1,6 +1,7 @@
 package ru.penlk.presentation.cars;
 
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
 import org.springframework.http.ResponseEntity;
@@ -14,9 +15,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ru.penlk.business.contracts.ServiceException;
 import ru.penlk.business.contracts.cars.CarService;
+import ru.penlk.business.contracts.cars.fk.DefaultConfigurationFactory;
+import ru.penlk.business.contracts.cars.fk.RequireNodeFactory;
+import ru.penlk.business.contracts.cars.fk.SpecialAllowedPartFactory;
+import ru.penlk.business.implementations.fk.DefaultConfigurationFactoryImpl;
+import ru.penlk.business.implementations.fk.RequireNodeFactoryImpl;
+import ru.penlk.business.implementations.fk.SpecialAllowedPartFactoryImpl;
 import ru.penlk.dao.entities.cars.Car;
 import ru.penlk.presentation.cars.models.CarDto;
-import jakarta.validation.Valid;
 import ru.penlk.presentation.cars.models.CreateCarDto;
 import ru.penlk.presentation.mapping.cars.CarMapper;
 import ru.penlk.presentation.mapping.cars.CreateCarMapper;
@@ -42,7 +48,16 @@ public class CarController {
     public ResponseEntity<CarDto> create(@RequestBody @Valid CreateCarDto request) {
         Car car = createCarMapper.createCarDtoToCar(request);
 
-        Car response = carService.create(car);
+        DefaultConfigurationFactory defaultConfigurationFactory =
+                new DefaultConfigurationFactoryImpl(request.defaultConfigurationIds());
+
+        SpecialAllowedPartFactory specialAllowedPartFactory =
+                new SpecialAllowedPartFactoryImpl(request.specialAllowedParts());
+
+        RequireNodeFactory requireNodeFactory =
+                new RequireNodeFactoryImpl(request.requireNodeIds());
+
+        Car response = carService.create(car, defaultConfigurationFactory, specialAllowedPartFactory, requireNodeFactory);
 
         return ResponseEntity.ok().body(carMapper.carToCarDto(response));
     }
@@ -52,9 +67,9 @@ public class CarController {
         try {
             return ResponseEntity.ok().body(
                     carMapper.carToCarDto(
-                        carService.update(
-                            carMapper.carDtoToCar(request)
-                        )
+                            carService.update(
+                                    carMapper.carDtoToCar(request)
+                            )
                     )
             );
         } catch (ServiceException e) {

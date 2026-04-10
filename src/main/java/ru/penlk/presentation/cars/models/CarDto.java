@@ -3,13 +3,9 @@ package ru.penlk.presentation.cars.models;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.NonNull;
-import ru.penlk.dao.entities.cars.Car;
 import ru.penlk.dao.entities.cars.CarDrive;
 import ru.penlk.dao.entities.cars.Fuel;
 import ru.penlk.dao.entities.cars.GearShiftBox;
-import ru.penlk.dao.entities.vo.EnginePower;
-import ru.penlk.dao.entities.vo.EngineVolume;
-import ru.penlk.dao.entities.vo.Price;
 
 import java.math.BigDecimal;
 

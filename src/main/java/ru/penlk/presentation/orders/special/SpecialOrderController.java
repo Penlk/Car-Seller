@@ -3,7 +3,6 @@ package ru.penlk.presentation.orders.special;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
-import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,12 +11,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import ru.penlk.business.contracts.DomainValidationException;
+import ru.penlk.business.contracts.IncompatibleComponentException;
 import ru.penlk.business.contracts.ServiceException;
 import ru.penlk.business.contracts.orders.SpecialOrderService;
 import ru.penlk.presentation.mapping.orders.special.CreateSpecialOrderMapper;
 import ru.penlk.presentation.mapping.orders.special.SpecialOrderMapper;
 import ru.penlk.presentation.orders.special.models.CreateSpecialOrderDto;
-import ru.penlk.presentation.orders.special.models.SpecialOrderDto;
 
 @AllArgsConstructor
 @RestController
@@ -47,7 +47,7 @@ public class SpecialOrderController {
     public ResponseEntity<?> issue(@NotNull @RequestBody @Valid CreateSpecialOrderDto request) {
         try {
             return ResponseEntity.ok(specialOrderMapper.specialOrderToSpecialOrderDto(service.issue(request.clientId(), request.configurationId())));
-        } catch (ServiceException e) {
+        } catch (ServiceException | IncompatibleComponentException | DomainValidationException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
@@ -101,7 +101,7 @@ public class SpecialOrderController {
     public ResponseEntity<?> cancel(@NotNull @PathVariable Long id) {
         try {
             return ResponseEntity.ok(specialOrderMapper.specialOrderToSpecialOrderDto(service.cancel(id)));
-        }  catch (ServiceException e) {
+        } catch (ServiceException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }

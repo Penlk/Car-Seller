@@ -1,12 +1,13 @@
 package ru.penlk.dao.entities.configurations.defaults;
 
 import lombok.AllArgsConstructor;
-import ru.penlk.dao.entities.configurations.specials.ConfiguratorCarPartId;
+import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.util.Objects;
 
 @AllArgsConstructor
+@NoArgsConstructor
 public class DefaultConfigurationId implements Serializable {
     private Long carPart;
     private Long car;
@@ -14,8 +15,7 @@ public class DefaultConfigurationId implements Serializable {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof DefaultConfigurationId)) return false;
-        DefaultConfigurationId that = (DefaultConfigurationId) o;
+        if (!(o instanceof DefaultConfigurationId that)) return false;
         return Objects.equals(car, that.car) &&
                 Objects.equals(carPart, that.carPart);
     }

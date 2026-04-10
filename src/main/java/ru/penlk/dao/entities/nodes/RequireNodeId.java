@@ -1,12 +1,13 @@
 package ru.penlk.dao.entities.nodes;
 
 import lombok.AllArgsConstructor;
-import ru.penlk.dao.entities.configurations.specials.ConfiguratorCarPartId;
+import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.util.Objects;
 
 @AllArgsConstructor
+@NoArgsConstructor
 public class RequireNodeId implements Serializable {
     private Long node;
     private Long car;
@@ -14,8 +15,7 @@ public class RequireNodeId implements Serializable {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof RequireNodeId)) return false;
-        RequireNodeId that = (RequireNodeId) o;
+        if (!(o instanceof RequireNodeId that)) return false;
         return Objects.equals(node, that.node) &&
                 Objects.equals(car, that.car);
     }

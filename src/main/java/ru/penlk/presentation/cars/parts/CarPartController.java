@@ -3,8 +3,6 @@ package ru.penlk.presentation.cars.parts;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
-import lombok.NonNull;
-import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,8 +19,6 @@ import ru.penlk.presentation.cars.parts.models.CarPartDto;
 import ru.penlk.presentation.cars.parts.models.CreateCarPartDto;
 import ru.penlk.presentation.mapping.cars.parts.CarPartMapper;
 import ru.penlk.presentation.mapping.cars.parts.CreateCarPartMapper;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/car_part")

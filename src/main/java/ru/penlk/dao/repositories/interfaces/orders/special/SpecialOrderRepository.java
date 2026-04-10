@@ -5,4 +5,5 @@ import org.springframework.stereotype.Repository;
 import ru.penlk.dao.entities.orders.special.SpecialOrder;
 
 @Repository
-public interface SpecialOrderRepository extends JpaRepository<SpecialOrder, Long> { }
+public interface SpecialOrderRepository extends JpaRepository<SpecialOrder, Long> {
+}

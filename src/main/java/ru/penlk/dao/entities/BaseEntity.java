@@ -20,7 +20,7 @@ import java.time.Instant;
 @SoftDelete(strategy = SoftDeleteType.DELETED, columnName = "removed")
 public class BaseEntity {
     @Id
-    @Column(name = "id",  nullable = false)
+    @Column(name = "id", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 

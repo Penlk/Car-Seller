@@ -16,8 +16,7 @@ public class SpecialConfigurationId implements Serializable {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof SpecialConfigurationId)) return false;
-        SpecialConfigurationId that = (SpecialConfigurationId) o;
+        if (!(o instanceof SpecialConfigurationId that)) return false;
         return configurator.equals(that.configurator) &&
                 specialAllowedPart.equals(that.specialAllowedPart);
     }

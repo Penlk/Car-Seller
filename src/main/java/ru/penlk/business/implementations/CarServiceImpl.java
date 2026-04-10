@@ -5,19 +5,51 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.penlk.business.contracts.ServiceException;
 import ru.penlk.business.contracts.cars.CarService;
+import ru.penlk.business.contracts.cars.fk.DefaultConfigurationFactory;
+import ru.penlk.business.contracts.cars.fk.RequireNodeFactory;
+import ru.penlk.business.contracts.cars.fk.SpecialAllowedPartFactory;
 import ru.penlk.dao.entities.cars.Car;
+import ru.penlk.dao.entities.configurations.defaults.DefaultConfiguration;
+import ru.penlk.dao.entities.nodes.RequireNode;
+import ru.penlk.dao.entities.orders.special.SpecialAllowedPart;
+import ru.penlk.dao.repositories.interfaces.cars.CarPartRepository;
 import ru.penlk.dao.repositories.interfaces.cars.CarRepository;
+import ru.penlk.dao.repositories.interfaces.nodes.NodeRepository;
 
+import java.util.HashSet;
 import java.util.Optional;
+import java.util.Set;
 
 @AllArgsConstructor
 @Service
 @Transactional
 public class CarServiceImpl implements CarService {
     private final CarRepository carRepository;
+    private final CarPartRepository carPartRepository;
+    private final NodeRepository nodeRepository;
 
     @Override
-    public Car create(Car request) {
+    public Car create(Car request,
+                      DefaultConfigurationFactory defaultConfigurationFactory,
+                      SpecialAllowedPartFactory specialAllowedPartFactory,
+                      RequireNodeFactory requireNodeFactory
+    ) throws ServiceException {
+        Set<DefaultConfiguration> defaultConfigurations = new HashSet<>();
+        Set<SpecialAllowedPart> specialAllowedParts = new HashSet<>();
+        Set<RequireNode> requireNodes = new HashSet<>();
+
+        try {
+            defaultConfigurations = defaultConfigurationFactory.getDefaultConfigurations(request, carPartRepository);
+            specialAllowedParts = specialAllowedPartFactory.getSpecialAllowedParts(request, carPartRepository);
+            requireNodes = requireNodeFactory.getRequireNodes(request, nodeRepository);
+        } catch (IllegalArgumentException e) {
+            throw new ServiceException(e.getMessage());
+        }
+
+        request.setDefaultConfiguration(defaultConfigurations);
+        request.setSpecialAllowedParts(specialAllowedParts);
+        request.setRequireNodes(requireNodes);
+
         return carRepository.save(request);
     }
 

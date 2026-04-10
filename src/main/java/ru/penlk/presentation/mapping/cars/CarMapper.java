@@ -7,7 +7,7 @@ import ru.penlk.presentation.mapping.vo.EnginePowerMapper;
 import ru.penlk.presentation.mapping.vo.EngineVolumeMapper;
 import ru.penlk.presentation.mapping.vo.PriceMapper;
 
-@Mapper(componentModel = "spring",  uses = {
+@Mapper(componentModel = "spring", uses = {
         EngineVolumeMapper.class,
         EnginePowerMapper.class,
         PriceMapper.class
