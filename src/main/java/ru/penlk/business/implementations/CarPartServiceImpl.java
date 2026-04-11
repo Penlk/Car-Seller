@@ -27,7 +27,7 @@ public class CarPartServiceImpl implements CarPartService {
     }
 
     @Override
-    public CarPart read(Long id) throws ServiceException {
+    public CarPart find(Long id) throws ServiceException {
         Optional<CarPart> carPartOptional = carPartRepository.findById(id);
 
         if (carPartOptional.isPresent()) {

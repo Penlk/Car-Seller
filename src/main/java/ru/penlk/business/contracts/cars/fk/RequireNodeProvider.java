@@ -6,6 +6,6 @@ import ru.penlk.dao.repositories.interfaces.nodes.NodeRepository;
 
 import java.util.Set;
 
-public interface RequireNodeFactory {
+public interface RequireNodeProvider {
     Set<RequireNode> getRequireNodes(Car car, NodeRepository nodeRepository);
 }

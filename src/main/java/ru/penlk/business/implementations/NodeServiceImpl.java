@@ -20,7 +20,7 @@ public class NodeServiceImpl implements NodeService {
     }
 
     @Override
-    public Node read(Long nodeId) throws ServiceException {
+    public Node find(Long nodeId) throws ServiceException {
         return nodeRepository.findById(nodeId)
                 .orElseThrow(() -> new ServiceException("Node not found"));
     }

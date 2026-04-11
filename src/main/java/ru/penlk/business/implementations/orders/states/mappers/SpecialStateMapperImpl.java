@@ -5,7 +5,7 @@ import ru.penlk.business.implementations.orders.states.special.SpecialCanceledSt
 import ru.penlk.business.implementations.orders.states.special.SpecialCarReadyToTakeState;
 import ru.penlk.business.implementations.orders.states.special.SpecialCompletedState;
 import ru.penlk.business.implementations.orders.states.special.SpecialConfirmedState;
-import ru.penlk.business.implementations.orders.states.special.SpecialIssuedState;
+import ru.penlk.business.implementations.orders.states.special.SpecialPlacedState;
 import ru.penlk.business.implementations.orders.states.special.SpecialOrderStateHandler;
 import ru.penlk.business.implementations.orders.states.special.SpecialPurchasedState;
 import ru.penlk.business.implementations.orders.states.special.SpecialWaitingPurchaseState;
@@ -16,7 +16,7 @@ public class SpecialStateMapperImpl implements SpecialStateMapper {
     @Override
     public SpecialOrderStateHandler map(SpecialOrderState state) {
         return switch (state) {
-            case SpecialOrderState.ISSUED -> new SpecialIssuedState();
+            case SpecialOrderState.PLACED -> new SpecialPlacedState();
             case SpecialOrderState.AGREED -> new SpecialConfirmedState();
             case SpecialOrderState.WAITING_PAYMENT -> new SpecialWaitingPurchaseState();
             case SpecialOrderState.PAID -> new SpecialPurchasedState();

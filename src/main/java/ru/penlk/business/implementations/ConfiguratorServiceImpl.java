@@ -5,7 +5,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.penlk.business.contracts.ServiceException;
 import ru.penlk.business.contracts.configurations.ConfiguratorService;
-import ru.penlk.business.contracts.configurations.fk.SpecialConfigurationFactory;
+import ru.penlk.business.contracts.configurations.fk.SpecialConfigurationProvider;
 import ru.penlk.dao.entities.cars.Car;
 import ru.penlk.dao.entities.configurations.specials.Configurator;
 import ru.penlk.dao.entities.configurations.specials.SpecialConfiguration;
@@ -26,7 +26,7 @@ public class ConfiguratorServiceImpl implements ConfiguratorService {
     private final CarRepository carRepository;
 
     @Override
-    public Configurator create(Configurator configurator, Long carId, SpecialConfigurationFactory specialConfigurationFactory) {
+    public Configurator create(Configurator configurator, Long carId, SpecialConfigurationProvider specialConfigurationProvider) {
         Set<SpecialConfiguration> specialConfigurations = new HashSet<>();
 
         Car car = carRepository.findById(carId).orElseThrow(() -> new ServiceException("Car not found with id " + carId));
@@ -34,7 +34,7 @@ public class ConfiguratorServiceImpl implements ConfiguratorService {
         configurator.setCar(car);
 
         try {
-            specialConfigurations = specialConfigurationFactory.create(configurator);
+            specialConfigurations = specialConfigurationProvider.create(configurator);
         } catch (IllegalArgumentException e) {
             throw new ServiceException(e.getMessage());
         }
@@ -81,7 +81,7 @@ public class ConfiguratorServiceImpl implements ConfiguratorService {
     }
 
     @Override
-    public Configurator read(Long id) {
+    public Configurator find(Long id) {
 
         return configuratorRepository.findById(id)
                 .orElseThrow(() -> new ServiceException("Cannot find configurator with id: " + id));

@@ -10,7 +10,7 @@ import ru.penlk.dao.entities.cars.CarPart;
 public interface CarPartService {
     CarPart create(CarPart request, Long nodeId);
 
-    CarPart read(Long carPartId) throws ServiceException;
+    CarPart find(Long carPartId) throws ServiceException;
 
     CarPart update(CarPart request, Long nodeId) throws ServiceException;
 

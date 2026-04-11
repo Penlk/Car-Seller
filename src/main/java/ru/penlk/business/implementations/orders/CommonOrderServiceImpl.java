@@ -17,7 +17,6 @@ import ru.penlk.dao.entities.orders.common.CommonOrder;
 import ru.penlk.dao.entities.orders.common.CommonOrderState;
 import ru.penlk.dao.entities.users.clients.Client;
 import ru.penlk.dao.entities.users.managers.Manager;
-import ru.penlk.dao.repositories.interfaces.cars.CarPartRepository;
 import ru.penlk.dao.repositories.interfaces.cars.CarRepository;
 import ru.penlk.dao.repositories.interfaces.orders.common.CommonOrderRepository;
 import ru.penlk.dao.repositories.interfaces.users.clients.ClientRepository;
@@ -33,7 +32,6 @@ public class CommonOrderServiceImpl implements CommonOrderService {
     private final CommonOrderRepository commonOrderRepository;
     private final ManagerRepository managerRepository;
     private final ClientRepository clientRepository;
-    private final CarPartRepository carPartRepository;
     private final CarRepository carRepository;
 
     private final ManagerSelectionStrategy managerSelectionStrategy;
@@ -41,12 +39,7 @@ public class CommonOrderServiceImpl implements CommonOrderService {
     private final RequiredNodeConfigurationService requiredNodeConfigurationService;
 
     @Override
-    public CommonOrder create(CommonOrder request) {
-        return commonOrderRepository.save(request);
-    }
-
-    @Override
-    public CommonOrder read(Long orderId) throws ServiceException {
+    public CommonOrder find(Long orderId) throws ServiceException {
         Optional<CommonOrder> carOptional = commonOrderRepository.findById(orderId);
 
         if (carOptional.isPresent()) {
@@ -57,29 +50,12 @@ public class CommonOrderServiceImpl implements CommonOrderService {
     }
 
     @Override
-    public CommonOrder update(CommonOrder request) throws ServiceException {
-        if (request.getId() == null) {
-            throw new ServiceException("Order id must not be null");
-        }
-
-        CommonOrder order = commonOrderRepository.findById(request.getId())
-                .orElseThrow(() -> new ServiceException("Order not found"));
-
-        order.setCar(request.getCar());
-        order.setClient(request.getClient());
-        order.setManager(request.getManager());
-        order.setState(request.getState());
-
-        return order;
-    }
-
-    @Override
     public void delete(Long orderId) throws ServiceException {
         commonOrderRepository.deleteById(orderId);
     }
 
     @Override
-    public CommonOrder issue(Long clientId, Long carId) throws ServiceException, DomainValidationException {
+    public CommonOrder placement(Long clientId, Long carId) throws ServiceException, DomainValidationException {
         Optional<Client> clientOptional = clientRepository.findById(clientId);
 
         if (clientOptional.isEmpty()) {
@@ -94,7 +70,7 @@ public class CommonOrderServiceImpl implements CommonOrderService {
 
         requiredNodeConfigurationService.completeRequireNodes(carOptional.get(), new ArrayList<>());
 
-        CommonOrder order = new CommonOrder(CommonOrderState.ISSUED, clientOptional.get(), null, carOptional.get());
+        CommonOrder order = new CommonOrder(CommonOrderState.PLACED, clientOptional.get(), null, carOptional.get());
 
         return commonOrderRepository.save(order);
     }

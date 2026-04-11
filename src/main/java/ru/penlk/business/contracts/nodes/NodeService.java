@@ -6,7 +6,7 @@ import ru.penlk.dao.entities.nodes.Node;
 public interface NodeService {
     Node create(Node request);
 
-    Node read(Long nodeId) throws ServiceException;
+    Node find(Long nodeId) throws ServiceException;
 
     Node update(Node request) throws ServiceException;
 

@@ -408,7 +408,7 @@ databaseChangeLog:
             stripComments: false
             sql: |
               CREATE TYPE common_order_state AS ENUM (
-                'ISSUED', 'AGREED', 'WAITING_PAYMENT', 'PAID', 'CAR_IS_READY', 'CANCELED', 'DONE'
+                'PLACED', 'AGREED', 'WAITING_PAYMENT', 'PAID', 'CAR_IS_READY', 'CANCELED', 'DONE'
               );
 
         - createTable:
@@ -485,7 +485,7 @@ databaseChangeLog:
             stripComments: false
             sql: |
               CREATE TYPE special_order_state AS ENUM (
-                'ISSUED', 'AGREED', 'WAITING_PAYMENT', 'PAID', 'CAR_IS_READY', 'CANCELED', 'DONE'
+                'PLACED', 'AGREED', 'WAITING_PAYMENT', 'PAID', 'CAR_IS_READY', 'CANCELED', 'DONE'
               );
         - createTable:
             tableName: configurators

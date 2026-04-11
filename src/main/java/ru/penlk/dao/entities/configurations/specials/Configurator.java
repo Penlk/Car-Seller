@@ -24,8 +24,7 @@ import java.util.Set;
 @Getter
 @Setter
 @Table(name = "configurators")
-public class
-Configurator extends BaseEntity {
+public class Configurator extends BaseEntity {
     @ManyToOne(fetch = FetchType.EAGER, optional = false, cascade = CascadeType.ALL)
     @JoinColumn(name = "car_id")
     private Car car;

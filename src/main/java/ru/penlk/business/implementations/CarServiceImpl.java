@@ -5,9 +5,9 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.penlk.business.contracts.ServiceException;
 import ru.penlk.business.contracts.cars.CarService;
-import ru.penlk.business.contracts.cars.fk.DefaultConfigurationFactory;
-import ru.penlk.business.contracts.cars.fk.RequireNodeFactory;
-import ru.penlk.business.contracts.cars.fk.SpecialAllowedPartFactory;
+import ru.penlk.business.contracts.cars.fk.DefaultConfigurationProvider;
+import ru.penlk.business.contracts.cars.fk.RequireNodeProvider;
+import ru.penlk.business.contracts.cars.fk.SpecialAllowedPartProvider;
 import ru.penlk.dao.entities.cars.Car;
 import ru.penlk.dao.entities.configurations.defaults.DefaultConfiguration;
 import ru.penlk.dao.entities.nodes.RequireNode;
@@ -30,9 +30,9 @@ public class CarServiceImpl implements CarService {
 
     @Override
     public Car create(Car request,
-                      DefaultConfigurationFactory defaultConfigurationFactory,
-                      SpecialAllowedPartFactory specialAllowedPartFactory,
-                      RequireNodeFactory requireNodeFactory
+                      DefaultConfigurationProvider defaultConfigurationFactory,
+                      SpecialAllowedPartProvider specialAllowedPartProvider,
+                      RequireNodeProvider requireNodeProvider
     ) throws ServiceException {
         Set<DefaultConfiguration> defaultConfigurations = new HashSet<>();
         Set<SpecialAllowedPart> specialAllowedParts = new HashSet<>();
@@ -40,8 +40,8 @@ public class CarServiceImpl implements CarService {
 
         try {
             defaultConfigurations = defaultConfigurationFactory.getDefaultConfigurations(request, carPartRepository);
-            specialAllowedParts = specialAllowedPartFactory.getSpecialAllowedParts(request, carPartRepository);
-            requireNodes = requireNodeFactory.getRequireNodes(request, nodeRepository);
+            specialAllowedParts = specialAllowedPartProvider.getSpecialAllowedParts(request, carPartRepository);
+            requireNodes = requireNodeProvider.getRequireNodes(request, nodeRepository);
         } catch (IllegalArgumentException e) {
             throw new ServiceException(e.getMessage());
         }
@@ -54,7 +54,7 @@ public class CarServiceImpl implements CarService {
     }
 
     @Override
-    public Car read(Long id) throws ServiceException {
+    public Car find(Long id) throws ServiceException {
         Optional<Car> carOptional = carRepository.findById(id);
 
         if (carOptional.isPresent()) {

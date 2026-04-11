@@ -6,6 +6,6 @@ import ru.penlk.dao.repositories.interfaces.cars.CarPartRepository;
 
 import java.util.Set;
 
-public interface DefaultConfigurationFactory {
+public interface DefaultConfigurationProvider {
     Set<DefaultConfiguration> getDefaultConfigurations(Car car, CarPartRepository repository);
 }

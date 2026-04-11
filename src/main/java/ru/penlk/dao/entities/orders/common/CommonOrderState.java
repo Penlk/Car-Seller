@@ -1,7 +1,7 @@
 package ru.penlk.dao.entities.orders.common;
 
 public enum CommonOrderState {
-    ISSUED,
+    PLACED,
     AGREED,
     WAITING_PAYMENT,
     PAID,

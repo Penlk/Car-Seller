@@ -3,7 +3,7 @@ package ru.penlk.business.implementations.orders.states.common;
 import ru.penlk.dao.entities.orders.common.CommonOrderState;
 import ru.penlk.dao.entities.users.managers.Manager;
 
-public class CommonIssuedState extends CommonDraftState {
+public class CommonPlacedState extends CommonDraftState {
     @Override
     public Boolean tryConfirm(CommonOrderCore core, Manager manager) {
         core.confirm(manager);

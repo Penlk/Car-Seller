@@ -1,7 +1,7 @@
 package ru.penlk.business.implementations.fk;
 
 import lombok.AllArgsConstructor;
-import ru.penlk.business.contracts.cars.fk.RequireNodeFactory;
+import ru.penlk.business.contracts.cars.fk.RequireNodeProvider;
 import ru.penlk.dao.entities.BaseEntity;
 import ru.penlk.dao.entities.cars.Car;
 import ru.penlk.dao.entities.nodes.Node;
@@ -12,7 +12,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @AllArgsConstructor
-public class RequireNodeFactoryImpl implements RequireNodeFactory {
+public class RequireNodeProviderImpl implements RequireNodeProvider {
     private final Set<Long> nodeIds;
 
     @Override

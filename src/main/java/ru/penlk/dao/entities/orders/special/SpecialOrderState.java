@@ -1,7 +1,7 @@
 package ru.penlk.dao.entities.orders.special;
 
 public enum SpecialOrderState {
-    ISSUED,
+    PLACED,
     AGREED,
     WAITING_PAYMENT,
     PAID,

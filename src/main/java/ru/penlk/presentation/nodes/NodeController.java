@@ -29,7 +29,7 @@ public class NodeController {
     @GetMapping("/{id}")
     public ResponseEntity<?> get(@Valid @NotNull @PathVariable Long id) {
         try {
-            return ResponseEntity.ok().body(nodeMapper.NodeToNodeDto(nodeService.read(id)));
+            return ResponseEntity.ok().body(nodeMapper.NodeToNodeDto(nodeService.find(id)));
         } catch (ServiceException e) {
             return ResponseEntity.notFound().build();
         }

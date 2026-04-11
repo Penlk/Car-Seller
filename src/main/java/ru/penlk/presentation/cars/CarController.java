@@ -15,12 +15,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ru.penlk.business.contracts.ServiceException;
 import ru.penlk.business.contracts.cars.CarService;
-import ru.penlk.business.contracts.cars.fk.DefaultConfigurationFactory;
-import ru.penlk.business.contracts.cars.fk.RequireNodeFactory;
-import ru.penlk.business.contracts.cars.fk.SpecialAllowedPartFactory;
-import ru.penlk.business.implementations.fk.DefaultConfigurationFactoryImpl;
-import ru.penlk.business.implementations.fk.RequireNodeFactoryImpl;
-import ru.penlk.business.implementations.fk.SpecialAllowedPartFactoryImpl;
+import ru.penlk.business.contracts.cars.fk.DefaultConfigurationProvider;
+import ru.penlk.business.contracts.cars.fk.RequireNodeProvider;
+import ru.penlk.business.contracts.cars.fk.SpecialAllowedPartProvider;
+import ru.penlk.business.implementations.fk.DefaultConfigurationProviderImpl;
+import ru.penlk.business.implementations.fk.RequireNodeProviderImpl;
+import ru.penlk.business.implementations.fk.SpecialAllowedPartProviderImpl;
 import ru.penlk.dao.entities.cars.Car;
 import ru.penlk.presentation.cars.models.CarDto;
 import ru.penlk.presentation.cars.models.CreateCarDto;
@@ -38,7 +38,7 @@ public class CarController {
     @GetMapping("/{id}")
     public ResponseEntity<CarDto> get(@PathVariable @NonNull Long id) {
         try {
-            return ResponseEntity.ok().body(carMapper.carToCarDto(carService.read(id)));
+            return ResponseEntity.ok().body(carMapper.carToCarDto(carService.find(id)));
         } catch (ServiceException e) {
             return ResponseEntity.notFound().build();
         }
@@ -48,16 +48,16 @@ public class CarController {
     public ResponseEntity<CarDto> create(@RequestBody @Valid CreateCarDto request) {
         Car car = createCarMapper.createCarDtoToCar(request);
 
-        DefaultConfigurationFactory defaultConfigurationFactory =
-                new DefaultConfigurationFactoryImpl(request.defaultConfigurationIds());
+        DefaultConfigurationProvider defaultConfigurationFactory =
+                new DefaultConfigurationProviderImpl(request.defaultConfigurationIds());
 
-        SpecialAllowedPartFactory specialAllowedPartFactory =
-                new SpecialAllowedPartFactoryImpl(request.specialAllowedParts());
+        SpecialAllowedPartProvider specialAllowedPartProvider =
+                new SpecialAllowedPartProviderImpl(request.specialAllowedParts());
 
-        RequireNodeFactory requireNodeFactory =
-                new RequireNodeFactoryImpl(request.requireNodeIds());
+        RequireNodeProvider requireNodeProvider =
+                new RequireNodeProviderImpl(request.requireNodeIds());
 
-        Car response = carService.create(car, defaultConfigurationFactory, specialAllowedPartFactory, requireNodeFactory);
+        Car response = carService.create(car, defaultConfigurationFactory, specialAllowedPartProvider, requireNodeProvider);
 
         return ResponseEntity.ok().body(carMapper.carToCarDto(response));
     }

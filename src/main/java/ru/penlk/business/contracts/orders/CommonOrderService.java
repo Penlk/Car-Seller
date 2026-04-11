@@ -9,15 +9,11 @@ import ru.penlk.dao.entities.orders.common.CommonOrder;
 @Service
 @Transactional
 public interface CommonOrderService {
-    CommonOrder create(CommonOrder request);
-
-    CommonOrder read(Long orderId) throws ServiceException;
-
-    CommonOrder update(CommonOrder request) throws ServiceException;
+    CommonOrder find(Long orderId) throws ServiceException;
 
     void delete(Long orderId) throws ServiceException;
 
-    CommonOrder issue(Long clientId, Long carId) throws ServiceException, DomainValidationException;
+    CommonOrder placement(Long clientId, Long carId) throws ServiceException, DomainValidationException;
 
     CommonOrder confirm(Long orderId) throws ServiceException;
 

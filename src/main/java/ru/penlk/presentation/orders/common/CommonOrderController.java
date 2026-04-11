@@ -6,7 +6,6 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -19,7 +18,6 @@ import ru.penlk.business.contracts.orders.CommonOrderService;
 import ru.penlk.dao.entities.orders.common.CommonOrder;
 import ru.penlk.presentation.mapping.orders.common.CommonOrderMapper;
 import ru.penlk.presentation.mapping.orders.common.CreateCommonOrderMapper;
-import ru.penlk.presentation.orders.common.models.CommonOrderDto;
 import ru.penlk.presentation.orders.common.models.CreateCommonOrderDto;
 
 @AllArgsConstructor
@@ -33,7 +31,7 @@ public class CommonOrderController {
     @GetMapping("/{id}")
     public ResponseEntity<?> get(@NotNull @PathVariable Long id) {
         try {
-            return ResponseEntity.ok(commonOrderMapper.commonOrderToCommonOrderDto(service.read(id)));
+            return ResponseEntity.ok(commonOrderMapper.commonOrderToCommonOrderDto(service.find(id)));
         } catch (ServiceException e) {
             return ResponseEntity.notFound().build();
         }
@@ -46,34 +44,10 @@ public class CommonOrderController {
         return ResponseEntity.noContent().build();
     }
 
-    @PatchMapping
-    public ResponseEntity<CommonOrderDto> update(@NotNull @RequestBody @Valid CommonOrderDto request) {
-        try {
-            return ResponseEntity.ok(
-                    commonOrderMapper.commonOrderToCommonOrderDto(
-                            service.update(
-                                    commonOrderMapper.commonOrderDtoToCommonOrder(request)
-                            )
-                    )
-            );
-        } catch (ServiceException e) {
-            return ResponseEntity.notFound().build();
-        }
-    }
-
-    @PostMapping
-    public ResponseEntity<CommonOrderDto> create(@NotNull @RequestBody @Valid CreateCommonOrderDto request) {
-        CommonOrder order = createCommonOrderMapper.createCommonOrderDtoToCommonOrder(request);
-
-        return ResponseEntity.ok(
-                commonOrderMapper.commonOrderToCommonOrderDto(service.create(order))
-        );
-    }
-
     @PostMapping("/issue")
-    public ResponseEntity<?> issue(@NotNull @RequestBody @Valid CreateCommonOrderDto request) {
+    public ResponseEntity<?> placement(@NotNull @RequestBody @Valid CreateCommonOrderDto request) {
         try {
-            CommonOrder order = service.issue(request.clientId(), request.carId());
+            CommonOrder order = service.placement(request.clientId(), request.carId());
             return ResponseEntity.ok(commonOrderMapper.commonOrderToCommonOrderDto(order));
         } catch (ServiceException | IncompatibleComponentException | DomainValidationException e) {
             return ResponseEntity.badRequest().body(e.getMessage());

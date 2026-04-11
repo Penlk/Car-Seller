@@ -1,7 +1,7 @@
 package ru.penlk.business.implementations.fk;
 
 import lombok.AllArgsConstructor;
-import ru.penlk.business.contracts.configurations.fk.SpecialConfigurationFactory;
+import ru.penlk.business.contracts.configurations.fk.SpecialConfigurationProvider;
 import ru.penlk.dao.entities.configurations.specials.Configurator;
 import ru.penlk.dao.entities.configurations.specials.SpecialConfiguration;
 import ru.penlk.dao.entities.orders.special.SpecialAllowedPart;
@@ -10,7 +10,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @AllArgsConstructor
-public class SpecialConfigurationFactoryImpl implements SpecialConfigurationFactory {
+public class SpecialConfigurationProviderImpl implements SpecialConfigurationProvider {
     private final Set<Long> carPartIds;
 
     @Override

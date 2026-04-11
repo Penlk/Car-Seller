@@ -6,6 +6,6 @@ import ru.penlk.dao.repositories.interfaces.cars.CarPartRepository;
 
 import java.util.Set;
 
-public interface SpecialAllowedPartFactory {
+public interface SpecialAllowedPartProvider {
     Set<SpecialAllowedPart> getSpecialAllowedParts(Car car, CarPartRepository repository);
 }

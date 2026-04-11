@@ -10,11 +10,11 @@ import ru.penlk.dao.entities.orders.special.SpecialOrder;
 @Service
 @Transactional
 public interface SpecialOrderService {
-    SpecialOrder read(Long orderId) throws ServiceException;
+    SpecialOrder find(Long orderId) throws ServiceException;
 
     void delete(Long orderId) throws ServiceException;
 
-    SpecialOrder issue(Long clientId, Long configuratorId) throws
+    SpecialOrder placement(Long clientId, Long configuratorId) throws
             ServiceException,
             DomainValidationException,
             IncompatibleComponentException;

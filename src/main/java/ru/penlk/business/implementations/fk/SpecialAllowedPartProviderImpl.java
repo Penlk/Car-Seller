@@ -1,7 +1,7 @@
 package ru.penlk.business.implementations.fk;
 
 import lombok.AllArgsConstructor;
-import ru.penlk.business.contracts.cars.fk.SpecialAllowedPartFactory;
+import ru.penlk.business.contracts.cars.fk.SpecialAllowedPartProvider;
 import ru.penlk.dao.entities.BaseEntity;
 import ru.penlk.dao.entities.cars.Car;
 import ru.penlk.dao.entities.cars.CarPart;
@@ -14,7 +14,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @AllArgsConstructor
-public class SpecialAllowedPartFactoryImpl implements SpecialAllowedPartFactory {
+public class SpecialAllowedPartProviderImpl implements SpecialAllowedPartProvider {
     private final Set<SpecialAllowedPartDto> specialAllowedPartDtos;
 
     @Override

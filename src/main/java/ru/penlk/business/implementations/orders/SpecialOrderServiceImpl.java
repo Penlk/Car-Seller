@@ -10,7 +10,6 @@ import ru.penlk.business.implementations.orders.states.special.SpecialOrderCore;
 import ru.penlk.business.implementations.orders.states.special.SpecialOrderFacade;
 import ru.penlk.business.implementations.orders.states.special.SpecialOrderStateHandler;
 import ru.penlk.business.implementations.orders.strategies.ManagerSelectionStrategy;
-import ru.penlk.business.internal.CarPartConfigurationService;
 import ru.penlk.business.internal.CarPartPriceCalculator;
 import ru.penlk.business.internal.RequiredNodeConfigurationService;
 import ru.penlk.dao.entities.cars.Car;
@@ -24,7 +23,6 @@ import ru.penlk.dao.entities.orders.special.SpecialOrderState;
 import ru.penlk.dao.entities.users.clients.Client;
 import ru.penlk.dao.entities.users.managers.Manager;
 import ru.penlk.dao.entities.vo.Price;
-import ru.penlk.dao.repositories.interfaces.cars.CarRepository;
 import ru.penlk.dao.repositories.interfaces.configurations.ConfiguratorRepository;
 import ru.penlk.dao.repositories.interfaces.orders.special.SpecialOrderRepository;
 import ru.penlk.dao.repositories.interfaces.users.clients.ClientRepository;
@@ -43,10 +41,8 @@ public class SpecialOrderServiceImpl implements SpecialOrderService {
     private final SpecialOrderRepository specialOrderRepository;
     private final ManagerRepository managerRepository;
     private final ClientRepository clientRepository;
-    private final CarRepository carRepository;
     private final ConfiguratorRepository configuratorRepository;
 
-    private final CarPartConfigurationService carPartConfigurationService;
     private final RequiredNodeConfigurationService requiredNodeConfigurationService;
     private final CarPartPriceCalculator carPartPriceCalculator;
 
@@ -54,7 +50,7 @@ public class SpecialOrderServiceImpl implements SpecialOrderService {
     private final SpecialStateMapper specialStateMapper;
 
     @Override
-    public SpecialOrder read(Long orderId) throws ServiceException {
+    public SpecialOrder find(Long orderId) throws ServiceException {
         Optional<SpecialOrder> specialOrderOptional = specialOrderRepository.findById(orderId);
 
         if (specialOrderOptional.isPresent()) {
@@ -70,7 +66,7 @@ public class SpecialOrderServiceImpl implements SpecialOrderService {
     }
 
     @Override
-    public SpecialOrder issue(Long clientId, Long configuratorId) {
+    public SpecialOrder placement(Long clientId, Long configuratorId) {
         Optional<Client> clientOptional = clientRepository.findById(clientId);
 
         if (clientOptional.isEmpty()) {
@@ -111,7 +107,7 @@ public class SpecialOrderServiceImpl implements SpecialOrderService {
         Price totalPrice = carPartPriceCalculator.getSpecialCarPartsPrice(specialCarParts).add(car.getPrice());
 
         return specialOrderRepository.save(new SpecialOrder(
-                        SpecialOrderState.ISSUED,
+                        SpecialOrderState.PLACED,
                         clientOptional.get(),
                         null,
                         car,

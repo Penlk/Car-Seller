@@ -30,7 +30,7 @@ public class SpecialOrderController {
     @GetMapping("/{id}")
     public ResponseEntity<?> get(@NotNull @PathVariable Long id) {
         try {
-            return ResponseEntity.ok(specialOrderMapper.specialOrderToSpecialOrderDto(service.read(id)));
+            return ResponseEntity.ok(specialOrderMapper.specialOrderToSpecialOrderDto(service.find(id)));
         } catch (ServiceException e) {
             return ResponseEntity.notFound().build();
         }
@@ -44,9 +44,9 @@ public class SpecialOrderController {
     }
 
     @PostMapping("/issue")
-    public ResponseEntity<?> issue(@NotNull @RequestBody @Valid CreateSpecialOrderDto request) {
+    public ResponseEntity<?> placement(@NotNull @RequestBody @Valid CreateSpecialOrderDto request) {
         try {
-            return ResponseEntity.ok(specialOrderMapper.specialOrderToSpecialOrderDto(service.issue(request.clientId(), request.configurationId())));
+            return ResponseEntity.ok(specialOrderMapper.specialOrderToSpecialOrderDto(service.placement(request.clientId(), request.configurationId())));
         } catch (ServiceException | IncompatibleComponentException | DomainValidationException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }

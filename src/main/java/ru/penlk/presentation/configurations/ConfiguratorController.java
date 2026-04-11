@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ru.penlk.business.contracts.ServiceException;
 import ru.penlk.business.contracts.configurations.ConfiguratorService;
-import ru.penlk.business.implementations.fk.SpecialConfigurationFactoryImpl;
+import ru.penlk.business.implementations.fk.SpecialConfigurationProviderImpl;
 import ru.penlk.dao.entities.configurations.specials.Configurator;
 import ru.penlk.presentation.configurations.models.CreateConfiguratorDto;
 import ru.penlk.presentation.mapping.configurations.ConfiguratorMapper;
@@ -30,7 +30,7 @@ public class ConfiguratorController {
     @GetMapping("/{id}")
     public ResponseEntity<?> get(@PathVariable Long id) {
         try {
-            return ResponseEntity.ok().body(configuratorMapper.ConfiguratorToDto(configuratorService.read(id)));
+            return ResponseEntity.ok().body(configuratorMapper.ConfiguratorToDto(configuratorService.find(id)));
         } catch (ServiceException ex) {
             return ResponseEntity.badRequest().body(ex.getMessage());
         }
@@ -40,7 +40,7 @@ public class ConfiguratorController {
     public ResponseEntity<?> create(@RequestBody @Valid CreateConfiguratorDto dto) {
         Configurator configurator = createConfiguratorMapper.CreateDtoToConfigurator(dto);
 
-        SpecialConfigurationFactoryImpl factory = new SpecialConfigurationFactoryImpl(dto.specialConfigurationIds());
+        SpecialConfigurationProviderImpl factory = new SpecialConfigurationProviderImpl(dto.specialConfigurationIds());
 
         try {
             Configurator result = configuratorService.create(configurator, dto.carId(), factory);

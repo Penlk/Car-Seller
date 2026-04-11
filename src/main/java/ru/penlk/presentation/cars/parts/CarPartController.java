@@ -30,7 +30,7 @@ public class CarPartController {
 
     @GetMapping("/{id}")
     public ResponseEntity<CarPartDto> get(@NotNull @PathVariable Long id) {
-        return ResponseEntity.ok(carPartMapper.carPartToCarPartDto(carPartService.read(id)));
+        return ResponseEntity.ok(carPartMapper.carPartToCarPartDto(carPartService.find(id)));
     }
 
     @DeleteMapping("/{id}")

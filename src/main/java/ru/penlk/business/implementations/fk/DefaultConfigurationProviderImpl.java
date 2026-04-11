@@ -1,7 +1,7 @@
 package ru.penlk.business.implementations.fk;
 
 import lombok.AllArgsConstructor;
-import ru.penlk.business.contracts.cars.fk.DefaultConfigurationFactory;
+import ru.penlk.business.contracts.cars.fk.DefaultConfigurationProvider;
 import ru.penlk.dao.entities.BaseEntity;
 import ru.penlk.dao.entities.cars.Car;
 import ru.penlk.dao.entities.cars.CarPart;
@@ -12,7 +12,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @AllArgsConstructor
-public class DefaultConfigurationFactoryImpl implements DefaultConfigurationFactory {
+public class DefaultConfigurationProviderImpl implements DefaultConfigurationProvider {
     private final Set<Long> defaultConfigurationIds;
 
     @Override
