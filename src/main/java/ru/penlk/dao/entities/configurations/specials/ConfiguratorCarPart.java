@@ -22,12 +22,12 @@ import ru.penlk.dao.entities.cars.CarPart;
 @Table(name = "configurations_car_parts")
 public class ConfiguratorCarPart {
     @Id
-    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "configurator_id")
     private Configurator configurator;
 
     @Id
-    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "car_part_id")
     private CarPart carPart;
 }

@@ -25,14 +25,14 @@ import java.util.Set;
 @Setter
 @Table(name = "configurators")
 public class Configurator extends BaseEntity {
-    @ManyToOne(fetch = FetchType.EAGER, optional = false, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false, cascade = CascadeType.ALL)
     @JoinColumn(name = "car_id")
     private Car car;
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "configurator", cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "configurator", cascade = CascadeType.ALL)
     private Set<SpecialConfiguration> specialConfigurations = new HashSet<>();
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "configurator", cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "configurator", cascade = CascadeType.ALL)
     private Set<ConfiguratorCarPart> carParts = new HashSet<>();
 
     @Column

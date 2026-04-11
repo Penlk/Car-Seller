@@ -45,7 +45,7 @@ public class SpecialOrder extends BaseEntity {
     @ManyToOne(optional = false)
     private Car car;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "configurator_id", nullable = false)
     private Configurator configurator;
 

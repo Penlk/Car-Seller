@@ -68,13 +68,13 @@ public class Car extends BaseEntity {
     @Column(nullable = false)
     private String colour;
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "car", cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "car", cascade = CascadeType.ALL)
     private Set<DefaultConfiguration> defaultConfiguration = new HashSet<>();
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "car", cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "car", cascade = CascadeType.ALL)
     private Set<SpecialAllowedPart> specialAllowedParts = new HashSet<>();
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "car", cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "car", cascade = CascadeType.ALL)
     private Set<RequireNode> requireNodes = new HashSet<>();
 }
 

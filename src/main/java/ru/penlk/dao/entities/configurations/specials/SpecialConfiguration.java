@@ -22,12 +22,12 @@ import ru.penlk.dao.entities.orders.special.SpecialAllowedPart;
 @IdClass(SpecialConfigurationId.class)
 public class SpecialConfiguration {
     @Id
-    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "configurator_id")
     private Configurator configurator;
 
     @Id
-    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "special_allowed_part_id")
     private SpecialAllowedPart specialAllowedPart;
 }

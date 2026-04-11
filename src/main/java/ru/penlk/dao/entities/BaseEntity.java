@@ -8,8 +8,7 @@ import jakarta.persistence.MappedSuperclass;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.SoftDelete;
-import org.hibernate.annotations.SoftDeleteType;
+import org.hibernate.annotations.SQLRestriction;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.Instant;
@@ -17,7 +16,7 @@ import java.time.Instant;
 @Getter
 @Setter
 @MappedSuperclass
-@SoftDelete(strategy = SoftDeleteType.DELETED, columnName = "removed")
+@SQLRestriction("deleted = false")
 public class BaseEntity {
     @Id
     @Column(name = "id", nullable = false)
