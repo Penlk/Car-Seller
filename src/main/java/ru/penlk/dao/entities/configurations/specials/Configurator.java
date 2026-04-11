@@ -1,5 +1,6 @@
 package ru.penlk.dao.entities.configurations.specials;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -23,15 +24,16 @@ import java.util.Set;
 @Getter
 @Setter
 @Table(name = "configurators")
-public class Configurator extends BaseEntity {
-    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+public class
+Configurator extends BaseEntity {
+    @ManyToOne(fetch = FetchType.EAGER, optional = false, cascade = CascadeType.ALL)
     @JoinColumn(name = "car_id")
     private Car car;
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "configurator")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "configurator", cascade = CascadeType.ALL)
     private Set<SpecialConfiguration> specialConfigurations = new HashSet<>();
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "configurator")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "configurator", cascade = CascadeType.ALL)
     private Set<ConfiguratorCarPart> carParts = new HashSet<>();
 
     @Column

@@ -2,6 +2,7 @@ package ru.penlk.dao.entities.configurations.specials;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.io.Serializable;
@@ -9,6 +10,7 @@ import java.io.Serializable;
 @Getter
 @Setter
 @AllArgsConstructor
+@NoArgsConstructor
 public class SpecialConfigurationId implements Serializable {
     private Long configurator;
     private Long specialAllowedPart;
