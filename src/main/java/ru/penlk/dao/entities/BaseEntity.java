@@ -16,7 +16,7 @@ import java.time.Instant;
 @Getter
 @Setter
 @MappedSuperclass
-@SQLRestriction("deleted = false")
+@SQLRestriction("removed = false")
 public class BaseEntity {
     @Id
     @Column(name = "id", nullable = false)
@@ -30,4 +30,7 @@ public class BaseEntity {
     @Column
     @UpdateTimestamp
     Instant updatedAt;
+
+    @Column
+    boolean removed = false;
 }

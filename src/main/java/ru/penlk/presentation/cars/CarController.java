@@ -45,7 +45,7 @@ public class CarController {
     }
 
     @PostMapping
-    public ResponseEntity<CarDto> create(@RequestBody @Valid CreateCarDto request) {
+    public ResponseEntity<?> create(@RequestBody @Valid CreateCarDto request) {
         Car car = createCarMapper.createCarDtoToCar(request);
 
         DefaultConfigurationProvider defaultConfigurationFactory =
@@ -57,9 +57,14 @@ public class CarController {
         RequireNodeProvider requireNodeProvider =
                 new RequireNodeProviderImpl(request.requireNodeIds());
 
-        Car response = carService.create(car, defaultConfigurationFactory, specialAllowedPartProvider, requireNodeProvider);
+        try {
+            Car response = carService.create(car, defaultConfigurationFactory, specialAllowedPartProvider, requireNodeProvider);
 
-        return ResponseEntity.ok().body(carMapper.carToCarDto(response));
+            return ResponseEntity.ok().body(carMapper.carToCarDto(response));
+        } catch (ServiceException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+
     }
 
     @PatchMapping

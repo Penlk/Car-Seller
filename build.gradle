@@ -19,31 +19,46 @@ repositories {
 }
 
 dependencies {
-    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-    implementation 'org.springframework.boot:spring-boot-starter-webmvc'
-    implementation 'org.springframework.boot:spring-boot-starter-validation'
-    implementation 'org.springframework.boot:spring-boot-starter-liquibase'
+
+    //lab 1
     compileOnly 'org.projectlombok:lombok:1.18.42'
-    runtimeOnly 'org.postgresql:postgresql'
     testCompileOnly 'org.projectlombok:lombok:1.18.42'
+    annotationProcessor 'org.projectlombok:lombok:1.18.42'
+    testAnnotationProcessor 'org.projectlombok:lombok:1.18.42'
+
     testImplementation platform('org.junit:junit-bom:5.10.0')
     testImplementation 'org.junit.jupiter:junit-jupiter'
     testImplementation 'org.testcontainers:junit-jupiter:1.19.7'
     testImplementation 'org.testcontainers:postgresql:1.19.7'
     testImplementation 'org.postgresql:postgresql:42.7.4'
     testRuntimeOnly 'org.slf4j:slf4j-simple:2.0.13'
-    annotationProcessor 'org.projectlombok:lombok:1.18.42'
-    testAnnotationProcessor 'org.projectlombok:lombok:1.18.42'
+
+
     testImplementation "org.mockito:mockito-core:5.11.0"
     testImplementation "org.mockito:mockito-junit-jupiter:5.11.0"
+
+    //lab 2
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-webmvc'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+    implementation 'org.springframework.boot:spring-boot-starter-liquibase'
     implementation 'org.springframework.boot:spring-boot-starter'
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
-    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
-    implementation 'org.modelmapper:modelmapper:3.1.1'
-    testImplementation 'org.modelmapper:modelmapper:3.1.1'
-    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.5.0'
+    runtimeOnly 'org.postgresql:postgresql'
+
     implementation "org.mapstruct:mapstruct:1.6.3"
     annotationProcessor "org.mapstruct:mapstruct-processor:1.6.3"
+    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.5.0'
+
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+    testImplementation 'org.testcontainers:testcontainers-junit-jupiter'
+    testImplementation 'org.springframework.boot:spring-boot-testcontainers'
+    testImplementation 'org.testcontainers:postgresql'
+
+    testImplementation 'org.springframework.boot:spring-boot-starter-data-jpa-test'
+
+    testImplementation 'org.springframework.boot:spring-boot-starter-webmvc-test:4.0.5'
 }
 
 springBoot {
@@ -53,6 +68,11 @@ springBoot {
 configurations {
     integrationTestImplementation.extendsFrom testImplementation
     integrationTestRuntimeOnly.extendsFrom testRuntimeOnly
+    integrationTestRuntimeOnly.exclude group: 'org.slf4j', module: 'slf4j-simple'
+
+    integrationTestCompileClasspath.extendsFrom integrationTestImplementation
+    integrationTestCompileClasspath.canBeResolved = true
+    integrationTestCompileClasspath.canBeConsumed = false
 }
 
 sourceSets {
@@ -60,9 +80,18 @@ sourceSets {
         java.srcDir file('src/integrationTest/java')
         resources.srcDir file('src/integrationTest/resources')
         compileClasspath += sourceSets.main.output + configurations.testRuntimeClasspath
-        runtimeClasspath += output + compileClasspath
+        runtimeClasspath += sourceSets.main.output + compileClasspath
     }
 }
+
+//sourceSets {
+//    integrationTest {
+//        java.srcDir file('src/integrationTest/java')
+//        resources.srcDir file('src/integrationTest/resources')
+//        compileClasspath += sourceSets.main.output + configurations.integrationTestRuntimeClasspath  // ✅ Было testRuntimeClasspath
+//        runtimeClasspath += sourceSets.integrationTest.output + configurations.integrationTestRuntimeClasspath
+//    }
+//}
 
 idea {
     module {
