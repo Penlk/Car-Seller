@@ -1,12 +1,11 @@
 package ru.penlk.business.internal;
 
 import ru.penlk.business.contracts.ServiceException;
-import ru.penlk.dao.entities.carParts.CarPart;
-import ru.penlk.dao.entities.cars.CarId;
-import ru.penlk.dao.entities.valueObjects.Price;
+import ru.penlk.dao.entities.orders.special.SpecialAllowedPart;
+import ru.penlk.dao.entities.vo.Price;
 
 import java.util.Collection;
 
 public interface CarPartPriceCalculator {
-    Price getSpecialCarPartsPrice(CarId carId, Collection<CarPart> specialCarParts) throws ServiceException;
+    Price getSpecialCarPartsPrice(Collection<SpecialAllowedPart> specialAllowedParts) throws ServiceException;
 }

@@ -1,66 +1,68 @@
 package ru.penlk.business.implementations;
 
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
+import org.springframework.stereotype.Service;
 import ru.penlk.business.contracts.ServiceException;
-import ru.penlk.business.contracts.cars.parts.CarPartService;
-import ru.penlk.business.contracts.cars.parts.models.CarPartDto;
-import ru.penlk.business.contracts.cars.parts.models.CreateCarPartDto;
-import ru.penlk.dao.entities.carParts.CarPart;
-import ru.penlk.dao.entities.carParts.CarPartId;
-import ru.penlk.dao.entities.nodes.NodeId;
-import ru.penlk.dao.repositories.interfaces.cars.parts.CarPartNotFoundException;
-import ru.penlk.dao.repositories.interfaces.cars.parts.CarPartRepository;
+import ru.penlk.business.contracts.cars.CarPartService;
+import ru.penlk.dao.entities.cars.CarPart;
+import ru.penlk.dao.entities.nodes.Node;
+import ru.penlk.dao.repositories.interfaces.cars.CarPartRepository;
+import ru.penlk.dao.repositories.interfaces.nodes.NodeRepository;
 
 import java.util.Optional;
 
 @AllArgsConstructor
+@Service
+@Transactional
 public class CarPartServiceImpl implements CarPartService {
     private final CarPartRepository carPartRepository;
+    private final NodeRepository nodeRepository;
 
     @Override
-    public CarPartDto create(CreateCarPartDto request) {
-        CarPart carPart = carPartRepository.create(new CarPart(
-                CarPartId.defaultId(),
-                request.namePart(),
-                new NodeId(request.nodeId())
-        ));
+    public CarPart create(CarPart request, Long nodeId) {
+        fillRawCarPart(request, nodeId);
 
-        return CarPartDto.MapToDto(carPart);
+        return carPartRepository.save(request);
     }
 
     @Override
-    public CarPartDto read(Long id) throws ServiceException {
-        Optional<CarPart> carPartOptional = carPartRepository.findById(new CarPartId(id));
+    public CarPart find(Long id) throws ServiceException {
+        Optional<CarPart> carPartOptional = carPartRepository.findById(id);
 
         if (carPartOptional.isPresent()) {
-            return CarPartDto.MapToDto(carPartOptional.get());
+            return carPartOptional.get();
         }
 
         throw new ServiceException(String.format("CarPart with id: {%d} not found", id));
     }
 
     @Override
-    public CarPartDto update(CarPartDto request) throws ServiceException {
-        try {
-            CarPart mappingCarPart = new CarPart(
-                    new CarPartId(request.id()),
-                    request.namePart(),
-                    new NodeId(request.nodeId()));
+    public CarPart update(CarPart request, Long nodeId) throws ServiceException {
+        fillRawCarPart(request, nodeId);
 
-            return CarPartDto.MapToDto(
-                    carPartRepository.update(mappingCarPart)
-            );
-        } catch (CarPartNotFoundException e) {
-            throw new ServiceException(String.format("CarPart with id: {%d} not found", e.getId().id()));
-        }
+        CarPart carPart = carPartRepository.findById(request.getId()).orElseThrow(
+                () -> new ServiceException(String.format("CarPart with id: {%d} not found", request.getId()))
+        );
+
+        carPart.setNamePart(request.getNamePart());
+        carPart.setNode(request.getNode());
+
+        return carPartRepository.save(carPart);
     }
 
     @Override
-    public void delete(Long id) throws ServiceException {
-        try {
-            carPartRepository.delete(new CarPartId(id));
-        } catch (CarPartNotFoundException e) {
-            throw new ServiceException(String.format("CarPart with id: {%d} not found", id));
+    public void delete(Long carPartId) throws ServiceException {
+        carPartRepository.deleteById(carPartId);
+    }
+
+    private void fillRawCarPart(CarPart carPart, Long nodeId) {
+        Optional<Node> optionalNode = nodeRepository.findById(nodeId);
+
+        if (optionalNode.isEmpty()) {
+            throw new ServiceException("Node with id " + nodeId + " not found");
         }
+
+        carPart.setNode(optionalNode.get());
     }
 }

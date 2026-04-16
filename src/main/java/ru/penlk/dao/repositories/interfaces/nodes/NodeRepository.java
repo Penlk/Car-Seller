@@ -1,19 +1,24 @@
 package ru.penlk.dao.repositories.interfaces.nodes;
 
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
 import ru.penlk.dao.entities.nodes.Node;
-import ru.penlk.dao.entities.nodes.NodeId;
 
-import java.util.Collection;
-import java.util.Optional;
+@Repository
+public interface NodeRepository extends JpaRepository<Node, Long> {
+    @Modifying
+    @Query("UPDATE Node e SET e.removed = true WHERE e.id = :id")
+    void softDeleteById(@Param("id") Long id);
 
-public interface NodeRepository {
-    Collection<Node> findAll();
+    default void delete(Node entity) {
+        softDeleteById(entity.getId());
+    }
 
-    Optional<Node> findById(NodeId id);
-
-    Node update(Node node) throws NodeNotFoundException;
-
-    void delete(NodeId nodeId) throws NodeNotFoundException;
-
-    Node create(Node node) throws NodeAlreadyInException;
+    @Override
+    default void deleteById(@Param("id") Long id) {
+        softDeleteById(id);
+    }
 }

@@ -1,42 +1,41 @@
 package ru.penlk.business.internal.implementation;
 
 import lombok.AllArgsConstructor;
+import org.springframework.stereotype.Service;
 import ru.penlk.business.contracts.DomainValidationException;
 import ru.penlk.business.internal.RequiredNodeConfigurationService;
-import ru.penlk.dao.entities.carParts.CarPart;
-import ru.penlk.dao.entities.carParts.CarPartId;
 import ru.penlk.dao.entities.cars.Car;
-import ru.penlk.dao.entities.nodes.NodeId;
-import ru.penlk.dao.repositories.interfaces.cars.parts.CarPartRepository;
-import ru.penlk.dao.repositories.interfaces.nodes.require.RequireNodeRepository;
-import ru.penlk.dao.repositories.interfaces.orders.common.configurations.CommonConfigurationRepository;
+import ru.penlk.dao.entities.cars.CarPart;
+import ru.penlk.dao.entities.configurations.defaults.DefaultConfiguration;
+import ru.penlk.dao.entities.nodes.RequireNode;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
 @AllArgsConstructor
+@Service
 public class RequiredNodeConfigurationServiceImpl implements RequiredNodeConfigurationService {
-    private final CarPartRepository carPartRepository;
-    private final CommonConfigurationRepository commonConfigurationRepository;
-    private final RequireNodeRepository requireNodeRepository;
-
     @Override
     public Collection<CarPart> completeRequireNodes(Car car, Collection<CarPart> specialCarParts) {
-        List<NodeId> missingNodeIds = getRequireNodeIds(car, specialCarParts);
+        List<Long> fillRequiredNodes = specialCarParts.stream().map(x -> x.getNode().getId()).toList();
 
-        return tryToCompleteRequireNodes(car, missingNodeIds);
+        List<RequireNode> missingNodeIds = car.getRequireNodes().stream()
+                .filter(x -> !fillRequiredNodes.contains(x.getNode().getId()))
+                .toList();
+
+        return tryToCompleteRequireNodes(car, missingNodeIds.stream().map(x -> x.getNode().getId()).toList());
     }
 
-    private List<CarPart> tryToCompleteRequireNodes(Car car, Collection<NodeId> missingNodeIds) {
-        Collection<CarPartId> commonConfigurationCarPartIds = commonConfigurationRepository.findByCarId(car.getId());
+    private List<CarPart> tryToCompleteRequireNodes(Car car, List<Long> missingNodeIds) {
+        Collection<DefaultConfiguration> defaultConfiguration = car.getDefaultConfiguration();
 
-        List<NodeId> copyMissingNodeIds = new ArrayList<>(missingNodeIds.stream().toList());
+        List<Long> copyMissingNodeIds = new ArrayList<>(missingNodeIds.stream().toList());
 
-        List<CarPart> completedCarParts = carPartRepository.findAll().stream()
-                .filter(x -> commonConfigurationCarPartIds.contains(x.getId()))
-                .filter(x -> copyMissingNodeIds.contains(x.getNodeId()))
-                .peek(x -> copyMissingNodeIds.remove(x.getNodeId()))
+        List<CarPart> completedCarParts = defaultConfiguration.stream()
+                .filter(x -> copyMissingNodeIds.contains(x.getCarPart().getNode().getId()))
+                .peek(x -> copyMissingNodeIds.remove(x.getCarPart().getNode().getId()))
+                .map(DefaultConfiguration::getCarPart)
                 .toList();
 
         if (!copyMissingNodeIds.isEmpty()) {
@@ -44,15 +43,5 @@ public class RequiredNodeConfigurationServiceImpl implements RequiredNodeConfigu
         }
 
         return completedCarParts;
-    }
-
-    private List<NodeId> getRequireNodeIds(Car car, Collection<CarPart> specialCarParts) {
-        Collection<NodeId> requireNodeIds = requireNodeRepository.findByCarId(car.getId());
-
-        List<NodeId> nodeIds = specialCarParts.stream()
-                .map(CarPart::getNodeId)
-                .toList();
-
-        return requireNodeIds.stream().filter(x -> !nodeIds.contains(x)).toList();
     }
 }

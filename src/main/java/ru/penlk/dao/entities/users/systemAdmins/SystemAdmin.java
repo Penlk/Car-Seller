@@ -1,10 +1,10 @@
 package ru.penlk.dao.entities.users.systemAdmins;
 
-import lombok.AllArgsConstructor;
+import jakarta.persistence.Entity;
 import lombok.Getter;
+import ru.penlk.dao.entities.BaseEntity;
 
-@AllArgsConstructor
 @Getter
-public class SystemAdmin {
-    private SystemAdminId id;
+@Entity
+public class SystemAdmin extends BaseEntity {
 }

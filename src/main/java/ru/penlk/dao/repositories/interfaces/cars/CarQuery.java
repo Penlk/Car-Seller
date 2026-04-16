@@ -5,11 +5,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import ru.penlk.dao.entities.cars.CarDrive;
-import ru.penlk.dao.entities.cars.EnginePower;
-import ru.penlk.dao.entities.cars.EngineVolume;
 import ru.penlk.dao.entities.cars.Fuel;
 import ru.penlk.dao.entities.cars.GearShiftBox;
-import ru.penlk.dao.entities.valueObjects.Price;
+import ru.penlk.dao.entities.vo.EnginePower;
+import ru.penlk.dao.entities.vo.EngineVolume;
+import ru.penlk.dao.entities.vo.Price;
 
 import java.util.List;
 

@@ -1,19 +1,7 @@
 package ru.penlk.dao.repositories.interfaces.users.systemAdmins;
 
+import org.springframework.data.jpa.repository.JpaRepository;
 import ru.penlk.dao.entities.users.systemAdmins.SystemAdmin;
-import ru.penlk.dao.entities.users.systemAdmins.SystemAdminId;
 
-import java.util.Collection;
-import java.util.Optional;
-
-public interface SystemAdminRepository {
-    Optional<SystemAdmin> findById(SystemAdminId systemAdminId);
-
-    Collection<SystemAdmin> findAll();
-
-    SystemAdmin create(SystemAdmin client) throws RuntimeException;
-
-    SystemAdmin update(SystemAdmin client) throws RuntimeException;
-
-    void delete(SystemAdminId systemAdminId) throws RuntimeException;
+public interface SystemAdminRepository extends JpaRepository<SystemAdmin, Long> {
 }

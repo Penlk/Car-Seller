@@ -1,10 +1,12 @@
 package ru.penlk.dao.entities.users.clients;
 
-import lombok.AllArgsConstructor;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
 import lombok.Getter;
+import ru.penlk.dao.entities.BaseEntity;
 
-@AllArgsConstructor
 @Getter
-public class Client {
-    private ClientId id;
+@Entity
+@Table(name = "clients")
+public class Client extends BaseEntity {
 }

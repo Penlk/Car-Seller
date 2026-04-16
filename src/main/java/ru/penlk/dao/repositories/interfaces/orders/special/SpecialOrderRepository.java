@@ -1,19 +1,24 @@
 package ru.penlk.dao.repositories.interfaces.orders.special;
 
-import ru.penlk.dao.entities.orders.specialOrder.SpecialOrder;
-import ru.penlk.dao.entities.orders.specialOrder.SpecialOrderId;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
+import ru.penlk.dao.entities.orders.special.SpecialOrder;
 
-import java.util.Collection;
-import java.util.Optional;
+@Repository
+public interface SpecialOrderRepository extends JpaRepository<SpecialOrder, Long> {
+    @Modifying
+    @Query("UPDATE SpecialOrder e SET e.removed = true WHERE e.id = :id")
+    void softDeleteById(@Param("id") Long id);
 
-public interface SpecialOrderRepository {
-    Optional<SpecialOrder> findById(SpecialOrderId specialOrderId);
+    default void delete(SpecialOrder entity) {
+        softDeleteById(entity.getId());
+    }
 
-    Collection<SpecialOrder> findAll();
-
-    void delete(SpecialOrderId specialOrderId) throws SpecialOrderNotFoundException;
-
-    SpecialOrder update(SpecialOrder specialOrder) throws SpecialOrderNotFoundException;
-
-    SpecialOrder create(SpecialOrder order) throws SpecialOrderAlreadyInException;
+    @Override
+    default void deleteById(@Param("id") Long id) {
+        softDeleteById(id);
+    }
 }

@@ -1,0 +1,703 @@
+databaseChangeLog:
+  - changeSet:
+      id: 0001-create-car-parts
+      author: auto
+      changes:
+        - createTable:
+            tableName: nodes
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+                    primaryKeyName: pk_nodes
+              - column:
+                  name: created_at
+                  type: TIMESTAMPTZ
+                  defaultValueComputed: NOW()
+                  constraints:
+                    nullable: false
+              - column:
+                  name: updated_at
+                  type: TIMESTAMPTZ
+                  defaultValueComputed: NOW()
+                  constraints:
+                    nullable: false
+              - column:
+                  name: removed
+                  type: BOOLEAN
+                  defaultValueBoolean: false
+                  constraints:
+                    nullable: false
+              - column:
+                  name: name
+                  type: TEXT
+                  constraints:
+                    nullable: false
+
+        - createTable:
+            tableName: car_parts
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+                    primaryKeyName: pk_car_parts
+              - column:
+                  name: created_at
+                  type: TIMESTAMPTZ
+                  defaultValueComputed: NOW()
+                  constraints:
+                    nullable: false
+              - column:
+                  name: updated_at
+                  type: TIMESTAMPTZ
+                  defaultValueComputed: NOW()
+                  constraints:
+                    nullable: false
+              - column:
+                  name: removed
+                  type: BOOLEAN
+                  defaultValueBoolean: false
+                  constraints:
+                    nullable: false
+              - column:
+                  name: name
+                  type: TEXT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: node_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_car_parts_node
+                    referencedTableName: nodes
+                    referencedColumnNames: id
+      rollback:
+        - dropTable:
+            tableName: car_parts
+            cascadeConstraints: true
+        - dropTable:
+            tableName: nodes
+            cascadeConstraints: true
+
+  - changeSet:
+      id: 0002-create-cars
+      author: auto
+      changes:
+        - sql:
+            splitStatements: false
+            stripComments: false
+            sql: |
+              CREATE TYPE fuel_type AS ENUM ('PETROL', 'DIESEL', 'ELECTRICITY');
+
+        - sql:
+            splitStatements: false
+            stripComments: false
+            sql: |
+              CREATE TYPE gear_shift_box_type AS ENUM ('MANUAL', 'AUTOMATIC');
+
+        - sql:
+            splitStatements: false
+            stripComments: false
+            sql: |
+              CREATE TYPE car_drive_type AS ENUM ('FRONT', 'REAR', 'FULL');
+
+        - createTable:
+            tableName: cars
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+                    primaryKeyName: pk_cars
+              - column:
+                  name: created_at
+                  type: TIMESTAMPTZ
+                  defaultValueComputed: NOW()
+                  constraints:
+                    nullable: false
+              - column:
+                  name: updated_at
+                  type: TIMESTAMPTZ
+                  defaultValueComputed: NOW()
+                  constraints:
+                    nullable: false
+              - column:
+                  name: removed
+                  type: BOOLEAN
+                  defaultValueBoolean: false
+                  constraints:
+                    nullable: false
+              - column:
+                  name: price
+                  type: MONEY
+                  constraints:
+                    nullable: false
+              - column:
+                  name: brand
+                  type: TEXT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: model
+                  type: TEXT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: body
+                  type: TEXT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: fuel
+                  type: fuel_type
+                  constraints:
+                    nullable: false
+              - column:
+                  name: engine_power
+                  type: DOUBLE PRECISION
+                  constraints:
+                    nullable: false
+              - column:
+                  name: engine_volume
+                  type: DOUBLE PRECISION
+                  constraints:
+                    nullable: false
+              - column:
+                  name: gear_shift_box
+                  type: gear_shift_box_type
+                  constraints:
+                    nullable: false
+              - column:
+                  name: car_drive
+                  type: car_drive_type
+                  constraints:
+                    nullable: false
+              - column:
+                  name: colour
+                  type: TEXT
+                  constraints:
+                    nullable: false
+
+        - createTable:
+            tableName: require_nodes
+            columns:
+              - column:
+                  name: node_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_require_nodes_node
+                    referencedTableName: nodes
+                    referencedColumnNames: id
+              - column:
+                  name: car_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_require_nodes_car
+                    referencedTableName: cars
+                    referencedColumnNames: id
+
+        - addPrimaryKey:
+            tableName: require_nodes
+            columnNames: node_id, car_id
+            constraintName: pk_require_nodes
+      rollback:
+        - sql:
+            splitStatements: false
+            stripComments: false
+            sql: |
+              DROP TYPE IF EXISTS car_drive_type CASCADE;
+              DROP TYPE IF EXISTS gear_shift_box_type CASCADE;
+              DROP TYPE IF EXISTS fuel_type CASCADE;
+        - dropTable:
+            tableName: require_nodes
+            cascadeConstraints: true
+        - dropTable:
+            tableName: cars
+            cascadeConstraints: true
+
+  - changeSet:
+      id: 0003-create-default-configurations
+      author: auto
+      changes:
+        - createTable:
+            tableName: default_configurations
+            columns:
+              - column:
+                  name: car_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_default_configurations_car
+                    referencedTableName: cars
+                    referencedColumnNames: id
+              - column:
+                  name: car_part_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_default_configurations_car_part
+                    referencedTableName: car_parts
+                    referencedColumnNames: id
+
+        - addPrimaryKey:
+            tableName: default_configurations
+            columnNames: car_id, car_part_id
+            constraintName: pk_default_configurations
+      rollback:
+        - dropTable:
+            tableName: default_configurations
+            cascadeConstraints: true
+
+  - changeSet:
+      id: 0004-create-users
+      author: auto
+      changes:
+        - createTable:
+            tableName: clients
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+                    primaryKeyName: pk_clients
+              - column:
+                  name: created_at
+                  type: TIMESTAMPTZ
+                  defaultValueComputed: NOW()
+                  constraints:
+                    nullable: false
+              - column:
+                  name: updated_at
+                  type: TIMESTAMPTZ
+                  defaultValueComputed: NOW()
+                  constraints:
+                    nullable: false
+              - column:
+                  name: removed
+                  type: BOOLEAN
+                  defaultValueBoolean: false
+                  constraints:
+                    nullable: false
+
+        - createTable:
+            tableName: composition_admins
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+                    primaryKeyName: pk_composition_admins
+              - column:
+                  name: created_at
+                  type: TIMESTAMPTZ
+                  defaultValueComputed: NOW()
+                  constraints:
+                    nullable: false
+              - column:
+                  name: updated_at
+                  type: TIMESTAMPTZ
+                  defaultValueComputed: NOW()
+                  constraints:
+                    nullable: false
+              - column:
+                  name: removed
+                  type: BOOLEAN
+                  defaultValueBoolean: false
+                  constraints:
+                    nullable: false
+
+        - createTable:
+            tableName: managers
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+                    primaryKeyName: pk_managers
+              - column:
+                  name: created_at
+                  type: TIMESTAMPTZ
+                  defaultValueComputed: NOW()
+                  constraints:
+                    nullable: false
+              - column:
+                  name: updated_at
+                  type: TIMESTAMPTZ
+                  defaultValueComputed: NOW()
+                  constraints:
+                    nullable: false
+              - column:
+                  name: removed
+                  type: BOOLEAN
+                  defaultValueBoolean: false
+                  constraints:
+                    nullable: false
+
+        - createTable:
+            tableName: system_admins
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+                    primaryKeyName: pk_system_admins
+              - column:
+                  name: created_at
+                  type: TIMESTAMPTZ
+                  defaultValueComputed: NOW()
+                  constraints:
+                    nullable: false
+              - column:
+                  name: updated_at
+                  type: TIMESTAMPTZ
+                  defaultValueComputed: NOW()
+                  constraints:
+                    nullable: false
+              - column:
+                  name: removed
+                  type: BOOLEAN
+                  defaultValueBoolean: false
+                  constraints:
+                    nullable: false
+      rollback:
+        - dropTable:
+            tableName: system_admins
+            cascadeConstraints: true
+        - dropTable:
+            tableName: managers
+            cascadeConstraints: true
+        - dropTable:
+            tableName: composition_admins
+            cascadeConstraints: true
+        - dropTable:
+            tableName: clients
+            cascadeConstraints: true
+
+  - changeSet:
+      id: 0005-create-common-orders
+      author: auto
+      changes:
+        - sql:
+            splitStatements: false
+            stripComments: false
+            sql: |
+              CREATE TYPE common_order_state AS ENUM (
+                'PLACED', 'AGREED', 'WAITING_PAYMENT', 'PAID', 'CAR_IS_READY', 'CANCELED', 'DONE'
+              );
+
+        - createTable:
+            tableName: common_orders
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+                    primaryKeyName: pk_common_orders
+              - column:
+                  name: created_at
+                  type: TIMESTAMPTZ
+                  defaultValueComputed: NOW()
+                  constraints:
+                    nullable: false
+              - column:
+                  name: updated_at
+                  type: TIMESTAMPTZ
+                  defaultValueComputed: NOW()
+                  constraints:
+                    nullable: false
+              - column:
+                  name: removed
+                  type: BOOLEAN
+                  defaultValueBoolean: false
+                  constraints:
+                    nullable: false
+              - column:
+                  name: state
+                  type: common_order_state
+                  constraints:
+                    nullable: false
+              - column:
+                  name: client_id
+                  type: BIGINT
+                  constraints:
+                    foreignKeyName: fk_common_orders_client
+                    referencedTableName: clients
+                    referencedColumnNames: id
+              - column:
+                  name: manager_id
+                  type: BIGINT
+                  constraints:
+                    foreignKeyName: fk_common_orders_manager
+                    referencedTableName: managers
+                    referencedColumnNames: id
+              - column:
+                  name: car_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_common_orders_car
+                    referencedTableName: cars
+                    referencedColumnNames: id
+      rollback:
+        - sql:
+            splitStatements: false
+            stripComments: false
+            sql: DROP TYPE IF EXISTS common_order_state CASCADE;
+        - dropTable:
+            tableName: common_orders
+            cascadeConstraints: true
+
+  - changeSet:
+      id: 0006-create-special-orders
+      author: auto
+      changes:
+        - sql:
+            splitStatements: false
+            stripComments: false
+            sql: |
+              CREATE TYPE special_order_state AS ENUM (
+                'PLACED', 'AGREED', 'WAITING_PAYMENT', 'PAID', 'CAR_IS_READY', 'CANCELED', 'DONE'
+              );
+        - createTable:
+            tableName: configurators
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+                    primaryKeyName: pk_configurators
+              - column:
+                  name: created_at
+                  type: TIMESTAMPTZ
+                  defaultValueComputed: NOW()
+                  constraints:
+                    nullable: false
+              - column:
+                  name: updated_at
+                  type: TIMESTAMPTZ
+                  defaultValueComputed: NOW()
+                  constraints:
+                    nullable: false
+              - column:
+                  name: removed
+                  type: BOOLEAN
+                  defaultValueBoolean: false
+                  constraints:
+                    nullable: false
+              - column:
+                  name: car_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_configurators_car
+                    referencedTableName: cars
+                    referencedColumnNames: id
+              - column:
+                  name: is_finished
+                  type: BOOLEAN
+                  defaultValueBoolean: false
+                  constraints:
+                    nullable: false
+        - createTable:
+            tableName: special_orders
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+                    primaryKeyName: pk_special_orders
+              - column:
+                  name: created_at
+                  type: TIMESTAMPTZ
+                  defaultValueComputed: NOW()
+                  constraints:
+                    nullable: false
+              - column:
+                  name: updated_at
+                  type: TIMESTAMPTZ
+                  defaultValueComputed: NOW()
+                  constraints:
+                    nullable: false
+              - column:
+                  name: removed
+                  type: BOOLEAN
+                  defaultValueBoolean: false
+                  constraints:
+                    nullable: false
+              - column:
+                  name: state
+                  type: special_order_state
+                  constraints:
+                    nullable: false
+              - column:
+                  name: client_id
+                  type: BIGINT
+                  constraints:
+                    foreignKeyName: fk_special_orders_client
+                    referencedTableName: clients
+                    referencedColumnNames: id
+              - column:
+                  name: manager_id
+                  type: BIGINT
+                  constraints:
+                    foreignKeyName: fk_special_orders_manager
+                    referencedTableName: managers
+                    referencedColumnNames: id
+              - column:
+                  name: car_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_special_orders_car
+                    referencedTableName: cars
+                    referencedColumnNames: id
+              - column:
+                  name: configurator_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_special_orders_configurator
+                    referencedTableName: configurators
+                    referencedColumnNames: id
+              - column:
+                  name: price
+                  type: MONEY
+                  constraints:
+                    nullable: false
+
+        - createTable:
+            tableName: special_allowed_parts
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+                    primaryKeyName: pk_special_allowed_parts
+              - column:
+                  name: car_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_special_allowed_parts_car
+                    referencedTableName: cars
+                    referencedColumnNames: id
+              - column:
+                  name: car_part_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_special_allowed_parts_car_part
+                    referencedTableName: car_parts
+                    referencedColumnNames: id
+              - column:
+                  name: price
+                  type: MONEY
+                  constraints:
+                    nullable: false
+        - createTable:
+            tableName: special_configurations
+            columns:
+              - column:
+                  name: configurator_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_special_configurations_configurator
+                    referencedTableName: configurators
+                    referencedColumnNames: id
+              - column:
+                  name: special_allowed_part_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_special_configurations_allowed_part
+                    referencedTableName: special_allowed_parts
+                    referencedColumnNames: id
+
+        - addPrimaryKey:
+            tableName: special_configurations
+            columnNames: configurator_id, special_allowed_part_id
+            constraintName: pk_special_configurations
+
+        - createTable:
+            tableName: configuration_car_parts
+            columns:
+              - column:
+                  name: configuration_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_configuration_car_parts_configurator
+                    referencedTableName: configurators
+                    referencedColumnNames: id
+              - column:
+                  name: car_part_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_configuration_car_parts_car_part
+                    referencedTableName: car_parts
+                    referencedColumnNames: id
+
+        - addPrimaryKey:
+            tableName: configuration_car_parts
+            columnNames: configuration_id, car_part_id
+            constraintName: pk_configuration_car_parts
+      rollback:
+        - sql:
+            splitStatements: false
+            stripComments: false
+            sql: DROP TYPE IF EXISTS special_order_state CASCADE;
+        - dropTable:
+            tableName: configuration_car_parts
+            cascadeConstraints: true
+        - dropTable:
+            tableName: special_configurations
+            cascadeConstraints: true
+        - dropTable:
+            tableName: configurations
+            cascadeConstraints: true
+        - dropTable:
+            tableName: special_allowed_parts
+            cascadeConstraints: true
+        - dropTable:
+            tableName: special_orders
+            cascadeConstraints: true

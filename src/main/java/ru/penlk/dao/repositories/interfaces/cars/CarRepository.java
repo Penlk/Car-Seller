@@ -1,19 +1,25 @@
 package ru.penlk.dao.repositories.interfaces.cars;
 
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
 import ru.penlk.dao.entities.cars.Car;
-import ru.penlk.dao.entities.cars.CarId;
 
-import java.util.Collection;
-import java.util.Optional;
+@Repository
+public interface CarRepository extends JpaRepository<Car, Long>, JpaSpecificationExecutor<Car> {
+    @Modifying
+    @Query("UPDATE Car e SET e.removed = true WHERE e.id = :id")
+    void softDeleteById(@Param("id") Long id);
 
-public interface CarRepository {
-    Collection<Car> query(CarQuery query);
+    default void delete(Car entity) {
+        softDeleteById(entity.getId());
+    }
 
-    Optional<Car> findById(CarId id);
-
-    void delete(CarId id) throws CarNotFoundException;
-
-    Car update(Car car) throws CarNotFoundException;
-
-    Car create(Car car) throws CarAlreadyInException;
+    @Override
+    default void deleteById(@Param("id") Long id) {
+        softDeleteById(id);
+    }
 }

@@ -1,28 +1,20 @@
 package ru.penlk.business.internal.implementation;
 
 import lombok.AllArgsConstructor;
+import org.springframework.stereotype.Service;
 import ru.penlk.business.internal.CarPartPriceCalculator;
-import ru.penlk.dao.entities.carParts.CarPart;
-import ru.penlk.dao.entities.cars.CarId;
-import ru.penlk.dao.entities.orders.specialConfigurations.SpecialConfiguration;
-import ru.penlk.dao.entities.valueObjects.Price;
-import ru.penlk.dao.repositories.interfaces.orders.special.configurators.SpecialConfigurationRepository;
+import ru.penlk.dao.entities.orders.special.SpecialAllowedPart;
+import ru.penlk.dao.entities.vo.Price;
 
 import java.util.Collection;
 
 @AllArgsConstructor
+@Service
 public class CarPartPriceCalculatorImpl implements CarPartPriceCalculator {
-    private final SpecialConfigurationRepository specialConfigurationRepository;
-
     @Override
-    public Price getSpecialCarPartsPrice(CarId carId, Collection<CarPart> specialCarParts) {
-        Collection<SpecialConfiguration> specialConfigurations = specialConfigurationRepository.findByCarId(carId);
-
-        return specialConfigurations.stream()
-                .filter(x ->
-                        specialCarParts.stream().anyMatch(y -> x.getCarPartId().equals(y.getId()))
-                )
-                .map(SpecialConfiguration::getPrice)
+    public Price getSpecialCarPartsPrice(Collection<SpecialAllowedPart> specialAllowedParts) {
+        return specialAllowedParts.stream()
+                .map(SpecialAllowedPart::getPrice)
                 .reduce(Price.ZERO, Price::add);
     }
 }

@@ -1,19 +1,24 @@
 package ru.penlk.dao.repositories.interfaces.orders.common;
 
-import ru.penlk.dao.entities.orders.commonOrder.CommonOrder;
-import ru.penlk.dao.entities.orders.commonOrder.CommonOrderId;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
+import ru.penlk.dao.entities.orders.common.CommonOrder;
 
-import java.util.Collection;
-import java.util.Optional;
+@Repository
+public interface CommonOrderRepository extends JpaRepository<CommonOrder, Long> {
+    @Modifying
+    @Query("UPDATE CommonOrder e SET e.removed = true WHERE e.id = :id")
+    void softDeleteById(@Param("id") Long id);
 
-public interface CommonOrderRepository {
-    Collection<CommonOrder> findAll();
+    default void delete(CommonOrder entity) {
+        softDeleteById(entity.getId());
+    }
 
-    Optional<CommonOrder> findById(CommonOrderId id) throws CommonOrderNotFoundException;
-
-    CommonOrder update(CommonOrder commonOrder) throws CommonOrderNotFoundException;
-
-    void delete(CommonOrderId commonOrderId) throws CommonOrderNotFoundException;
-
-    CommonOrder create(CommonOrder commonOrder);
+    @Override
+    default void deleteById(@Param("id") Long id) {
+        softDeleteById(id);
+    }
 }
