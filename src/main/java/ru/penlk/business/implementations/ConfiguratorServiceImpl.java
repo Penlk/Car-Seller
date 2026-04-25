@@ -2,6 +2,9 @@ package ru.penlk.business.implementations;
 
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import ru.penlk.business.contracts.ServiceException;
 import ru.penlk.business.contracts.configurations.ConfiguratorService;
@@ -22,12 +25,19 @@ import java.util.Set;
 @Transactional
 public class ConfiguratorServiceImpl implements ConfiguratorService {
     private final ConfiguratorRepository configuratorRepository;
-    private final CarPartRepository carPartRepository;
     private final CarRepository carRepository;
 
     @Override
+    @PreAuthorize("hasRole('USER')")
     public Configurator create(Configurator configurator, Long carId, SpecialConfigurationProvider specialConfigurationProvider) {
         Set<SpecialConfiguration> specialConfigurations = new HashSet<>();
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+        if (auth == null) {
+            throw new ServiceException("Authentication required");
+        }
+
+        String userId = auth.getName();
 
         Car car = carRepository.findById(carId).orElseThrow(() -> new ServiceException("Car not found with id " + carId));
 
@@ -41,11 +51,13 @@ public class ConfiguratorServiceImpl implements ConfiguratorService {
 
         configurator.setSpecialConfigurations(specialConfigurations);
         configurator.setFinished(false);
+        configurator.setOwnerId(userId);
 
         return configuratorRepository.save(configurator);
     }
 
     @Override
+    @PreAuthorize("hasRole('ADMIN') or hasRole('USER') and @configuratorSecurityImpl.isOwner(#configuratorId)")
     public Configurator addPart(Long configuratorId, Long carPartId) {
         Configurator configurator = configuratorRepository.findById(configuratorId)
                 .orElseThrow(() -> new ServiceException("Cannot find configurator with id: " + configuratorId));
@@ -67,6 +79,7 @@ public class ConfiguratorServiceImpl implements ConfiguratorService {
     }
 
     @Override
+    @PreAuthorize("hasRole('ADMIN') or hasRole('USER') and @configuratorSecurityImpl.isOwner(#configuratorId)")
     public Configurator removePart(Long configuratorId, Long carPartId) {
         Configurator configurator = configuratorRepository.findById(configuratorId)
                 .orElseThrow(() -> new ServiceException("Cannot find configurator with id: " + configuratorId));
@@ -81,16 +94,18 @@ public class ConfiguratorServiceImpl implements ConfiguratorService {
     }
 
     @Override
-    public Configurator find(Long id) {
+    @PreAuthorize("hasRole('ADMIN') or hasRole('USER') and @configuratorSecurityImpl.isOwner(#configuratorId)")
+    public Configurator find(Long configuratorId) {
 
-        return configuratorRepository.findById(id)
-                .orElseThrow(() -> new ServiceException("Cannot find configurator with id: " + id));
+        return configuratorRepository.findById(configuratorId)
+                .orElseThrow(() -> new ServiceException("Cannot find configurator with id: " + configuratorId));
     }
 
     @Override
-    public void delete(Long id) {
-        Configurator configurator = configuratorRepository.findById(id)
-                .orElseThrow(() -> new ServiceException("Cannot find configurator with id: " + id));
+    @PreAuthorize("hasRole('ADMIN') or hasRole('USER') and @configuratorSecurityImpl.isOwner(#configuratorId)")
+    public void delete(Long configuratorId) {
+        Configurator configurator = configuratorRepository.findById(configuratorId)
+                .orElseThrow(() -> new ServiceException("Cannot find configurator with id: " + configuratorId));
 
         if (configurator.isFinished()) {
             throw new ServiceException("Cannot remove finished configurator");

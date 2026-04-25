@@ -1,10 +1,9 @@
 package ru.penlk.business.implementations.orders.states.common;
 
 import ru.penlk.dao.entities.orders.common.CommonOrderState;
-import ru.penlk.dao.entities.users.managers.Manager;
 
 public interface CommonOrderStateHandler {
-    Boolean tryConfirm(CommonOrderCore core, Manager manager);
+    Boolean tryConfirm(CommonOrderCore core);
 
     Boolean tryWaitPurchase(CommonOrderCore core);
 

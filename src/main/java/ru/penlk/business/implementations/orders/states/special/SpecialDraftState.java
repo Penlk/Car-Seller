@@ -1,10 +1,8 @@
 package ru.penlk.business.implementations.orders.states.special;
 
-import ru.penlk.dao.entities.users.managers.Manager;
-
 public abstract class SpecialDraftState implements SpecialOrderStateHandler {
     @Override
-    public Boolean tryConfirm(SpecialOrderCore core, Manager manager) {
+    public Boolean tryConfirm(SpecialOrderCore core) {
         return false;
     }
 

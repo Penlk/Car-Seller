@@ -5,8 +5,8 @@ import ru.penlk.business.implementations.orders.states.common.CommonCanceledStat
 import ru.penlk.business.implementations.orders.states.common.CommonCarReadyToTakeState;
 import ru.penlk.business.implementations.orders.states.common.CommonCompletedState;
 import ru.penlk.business.implementations.orders.states.common.CommonConfirmedState;
-import ru.penlk.business.implementations.orders.states.common.CommonPlacedState;
 import ru.penlk.business.implementations.orders.states.common.CommonOrderStateHandler;
+import ru.penlk.business.implementations.orders.states.common.CommonPlacedState;
 import ru.penlk.business.implementations.orders.states.common.CommonPurchasedState;
 import ru.penlk.business.implementations.orders.states.common.CommonWaitingPurchaseState;
 import ru.penlk.dao.entities.orders.common.CommonOrderState;

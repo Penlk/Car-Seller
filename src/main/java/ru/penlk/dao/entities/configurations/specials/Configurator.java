@@ -35,6 +35,9 @@ public class Configurator extends BaseEntity {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "configurator", cascade = CascadeType.ALL)
     private Set<ConfiguratorCarPart> carParts = new HashSet<>();
 
+    @Column(name = "owner_id", nullable = false)
+    private String ownerId;
+
     @Column
     private boolean isFinished;
 }

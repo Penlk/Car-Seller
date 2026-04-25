@@ -9,14 +9,16 @@ import org.springframework.boot.testcontainers.service.connection.ServiceConnect
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
-import ru.penlk.config.AbstractIntegrationTest;
 import ru.penlk.dao.entities.users.clients.Client;
 import ru.penlk.dao.repositories.interfaces.users.clients.ClientRepository;
 
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @DisplayName("ClientRepository Integration Tests")
 @DataJpaTest
@@ -44,7 +46,7 @@ class ClientRepositoryIT {
     @DisplayName("Should save client and generate ID")
     void shouldSaveClientToDatabaseSuccessfully() {
         Client savedClient = clientRepository.save(testClient);
-        
+
         assertNotNull(savedClient.getId());
         assertNotNull(savedClient.getCreatedAt());
     }
@@ -98,9 +100,9 @@ class ClientRepositoryIT {
     void shouldUpdateTimestampOnModification() throws InterruptedException {
         Client savedClient = clientRepository.save(testClient);
         var updatedAtFirst = savedClient.getUpdatedAt();
-        
+
         Thread.sleep(100);
-        
+
         Client clientToUpdate = clientRepository.findById(savedClient.getId()).orElseThrow();
         Client updatedClient = clientRepository.save(clientToUpdate);
 
@@ -134,7 +136,7 @@ class ClientRepositoryIT {
     @DisplayName("Should count clients correctly")
     void shouldCountClientsCorrectly() {
         clientRepository.deleteAll();
-        
+
         Client client1 = new Client();
         Client client2 = new Client();
         Client client3 = new Client();

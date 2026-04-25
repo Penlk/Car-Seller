@@ -1,13 +1,6 @@
 package ru.penlk;
 
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
-import ru.penlk.presentation.cars.models.CreateCarDto;
-import ru.penlk.dao.repositories.interfaces.cars.CarRepository;
-
-import java.math.BigDecimal;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class AppTest {
 

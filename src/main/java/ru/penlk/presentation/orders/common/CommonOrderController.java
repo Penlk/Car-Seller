@@ -1,6 +1,5 @@
 package ru.penlk.presentation.orders.common;
 
-import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -17,8 +16,6 @@ import ru.penlk.business.contracts.ServiceException;
 import ru.penlk.business.contracts.orders.CommonOrderService;
 import ru.penlk.dao.entities.orders.common.CommonOrder;
 import ru.penlk.presentation.mapping.orders.common.CommonOrderMapper;
-import ru.penlk.presentation.mapping.orders.common.CreateCommonOrderMapper;
-import ru.penlk.presentation.orders.common.models.CreateCommonOrderDto;
 
 @AllArgsConstructor
 @RestController
@@ -26,7 +23,6 @@ import ru.penlk.presentation.orders.common.models.CreateCommonOrderDto;
 public class CommonOrderController {
     private final CommonOrderService service;
     private final CommonOrderMapper commonOrderMapper;
-    private final CreateCommonOrderMapper createCommonOrderMapper;
 
     @GetMapping("/{id}")
     public ResponseEntity<?> get(@NotNull @PathVariable Long id) {
@@ -44,10 +40,10 @@ public class CommonOrderController {
         return ResponseEntity.noContent().build();
     }
 
-    @PostMapping("/issue")
-    public ResponseEntity<?> placement(@NotNull @RequestBody @Valid CreateCommonOrderDto request) {
+    @PostMapping("/placement/{id}")
+    public ResponseEntity<?> placement(@NotNull @RequestBody Long carId) {
         try {
-            CommonOrder order = service.placement(request.clientId(), request.carId());
+            CommonOrder order = service.placement(carId);
             return ResponseEntity.ok(commonOrderMapper.commonOrderToCommonOrderDto(order));
         } catch (ServiceException | IncompatibleComponentException | DomainValidationException e) {
             return ResponseEntity.badRequest().body(e.getMessage());

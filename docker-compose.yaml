@@ -17,16 +17,44 @@ services:
       timeout: 30s
       retries: 5
       start_period: 30s
-#  migration:
-#    build:
-#      context: .
-#      dockerfile: docker/Dockerfile.migration
-#    image: java_migration
-#    env_file:
-#      - .env
-#    depends_on:
-#      db:
-#        condition: service_healthy
+  keycloak-db:
+    image: postgres:16
+    container_name: keycloak-db
+    working_dir: /app
+    environment:
+      - PGDATA=/app/data
+      - POSTGRES_DB=${KC_DB}
+      - POSTGRES_USER=${KC_DB_USER}
+      - POSTGRES_PASSWORD=${KC_DB_PASSWORD}
+    volumes:
+      - keycloak-data:/app/data
+    ports:
+      - ${KC_DB_PORT}:5432
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U $KC_DB_USER -d $KC_DB -h localhost -p 5432" ]
+      interval: 1m30s
+      timeout: 30s
+      retries: 5
+      start_period: 30s
+  keycloak:
+    image: quay.io/keycloak/keycloak:latest
+    container_name: keycloak
+    command: start-dev --import-realm
+    env_file:
+      - .env
+    environment:
+      KC_DB: postgres
+      KC_DB_USERNAME: ${KC_DB_USER}
+      KC_DB_PASSWORD: ${KC_DB_PASSWORD}
+    ports:
+      - "11222:8080"
+    depends_on:
+      keycloak-db:
+        condition: service_healthy
+    volumes:
+      - ./src/main/resources/keycloak/import:/opt/keycloak/data/import
+
 
 volumes:
   data:
+  keycloak-data:

@@ -9,14 +9,16 @@ import org.springframework.boot.testcontainers.service.connection.ServiceConnect
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
-import ru.penlk.config.AbstractIntegrationTest;
 import ru.penlk.dao.entities.users.compositionAdmins.CompositionAdmin;
 import ru.penlk.dao.repositories.interfaces.users.compositionAdmins.CompositionAdminRepository;
 
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @DisplayName("CompositionAdminRepository Integration Tests")
 @DataJpaTest
@@ -44,7 +46,7 @@ class CompositionAdminRepositoryIT {
     @DisplayName("Should save composition admin and generate ID")
     void shouldSaveCompositionAdminToDatabaseSuccessfully() {
         CompositionAdmin savedAdmin = compositionAdminRepository.save(testCompositionAdmin);
-        
+
         assertNotNull(savedAdmin.getId());
         assertNotNull(savedAdmin.getCreatedAt());
     }
@@ -98,9 +100,9 @@ class CompositionAdminRepositoryIT {
     void shouldUpdateTimestampOnModification() throws InterruptedException {
         CompositionAdmin savedAdmin = compositionAdminRepository.save(testCompositionAdmin);
         var updatedAtFirst = savedAdmin.getUpdatedAt();
-        
+
         Thread.sleep(100);
-        
+
         CompositionAdmin adminToUpdate = compositionAdminRepository.findById(savedAdmin.getId()).orElseThrow();
         CompositionAdmin updatedAdmin = compositionAdminRepository.save(adminToUpdate);
 
@@ -134,7 +136,7 @@ class CompositionAdminRepositoryIT {
     @DisplayName("Should count composition admins correctly")
     void shouldCountCompositionAdminsCorrectly() {
         compositionAdminRepository.deleteAll();
-        
+
         CompositionAdmin admin1 = new CompositionAdmin();
         CompositionAdmin admin2 = new CompositionAdmin();
         CompositionAdmin admin3 = new CompositionAdmin();
@@ -155,7 +157,7 @@ class CompositionAdminRepositoryIT {
 
         assertTrue(foundAdmin.isPresent());
         CompositionAdmin admin = foundAdmin.get();
-        
+
         assertNotNull(admin.getId());
         assertNotNull(admin.getCreatedAt());
         assertNotNull(admin.getUpdatedAt());

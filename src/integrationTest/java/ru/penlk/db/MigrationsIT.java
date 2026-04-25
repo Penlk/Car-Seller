@@ -14,19 +14,19 @@ import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @Testcontainers
 class MigrationsIT extends AbstractIntegrationTest {
-
-    @Autowired
-    private DataSource dataSource;
 
     @Container
     static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres:16-alpine")
             .withDatabaseName("testdb")
             .withUsername("testuser")
             .withPassword("testpass");
+    @Autowired
+    private DataSource dataSource;
 
     @DynamicPropertySource
     static void registerPgProperties(DynamicPropertyRegistry registry) {
@@ -137,7 +137,7 @@ class MigrationsIT extends AbstractIntegrationTest {
         try (Connection connection = dataSource.getConnection()) {
             DatabaseMetaData metadata = connection.getMetaData();
             ResultSet fks = metadata.getImportedKeys(null, null, "car_parts");
-            
+
             boolean hasNodeFk = false;
             while (fks.next()) {
                 if ("nodes".equals(fks.getString("PKTABLE_NAME"))) {

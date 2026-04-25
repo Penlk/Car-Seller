@@ -6,14 +6,12 @@ import ru.penlk.business.contracts.DomainValidationException;
 import ru.penlk.business.contracts.ServiceException;
 import ru.penlk.dao.entities.orders.common.CommonOrder;
 
-@Service
-@Transactional
 public interface CommonOrderService {
     CommonOrder find(Long orderId) throws ServiceException;
 
     void delete(Long orderId) throws ServiceException;
 
-    CommonOrder placement(Long clientId, Long carId) throws ServiceException, DomainValidationException;
+    CommonOrder placement(Long carId) throws ServiceException, DomainValidationException;
 
     CommonOrder confirm(Long orderId) throws ServiceException;
 
