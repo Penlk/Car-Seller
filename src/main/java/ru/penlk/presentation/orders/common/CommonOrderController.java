@@ -33,6 +33,15 @@ public class CommonOrderController {
         }
     }
 
+    @GetMapping
+    public ResponseEntity<?> get() {
+        try {
+            return ResponseEntity.ok(service.findAll().stream().map(commonOrderMapper::commonOrderToCommonOrderDto));
+        } catch (ServiceException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@NotNull @PathVariable Long id) {
         service.delete(id);
@@ -41,7 +50,7 @@ public class CommonOrderController {
     }
 
     @PostMapping("/placement/{carId}")
-    public ResponseEntity<?> placement(@PathVariable @NotNull @RequestBody Long carId) {
+    public ResponseEntity<?> placement(@PathVariable @NotNull Long carId) {
         try {
             CommonOrder order = service.placement(carId);
             return ResponseEntity.ok(commonOrderMapper.commonOrderToCommonOrderDto(order));

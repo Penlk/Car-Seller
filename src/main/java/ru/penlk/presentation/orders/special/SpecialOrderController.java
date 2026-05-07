@@ -33,6 +33,15 @@ public class SpecialOrderController {
         }
     }
 
+    @GetMapping
+    public ResponseEntity<?> get() {
+        try {
+            return ResponseEntity.ok(service.findAll().stream().map(specialOrderMapper::specialOrderToSpecialOrderDto));
+        } catch (ServiceException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@NotNull @PathVariable Long id) {
         service.delete(id);
@@ -40,8 +49,8 @@ public class SpecialOrderController {
         return ResponseEntity.noContent().build();
     }
 
-    @PostMapping("/issue/{id}")
-    public ResponseEntity<?> placement(@NotNull @RequestBody Long configuratorId) {
+    @PostMapping("/issue/{configuratorId}")
+    public ResponseEntity<?> placement(@NotNull @PathVariable Long configuratorId) {
         try {
             return ResponseEntity.ok(specialOrderMapper.specialOrderToSpecialOrderDto(service.placement(configuratorId)));
         } catch (ServiceException | IncompatibleComponentException | DomainValidationException e) {

@@ -2,6 +2,7 @@ package ru.penlk.business.implementations;
 
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import ru.penlk.business.contracts.ServiceException;
 import ru.penlk.business.contracts.cars.CarService;
@@ -29,6 +30,7 @@ public class CarServiceImpl implements CarService {
     private final NodeRepository nodeRepository;
 
     @Override
+    @PreAuthorize("hasAnyRole('ADMIN', 'WAREHOUSE_ADMIN')")
     public Car create(Car request,
                       DefaultConfigurationProvider defaultConfigurationFactory,
                       SpecialAllowedPartProvider specialAllowedPartProvider,
@@ -65,6 +67,7 @@ public class CarServiceImpl implements CarService {
     }
 
     @Override
+    @PreAuthorize("hasAnyRole('ADMIN', 'WAREHOUSE_ADMIN')")
     public Car update(Car request) throws ServiceException {
         Car car = carRepository.findById(request.getId()).orElseThrow(
                 () -> new ServiceException(String.format("Car with id: {%d} not found", request.getId()))
@@ -100,6 +103,7 @@ public class CarServiceImpl implements CarService {
     }
 
     @Override
+    @PreAuthorize("hasAnyRole('ADMIN', 'WAREHOUSE_ADMIN')")
     public void delete(Long id) throws ServiceException {
         carRepository.deleteById(id);
     }

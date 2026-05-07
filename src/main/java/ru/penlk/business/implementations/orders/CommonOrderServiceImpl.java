@@ -3,6 +3,7 @@ package ru.penlk.business.implementations.orders;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.authorization.AuthorityAuthorizationManager;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -15,6 +16,7 @@ import ru.penlk.business.implementations.orders.states.common.CommonOrderFacade;
 import ru.penlk.business.implementations.orders.states.common.CommonOrderStateHandler;
 import ru.penlk.business.implementations.orders.states.mappers.CommonStateMapper;
 import ru.penlk.business.implementations.orders.strategies.ManagerSelectionStrategy;
+import ru.penlk.business.internal.GrantedRoleService;
 import ru.penlk.business.internal.RequiredNodeConfigurationService;
 import ru.penlk.dao.entities.cars.Car;
 import ru.penlk.dao.entities.orders.common.CommonOrder;
@@ -23,6 +25,7 @@ import ru.penlk.dao.repositories.interfaces.cars.CarRepository;
 import ru.penlk.dao.repositories.interfaces.orders.common.CommonOrderRepository;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @AllArgsConstructor
@@ -32,10 +35,33 @@ public class CommonOrderServiceImpl implements CommonOrderService {
     private final CommonOrderRepository commonOrderRepository;
     private final CarRepository carRepository;
     private final KeycloakAdminService keycloakAdminService;
+    private final GrantedRoleService grantedRoleService;
 
     private final ManagerSelectionStrategy managerSelectionStrategy;
     private final CommonStateMapper commonStateMapper;
     private final RequiredNodeConfigurationService requiredNodeConfigurationService;
+
+    @Override
+    @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER', 'USER')")
+    public List<CommonOrder> findAll() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+        if (auth == null) {
+            throw new ServiceException("Authentication required");
+        }
+
+        String userId = auth.getName();
+
+        if (grantedRoleService.hasRole("ADMIN")) {
+            return commonOrderRepository.findAll();
+        }
+
+        if (grantedRoleService.hasRole("MANAGER")) {
+            return commonOrderRepository.findAllByManagerId(userId);
+        }
+
+        return commonOrderRepository.findAllByOwnerId(userId);
+    }
 
     @Override
     @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER') or hasRole('USER') and @orderSecurityImpl.isOwnerCommonOrder(#orderId)")
@@ -151,7 +177,7 @@ public class CommonOrderServiceImpl implements CommonOrderService {
         CommonOrderFacade orderFacade = getFacade(orderId);
 
         if (orderFacade.tryCancel() == Boolean.FALSE) {
-            throw new ServiceException(String.format("CommonOrder with id: {%d} cancelled", orderId));
+            throw new ServiceException(String.format("CommonOrder with id: {%d} impossible to cancel", orderId));
         }
 
         return commonOrderRepository.save(orderFacade.getOrder());

@@ -61,9 +61,9 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-webmvc-test:4.0.5'
 
     //lab 3
+    testImplementation 'org.springframework.security:spring-security-test'
     implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.springframework.boot:spring-boot-starter-security-oauth2-client'
-    testImplementation 'org.springframework.security:spring-security-test'
     implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server'
     implementation 'org.springframework.boot:spring-boot-starter-security-oauth2-authorization-server'
 
@@ -92,15 +92,6 @@ sourceSets {
         runtimeClasspath += sourceSets.main.output + compileClasspath
     }
 }
-
-//sourceSets {
-//    integrationTest {
-//        java.srcDir file('src/integrationTest/java')
-//        resources.srcDir file('src/integrationTest/resources')
-//        compileClasspath += sourceSets.main.output + configurations.integrationTestRuntimeClasspath  // ✅ Было testRuntimeClasspath
-//        runtimeClasspath += sourceSets.integrationTest.output + configurations.integrationTestRuntimeClasspath
-//    }
-//}
 
 idea {
     module {

@@ -7,8 +7,14 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import ru.penlk.dao.entities.orders.common.CommonOrder;
 
+import java.util.List;
+
 @Repository
 public interface CommonOrderRepository extends JpaRepository<CommonOrder, Long> {
+    List<CommonOrder> findAllByOwnerId(String ownerId);
+
+    List<CommonOrder> findAllByManagerId(String managerId);
+
     @Modifying
     @Query("UPDATE CommonOrder e SET e.removed = true WHERE e.id = :id")
     void softDeleteById(@Param("id") Long id);

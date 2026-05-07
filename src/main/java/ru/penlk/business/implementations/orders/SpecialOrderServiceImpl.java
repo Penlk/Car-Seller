@@ -15,6 +15,7 @@ import ru.penlk.business.implementations.orders.states.special.SpecialOrderFacad
 import ru.penlk.business.implementations.orders.states.special.SpecialOrderStateHandler;
 import ru.penlk.business.implementations.orders.strategies.ManagerSelectionStrategy;
 import ru.penlk.business.internal.CarPartPriceCalculator;
+import ru.penlk.business.internal.GrantedRoleService;
 import ru.penlk.business.internal.RequiredNodeConfigurationService;
 import ru.penlk.dao.entities.cars.Car;
 import ru.penlk.dao.entities.cars.CarPart;
@@ -41,6 +42,7 @@ public class SpecialOrderServiceImpl implements SpecialOrderService {
     private final SpecialOrderRepository specialOrderRepository;
     private final ConfiguratorRepository configuratorRepository;
     private final KeycloakAdminService keycloakAdminService;
+    private final GrantedRoleService grantedRoleService;
 
     private final RequiredNodeConfigurationService requiredNodeConfigurationService;
     private final CarPartPriceCalculator carPartPriceCalculator;
@@ -59,6 +61,29 @@ public class SpecialOrderServiceImpl implements SpecialOrderService {
 
         throw new ServiceException(String.format("SpecialOrder with id: {%d} not found", orderId));
     }
+
+    @Override
+    @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER', 'USER')")
+    public List<SpecialOrder> findAll() throws ServiceException {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+        if (auth == null) {
+            throw new ServiceException("Authentication required");
+        }
+
+        String userId = auth.getName();
+
+        if (grantedRoleService.hasRole("ADMIN")) {
+            return specialOrderRepository.findAll();
+        }
+
+        if (grantedRoleService.hasRole("MANAGER")) {
+            return specialOrderRepository.findAllByManagerId(userId);
+        }
+
+        return specialOrderRepository.findAllByOwnerId(userId);
+    }
+
 
     @Override
     @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER') or hasRole('USER') and @orderSecurityImpl.isOwnerSpecialOrder(#orderId)")

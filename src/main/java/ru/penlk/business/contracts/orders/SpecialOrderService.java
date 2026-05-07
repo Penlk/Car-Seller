@@ -5,8 +5,12 @@ import ru.penlk.business.contracts.IncompatibleComponentException;
 import ru.penlk.business.contracts.ServiceException;
 import ru.penlk.dao.entities.orders.special.SpecialOrder;
 
+import java.util.List;
+
 public interface SpecialOrderService {
     SpecialOrder find(Long orderId) throws ServiceException;
+
+    List<SpecialOrder> findAll() throws ServiceException;
 
     void delete(Long orderId) throws ServiceException;
 
