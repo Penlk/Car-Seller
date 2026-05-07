@@ -28,6 +28,8 @@ public class OrderSecurityImpl implements OrderSecurity {
 
         CommonOrder order = optionalOrder.get();
 
+        String userId = getUserId();
+
         return order.getOwnerId().equals(getUserId());
     }
 

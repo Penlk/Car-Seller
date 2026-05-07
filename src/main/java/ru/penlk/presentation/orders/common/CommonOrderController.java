@@ -40,8 +40,8 @@ public class CommonOrderController {
         return ResponseEntity.noContent().build();
     }
 
-    @PostMapping("/placement/{id}")
-    public ResponseEntity<?> placement(@NotNull @RequestBody Long carId) {
+    @PostMapping("/placement/{carId}")
+    public ResponseEntity<?> placement(@PathVariable @NotNull @RequestBody Long carId) {
         try {
             CommonOrder order = service.placement(carId);
             return ResponseEntity.ok(commonOrderMapper.commonOrderToCommonOrderDto(order));

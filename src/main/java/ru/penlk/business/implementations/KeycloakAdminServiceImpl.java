@@ -1,6 +1,9 @@
 package ru.penlk.business.implementations;
 
 import jakarta.annotation.PostConstruct;
+import org.keycloak.OAuth2Constants;
+import org.keycloak.admin.client.resource.UserResource;
+import org.keycloak.admin.client.resource.UsersResource;
 import org.springframework.beans.factory.annotation.Value;
 import org.keycloak.admin.client.Keycloak;
 import org.keycloak.admin.client.KeycloakBuilder;
@@ -22,11 +25,8 @@ public class KeycloakAdminServiceImpl implements KeycloakAdminService {
     @Value("${keycloak.client-id}")
     private String clientId;
 
-    @Value("${keycloak.username}")
-    private String username;
-
-    @Value("${keycloak.password}")
-    private String password;
+    @Value("${keycloak.client-secret}")
+    private String clientSecret;
 
     private Keycloak keycloak;
 
@@ -36,17 +36,13 @@ public class KeycloakAdminServiceImpl implements KeycloakAdminService {
                 .serverUrl(serverUrl)
                 .realm(realm)
                 .clientId(clientId)
-                .username(username)
-                .password(password)
+                .clientSecret(clientSecret)
+                .grantType(OAuth2Constants.CLIENT_CREDENTIALS)
                 .build();
     }
 
     @Override
     public List<UserRepresentation> getManagers() {
-        UserRepresentation us;
-
-        return keycloak.realm(realm)
-                .users()
-                .searchByAttributes("role:MANAGER");
+        return keycloak.realm(realm).roles().get("MANAGER").getUserMembers();
     }
 }

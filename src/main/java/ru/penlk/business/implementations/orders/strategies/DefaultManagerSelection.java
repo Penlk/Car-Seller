@@ -11,6 +11,10 @@ import java.util.concurrent.ThreadLocalRandom;
 public class DefaultManagerSelection implements ManagerSelectionStrategy {
     @Override
     public Optional<String> findManager(List<UserRepresentation> managers) {
+        if (managers.isEmpty()) {
+            return Optional.empty();
+        }
+
         int randomIndex = ThreadLocalRandom.current().nextInt(managers.size());
 
         return Optional.ofNullable(managers.get(randomIndex).getId());
