@@ -64,7 +64,6 @@ public class CarController {
         } catch (ServiceException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
-
     }
 
     @PatchMapping
