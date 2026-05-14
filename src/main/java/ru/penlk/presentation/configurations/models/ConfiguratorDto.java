@@ -1,13 +1,15 @@
 package ru.penlk.presentation.configurations.models;
 
-import lombok.NonNull;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 
 import java.util.Set;
 
 public record ConfiguratorDto(
-        @NonNull Long id,
-        @NonNull Long carId,
-        @NonNull Set<Long> specialConfigurationIds,
-        @NonNull Set<Long> carPartIds,
+        @NotNull Long id,
+        @NotNull Long carId,
+        @NotEmpty String ownerId,
+        @NotNull Set<Long> specialConfigurationIds,
+        @NotNull Set<Long> carPartIds,
         boolean isFinished) {
 }

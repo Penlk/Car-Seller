@@ -3,14 +3,13 @@ package ru.penlk.business.implementations.orders.states.special;
 import lombok.AllArgsConstructor;
 import ru.penlk.dao.entities.orders.special.SpecialOrder;
 import ru.penlk.dao.entities.orders.special.SpecialOrderState;
-import ru.penlk.dao.entities.users.managers.Manager;
 
 @AllArgsConstructor
 public class SpecialOrderFacade {
     private final SpecialOrderCore core;
 
-    public Boolean tryConfirm(Manager manager) {
-        return core.getState().tryConfirm(core, manager);
+    public Boolean tryConfirm() {
+        return core.getState().tryConfirm(core);
     }
 
     public Boolean tryWaitPurchase() {

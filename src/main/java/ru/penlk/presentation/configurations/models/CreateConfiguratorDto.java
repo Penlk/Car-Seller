@@ -1,11 +1,11 @@
 package ru.penlk.presentation.configurations.models;
 
-import lombok.NonNull;
+import jakarta.validation.constraints.NotNull;
 
 import java.util.Set;
 
 public record CreateConfiguratorDto(
-        @NonNull Long carId,
-        @NonNull Set<Long> specialConfigurationIds
+        @NotNull Long carId,
+        @NotNull Set<Long> specialConfigurationIds
 ) {
 }

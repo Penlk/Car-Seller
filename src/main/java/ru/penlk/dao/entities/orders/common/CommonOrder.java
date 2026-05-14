@@ -15,8 +15,6 @@ import org.hibernate.annotations.JdbcType;
 import org.hibernate.dialect.type.PostgreSQLEnumJdbcType;
 import ru.penlk.dao.entities.BaseEntity;
 import ru.penlk.dao.entities.cars.Car;
-import ru.penlk.dao.entities.users.clients.Client;
-import ru.penlk.dao.entities.users.managers.Manager;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -30,13 +28,11 @@ public class CommonOrder extends BaseEntity {
     @Column(columnDefinition = "common_order_state", nullable = false)
     private CommonOrderState state;
 
-    @JoinColumn(name = "client_id", nullable = false)
-    @ManyToOne(optional = false)
-    private Client client;
+    @Column(name = "owner_id", nullable = false)
+    private String ownerId;
 
-    @JoinColumn(name = "manager_id")
-    @ManyToOne(optional = true)
-    private Manager manager;
+    @Column(name = "manager_id", nullable = false)
+    private String managerId;
 
     @JoinColumn(name = "car_id", nullable = false)
     @ManyToOne(optional = false)

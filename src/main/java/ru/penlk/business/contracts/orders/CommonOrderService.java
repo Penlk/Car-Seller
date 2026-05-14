@@ -1,19 +1,19 @@
 package ru.penlk.business.contracts.orders;
 
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import ru.penlk.business.contracts.DomainValidationException;
 import ru.penlk.business.contracts.ServiceException;
 import ru.penlk.dao.entities.orders.common.CommonOrder;
 
-@Service
-@Transactional
+import java.util.List;
+
 public interface CommonOrderService {
+    List<CommonOrder> findAll();
+
     CommonOrder find(Long orderId) throws ServiceException;
 
     void delete(Long orderId) throws ServiceException;
 
-    CommonOrder placement(Long clientId, Long carId) throws ServiceException, DomainValidationException;
+    CommonOrder placement(Long carId) throws ServiceException, DomainValidationException;
 
     CommonOrder confirm(Long orderId) throws ServiceException;
 

@@ -15,9 +15,7 @@ import ru.penlk.business.contracts.DomainValidationException;
 import ru.penlk.business.contracts.IncompatibleComponentException;
 import ru.penlk.business.contracts.ServiceException;
 import ru.penlk.business.contracts.orders.SpecialOrderService;
-import ru.penlk.presentation.mapping.orders.special.CreateSpecialOrderMapper;
 import ru.penlk.presentation.mapping.orders.special.SpecialOrderMapper;
-import ru.penlk.presentation.orders.special.models.CreateSpecialOrderDto;
 
 @AllArgsConstructor
 @RestController
@@ -25,7 +23,6 @@ import ru.penlk.presentation.orders.special.models.CreateSpecialOrderDto;
 public class SpecialOrderController {
     private final SpecialOrderService service;
     private final SpecialOrderMapper specialOrderMapper;
-    private final CreateSpecialOrderMapper createSpecialOrderMapper;
 
     @GetMapping("/{id}")
     public ResponseEntity<?> get(@NotNull @PathVariable Long id) {
@@ -36,6 +33,15 @@ public class SpecialOrderController {
         }
     }
 
+    @GetMapping
+    public ResponseEntity<?> get() {
+        try {
+            return ResponseEntity.ok(service.findAll().stream().map(specialOrderMapper::specialOrderToSpecialOrderDto));
+        } catch (ServiceException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@NotNull @PathVariable Long id) {
         service.delete(id);
@@ -43,10 +49,10 @@ public class SpecialOrderController {
         return ResponseEntity.noContent().build();
     }
 
-    @PostMapping("/issue")
-    public ResponseEntity<?> placement(@NotNull @RequestBody @Valid CreateSpecialOrderDto request) {
+    @PostMapping("/issue/{configuratorId}")
+    public ResponseEntity<?> placement(@NotNull @PathVariable Long configuratorId) {
         try {
-            return ResponseEntity.ok(specialOrderMapper.specialOrderToSpecialOrderDto(service.placement(request.clientId(), request.configurationId())));
+            return ResponseEntity.ok(specialOrderMapper.specialOrderToSpecialOrderDto(service.placement(configuratorId)));
         } catch (ServiceException | IncompatibleComponentException | DomainValidationException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }

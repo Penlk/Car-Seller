@@ -2,6 +2,7 @@ package ru.penlk.business.implementations;
 
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import ru.penlk.business.contracts.ServiceException;
 import ru.penlk.business.contracts.nodes.NodeService;
@@ -15,6 +16,7 @@ public class NodeServiceImpl implements NodeService {
     private final NodeRepository nodeRepository;
 
     @Override
+    @PreAuthorize("hasAnyRole('ADMIN', 'WAREHOUSE_ADMIN')")
     public Node create(Node request) {
         return nodeRepository.save(request);
     }
@@ -26,6 +28,7 @@ public class NodeServiceImpl implements NodeService {
     }
 
     @Override
+    @PreAuthorize("hasAnyRole('ADMIN', 'WAREHOUSE_ADMIN')")
     public Node update(Node request) throws ServiceException {
         Node node = nodeRepository.findById(request.getId())
                 .orElseThrow(() -> new ServiceException("Node not found"));
@@ -36,6 +39,7 @@ public class NodeServiceImpl implements NodeService {
     }
 
     @Override
+    @PreAuthorize("hasAnyRole('ADMIN', 'WAREHOUSE_ADMIN')")
     public void delete(Long nodeId) throws ServiceException {
         Node node = nodeRepository.findById(nodeId).orElseThrow(() -> new ServiceException("Node not found"));
 

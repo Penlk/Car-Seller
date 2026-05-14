@@ -6,13 +6,13 @@ import org.springframework.boot.data.jpa.test.autoconfigure.DataJpaTest;
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
-import ru.penlk.config.AbstractIntegrationTest;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.ResultSet;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @DataJpaTest
 class PostgresIT {
@@ -39,7 +39,7 @@ class PostgresIT {
     void postgresContainerIsRunning() throws Exception {
         try (Connection connection = dataSource.getConnection()) {
             boolean isValid = connection.isValid(5);
-            assertEquals(true, isValid);
+            assertTrue(isValid);
         }
     }
 }

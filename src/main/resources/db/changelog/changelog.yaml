@@ -261,146 +261,8 @@ databaseChangeLog:
         - dropTable:
             tableName: default_configurations
             cascadeConstraints: true
-
   - changeSet:
-      id: 0004-create-users
-      author: auto
-      changes:
-        - createTable:
-            tableName: clients
-            columns:
-              - column:
-                  name: id
-                  type: BIGINT
-                  autoIncrement: true
-                  constraints:
-                    primaryKey: true
-                    nullable: false
-                    primaryKeyName: pk_clients
-              - column:
-                  name: created_at
-                  type: TIMESTAMPTZ
-                  defaultValueComputed: NOW()
-                  constraints:
-                    nullable: false
-              - column:
-                  name: updated_at
-                  type: TIMESTAMPTZ
-                  defaultValueComputed: NOW()
-                  constraints:
-                    nullable: false
-              - column:
-                  name: removed
-                  type: BOOLEAN
-                  defaultValueBoolean: false
-                  constraints:
-                    nullable: false
-
-        - createTable:
-            tableName: composition_admins
-            columns:
-              - column:
-                  name: id
-                  type: BIGINT
-                  autoIncrement: true
-                  constraints:
-                    primaryKey: true
-                    nullable: false
-                    primaryKeyName: pk_composition_admins
-              - column:
-                  name: created_at
-                  type: TIMESTAMPTZ
-                  defaultValueComputed: NOW()
-                  constraints:
-                    nullable: false
-              - column:
-                  name: updated_at
-                  type: TIMESTAMPTZ
-                  defaultValueComputed: NOW()
-                  constraints:
-                    nullable: false
-              - column:
-                  name: removed
-                  type: BOOLEAN
-                  defaultValueBoolean: false
-                  constraints:
-                    nullable: false
-
-        - createTable:
-            tableName: managers
-            columns:
-              - column:
-                  name: id
-                  type: BIGINT
-                  autoIncrement: true
-                  constraints:
-                    primaryKey: true
-                    nullable: false
-                    primaryKeyName: pk_managers
-              - column:
-                  name: created_at
-                  type: TIMESTAMPTZ
-                  defaultValueComputed: NOW()
-                  constraints:
-                    nullable: false
-              - column:
-                  name: updated_at
-                  type: TIMESTAMPTZ
-                  defaultValueComputed: NOW()
-                  constraints:
-                    nullable: false
-              - column:
-                  name: removed
-                  type: BOOLEAN
-                  defaultValueBoolean: false
-                  constraints:
-                    nullable: false
-
-        - createTable:
-            tableName: system_admins
-            columns:
-              - column:
-                  name: id
-                  type: BIGINT
-                  autoIncrement: true
-                  constraints:
-                    primaryKey: true
-                    nullable: false
-                    primaryKeyName: pk_system_admins
-              - column:
-                  name: created_at
-                  type: TIMESTAMPTZ
-                  defaultValueComputed: NOW()
-                  constraints:
-                    nullable: false
-              - column:
-                  name: updated_at
-                  type: TIMESTAMPTZ
-                  defaultValueComputed: NOW()
-                  constraints:
-                    nullable: false
-              - column:
-                  name: removed
-                  type: BOOLEAN
-                  defaultValueBoolean: false
-                  constraints:
-                    nullable: false
-      rollback:
-        - dropTable:
-            tableName: system_admins
-            cascadeConstraints: true
-        - dropTable:
-            tableName: managers
-            cascadeConstraints: true
-        - dropTable:
-            tableName: composition_admins
-            cascadeConstraints: true
-        - dropTable:
-            tableName: clients
-            cascadeConstraints: true
-
-  - changeSet:
-      id: 0005-create-common-orders
+      id: 0004-create-common-orders
       author: auto
       changes:
         - sql:
@@ -446,19 +308,15 @@ databaseChangeLog:
                   constraints:
                     nullable: false
               - column:
-                  name: client_id
-                  type: BIGINT
+                  name: owner_id
+                  type: TEXT
                   constraints:
-                    foreignKeyName: fk_common_orders_client
-                    referencedTableName: clients
-                    referencedColumnNames: id
+                    nullable: false
               - column:
                   name: manager_id
-                  type: BIGINT
+                  type: TEXT
                   constraints:
-                    foreignKeyName: fk_common_orders_manager
-                    referencedTableName: managers
-                    referencedColumnNames: id
+                    nullable: false
               - column:
                   name: car_id
                   type: BIGINT
@@ -477,7 +335,7 @@ databaseChangeLog:
             cascadeConstraints: true
 
   - changeSet:
-      id: 0006-create-special-orders
+      id: 0005-create-special-orders
       author: auto
       changes:
         - sql:
@@ -530,6 +388,11 @@ databaseChangeLog:
                   defaultValueBoolean: false
                   constraints:
                     nullable: false
+              - column:
+                  name: owner_id
+                  type: TEXT
+                  constraints:
+                    nullable: false
         - createTable:
             tableName: special_orders
             columns:
@@ -565,19 +428,15 @@ databaseChangeLog:
                   constraints:
                     nullable: false
               - column:
-                  name: client_id
-                  type: BIGINT
+                  name: owner_id
+                  type: TEXT
                   constraints:
-                    foreignKeyName: fk_special_orders_client
-                    referencedTableName: clients
-                    referencedColumnNames: id
+                    nullable: false
               - column:
                   name: manager_id
-                  type: BIGINT
+                  type: TEXT
                   constraints:
-                    foreignKeyName: fk_special_orders_manager
-                    referencedTableName: managers
-                    referencedColumnNames: id
+                    nullable: false
               - column:
                   name: car_id
                   type: BIGINT

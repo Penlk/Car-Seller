@@ -11,14 +11,16 @@ import org.springframework.boot.testcontainers.service.connection.ServiceConnect
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
-import ru.penlk.config.AbstractIntegrationTest;
 import ru.penlk.dao.entities.nodes.Node;
 import ru.penlk.dao.repositories.interfaces.nodes.NodeRepository;
 
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @DisplayName("NodeRepository Integration Tests")
 @DataJpaTest
@@ -50,7 +52,7 @@ class NodeRepositoryIT {
     @DisplayName("Should save node and generate ID")
     void shouldSaveNodeToDatabaseSuccessfully() {
         Node savedNode = nodeRepository.save(testNode);
-        
+
         assertNotNull(savedNode.getId());
         assertEquals("TestNode", savedNode.getName());
         assertNotNull(savedNode.getCreatedAt());
@@ -88,7 +90,7 @@ class NodeRepositoryIT {
     void shouldFindAllNodes() {
         Node node1 = new Node();
         node1.setName("Node1");
-        
+
         Node node2 = new Node();
         node2.setName("Node2");
 
@@ -125,10 +127,10 @@ class NodeRepositoryIT {
     void shouldSaveNodesWithDifferentNames() {
         Node node1 = new Node();
         node1.setName("Engine");
-        
+
         Node node2 = new Node();
         node2.setName("Transmission");
-        
+
         Node node3 = new Node();
         node3.setName("Chassis");
 
@@ -147,9 +149,9 @@ class NodeRepositoryIT {
     void shouldUpdateTimestampOnModification() throws InterruptedException {
         Node savedNode = nodeRepository.save(testNode);
         var updatedAtFirst = savedNode.getUpdatedAt();
-        
+
         Thread.sleep(100);
-        
+
         Node nodeToUpdate = nodeRepository.findById(savedNode.getId()).orElseThrow();
         nodeToUpdate.setName("NewName");
         Node updatedNode = nodeRepository.save(nodeToUpdate);
@@ -165,7 +167,7 @@ class NodeRepositoryIT {
 
         assertTrue(foundNode.isPresent());
         Node node = foundNode.get();
-        
+
         assertEquals("TestNode", node.getName());
         assertNotNull(node.getId());
         assertNotNull(node.getCreatedAt());
@@ -176,10 +178,10 @@ class NodeRepositoryIT {
     @DisplayName("Should count nodes correctly")
     void shouldCountNodesCorrectly() {
         nodeRepository.deleteAll();
-        
+
         Node node1 = new Node();
         node1.setName("Node1");
-        
+
         Node node2 = new Node();
         node2.setName("Node2");
 

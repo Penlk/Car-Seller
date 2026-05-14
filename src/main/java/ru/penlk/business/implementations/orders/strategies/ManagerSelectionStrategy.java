@@ -1,11 +1,10 @@
 package ru.penlk.business.implementations.orders.strategies;
 
-import ru.penlk.dao.entities.users.managers.Manager;
+import org.keycloak.representations.idm.UserRepresentation;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
 public interface ManagerSelectionStrategy {
-    Optional<Manager> findManager(List<Manager> managers);
+    Optional<String> findManager(List<UserRepresentation> managers);
 }

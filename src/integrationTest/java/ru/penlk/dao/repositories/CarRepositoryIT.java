@@ -25,7 +25,10 @@ import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @DisplayName("CarRepository Integration Tests")
 @DataJpaTest
@@ -71,7 +74,7 @@ class CarRepositoryIT {
     @DisplayName("Should save car and generate ID")
     void shouldSaveCarToDatabaseSuccessfully() {
         Car savedCar = carRepository.save(testCar);
-        
+
         assertNotNull(savedCar.getId());
         assertEquals("Toyota", savedCar.getBrand());
         assertEquals("Camry", savedCar.getModel());
@@ -152,7 +155,7 @@ class CarRepositoryIT {
 
         assertTrue(foundCar.isPresent());
         Car car = foundCar.get();
-        
+
         assertEquals("Toyota", car.getBrand());
         assertEquals("Camry", car.getModel());
         assertEquals("Sedan", car.getBody());
@@ -201,10 +204,10 @@ class CarRepositoryIT {
     void shouldSupportAllDrivingTypes() {
         Car frontCar = createTestCar("Toyota", "Corolla", "Sedan", Fuel.PETROL, 140.0, "Blue");
         frontCar.setCarDrive(CarDrive.FRONT);
-        
+
         Car rearCar = createTestCar("BMW", "3-Series", "Sedan", Fuel.DIESEL, 200.0, "Green");
         rearCar.setCarDrive(CarDrive.REAR);
-        
+
         Car fullCar = createTestCar("Audi", "Q7", "SUV", Fuel.DIESEL, 340.0, "White");
         fullCar.setCarDrive(CarDrive.FULL);
 
