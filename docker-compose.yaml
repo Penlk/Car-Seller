@@ -53,8 +53,67 @@ services:
         condition: service_healthy
     volumes:
       - ./src/main/resources/keycloak/import:/opt/keycloak/data/import
+  storage-db:
+    image: postgres:16
+    container_name: storage-db
+    working_dir: /app
+    environment:
+      - PGDATA=/app/data
+      - POSTGRES_DB=${STORAGE_POSTGRES_DB}
+      - POSTGRES_USER=${STORAGE_POSTGRES_USER}
+      - POSTGRES_PASSWORD=${STORAGE_POSTGRES_PASSWORD}
+    volumes:
+      - storage-data:/app/data
+    ports:
+      - ${STORAGE_POSTGRES_PORT}:5432
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U $STORAGE_POSTGRES_USER -d $STORAGE_POSTGRES_DB -h localhost -p 5432" ]
+      interval: 1m30s
+      timeout: 30s
+      retries: 5
+      start_period: 30s
+  kafka:
+    image: confluentinc/cp-kafka@sha256:acbbf674f2ed40e5d0a8ca51beb0f00692c866fc22b5ce06f8cadbdc54cd4436
+    container_name: kafka
+    ports:
+      - "9092:9092"
+    environment:
+      KAFKA_KRAFT_MODE: 'true'
+      CLUSTER_ID: '3Myb0wkQR0yQ00XV0MUqNA'
+      KAFKA_NODE_ID: 1
+      KAFKA_PROCESS_ROLES: broker,controller
+      KAFKA_CONTROLLER_QUORUM_VOTERS: 1@kafka:9093
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+
+      KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092,CONTROLLER://0.0.0.0:9093
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092
+      KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
+
+      KAFKA_LOG_DIRS: /tmp/kraft-combined-logs
+    volumes:
+      - kafka-logs:/tmp/kraft-combined-logs
+  kafka-connect:
+    image: debezium/connect:2.6
+    container_name: kafka-connect
+    ports:
+      - "8083:8083"
+    depends_on:
+      - kafka
+    environment:
+      BOOTSTRAP_SERVERS: kafka:9092
+      GROUP_ID: 1
+
+      CONFIG_STORAGE_TOPIC: connect_configs
+      OFFSET_STORAGE_TOPIC: connect_offsets
+      STATUS_STORAGE_TOPIC: connect_statuses
+
+      CONFIG_STORAGE_REPLICATION_FACTOR: 1
+      OFFSET_STORAGE_REPLICATION_FACTOR: 1
+      STATUS_STORAGE_REPLICATION_FACTOR: 1
 
 
 volumes:
   data:
   keycloak-data:
+  kafka-logs:
+  storage-data:
