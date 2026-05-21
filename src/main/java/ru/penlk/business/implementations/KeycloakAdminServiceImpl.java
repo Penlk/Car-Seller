@@ -1,6 +1,7 @@
 package ru.penlk.business.implementations;
 
 import jakarta.annotation.PostConstruct;
+import lombok.AllArgsConstructor;
 import org.keycloak.OAuth2Constants;
 import org.keycloak.admin.client.resource.UserResource;
 import org.keycloak.admin.client.resource.UsersResource;

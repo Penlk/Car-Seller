@@ -4,9 +4,9 @@ spring:
 
   datasource:
     driver-class-name: org.postgresql.Driver
-    username: ${POSTGRES_USER}
-    password: ${POSTGRES_PASSWORD}
-    url: jdbc:postgresql://${POSTGRES_HOST}:${POSTGRES_PORT}/${POSTGRES_DB}?sslmode=disable
+    username: ${STORAGE_POSTGRES_USER}
+    password: ${STORAGE_POSTGRES_PASSWORD}
+    url: jdbc:postgresql://${STORAGE_POSTGRES_HOST}:${STORAGE_POSTGRES_PORT}/${STORAGE_POSTGRES_DB}?sslmode=disable
 
   jpa:
     hibernate:
@@ -14,19 +14,11 @@ spring:
     show-sql: true
 
   liquibase:
-    change-log: classpath:db/changelog/changelog.yaml
-
-  security:
-    oauth2:
-      resourceserver:
-        jwt:
-          issuer-uri: http://${KEYCLOAK_HOST}:${KEYCLOAK_PORT}/realms/${KEYCLOAK_REALM}
-          jws-algorithms: RS256
-
+    change-log: classpath:changelog.yaml
   kafka:
     consumer:
       bootstrap-servers: localhost:9092
-      group-id: order-consumers
+      group-id: my-group
 
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
@@ -37,11 +29,18 @@ spring:
       key-serializer: org.apache.kafka.common.serialization.LongSerializer
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
 
-keycloak:
-  server-url: http://${KEYCLOAK_HOST}:${KEYCLOAK_PORT}
-  realm: ${KEYCLOAK_REALM}
-  client-id: ${KEYCLOAK_CLIENT_ID}
-  client-secret: ${KEYCLOAK_CLIENT_SECRET}
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://${KEYCLOAK_HOST}:${KEYCLOAK_PORT}/realms/${KEYCLOAK_REALM}
+          jws-algorithms: RS256
+
+#keycloak:
+#  server-url: http://${KEYCLOAK_HOST}:${KEYCLOAK_PORT}
+#  realm: ${KEYCLOAK_REALM}
+#  client-id: ${KEYCLOAK_CLIENT_ID}
+#  client-secret: ${KEYCLOAK_CLIENT_SECRET}
 
 springdoc:
   swagger-ui:
@@ -53,13 +52,18 @@ springdoc:
 
 kafka:
   topics:
-    output: "storage.order.questions"
-    input: "storage.order.solutions"
+    output:
+       storage-event: "storage.order.solutions"
+    input: "storage.order.questions"
   events:
-    output: "OrderSentForApproval"
+    input:
+      creating-event: "OrderSentForApproval"
 
 outbox:
   cron: "*/5 * * * * *"
+
+server:
+  port: 8081
 
 logging:
   level:

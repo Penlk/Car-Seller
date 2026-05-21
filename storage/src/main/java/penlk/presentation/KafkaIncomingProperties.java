@@ -1,4 +1,4 @@
-package penlk.business.kafka;
+package penlk.presentation;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Configuration;
 @Getter
 @Setter
 @Configuration
-@ConfigurationProperties(prefix = "app.kafka.topics")
-public class KafkaTopicProperties {
-    private String storageEvents;
+@ConfigurationProperties(prefix = "kafka.events.input")
+public class KafkaIncomingProperties {
+    private String creatingEvent;
 }

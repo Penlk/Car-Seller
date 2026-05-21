@@ -6,9 +6,12 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import penlk.dao.entities.CarStock;
 
+import java.util.Optional;
 import java.util.UUID;
 
 public interface CarStockRepository extends JpaRepository<CarStock, UUID> {
+    Optional<CarStock> findByCarSourceId(Long id);
+
     @Modifying
     @Query("UPDATE CarStock e SET e.removed = true WHERE e.id = :id")
     void softDeleteById(@Param("id") UUID id);

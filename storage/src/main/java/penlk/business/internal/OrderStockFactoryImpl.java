@@ -8,40 +8,38 @@ import penlk.dao.entities.orders.OrderStock;
 import penlk.dao.entities.orders.OrderType;
 import penlk.dao.repositories.CarPartStockRepository;
 import penlk.dao.repositories.CarStockRepository;
+import penlk.presentation.KafkaEvent;
 
 import java.util.Set;
 import java.util.stream.Collectors;
 
 @AllArgsConstructor
 public class OrderStockFactoryImpl implements OrderStockFactory {
-    private final OrderStockCreate rawOrder;
+    private final KafkaEvent event;
 
     @Override
     public OrderStock create(CarPartStockRepository carPartStockRepository, CarStockRepository carStockRepository) throws RuntimeException {
         OrderStock orderStock = new OrderStock();
 
-        CarStock car = carStockRepository.findById(rawOrder.getCarStockId()).orElse(null);
+        CarStock car = carStockRepository.findByCarSourceId(event.carSourceId()).orElse(null);
 
-        if (rawOrder.getOrderType() == OrderType.Special) {
+        if (event.carPartSourceIds() != null && !event.carPartSourceIds().isEmpty()) {
             Set<CarPartStock> carPartStocks;
 
-            try {
-                carPartStocks = rawOrder.getCarPartStockIds().stream()
-                        .map(x -> carPartStockRepository.findById(x)
-                                .orElseThrow(() -> new RuntimeException(String.format("CarPartStock with id %s not found", x))))
-                        .collect(Collectors.toUnmodifiableSet());
+            carPartStocks = carPartStockRepository.findByCarPartSourceIdIn(event.carPartSourceIds());
 
-                orderStock.setCarPartStocks(carPartStocks);
-            } catch (RuntimeException e) {
+            if (carPartStocks == null || carPartStocks.size() != event.carPartSourceIds().size()) {
                 orderStock.setCarPartStocks(null);
+            } else {
+                orderStock.setCarPartStocks(carPartStocks);
             }
         }
 
 
 
         orderStock.setCarStock(car);
-        orderStock.setOrderSourceId(rawOrder.getOrderSourceId());
-        orderStock.setOrderType(rawOrder.getOrderType());
+        orderStock.setOrderSourceId(event.orderSourceId());
+        orderStock.setOrderType(event.orderType());
 
         return orderStock;
     }

@@ -20,6 +20,10 @@ public class CommonOrderFacade {
         return core.getState().tryPurchase(core);
     }
 
+    public Boolean tryReserve() {
+        return core.getState().tryReserve(core);
+    }
+
     public Boolean tryCarReadyToTake() {
         return core.getState().tryCarReadyToTake(core);
     }

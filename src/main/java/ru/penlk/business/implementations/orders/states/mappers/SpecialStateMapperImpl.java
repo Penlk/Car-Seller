@@ -23,6 +23,7 @@ public class SpecialStateMapperImpl implements SpecialStateMapper {
             case SpecialOrderState.CAR_IS_READY -> new SpecialCarReadyToTakeState();
             case SpecialOrderState.CANCELED -> new SpecialCanceledState();
             case SpecialOrderState.DONE -> new SpecialCompletedState();
+            case SpecialOrderState.RESERVED -> new SpecialReservedState();
         };
     }
 }

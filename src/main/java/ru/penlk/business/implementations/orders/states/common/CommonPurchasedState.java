@@ -9,8 +9,15 @@ public class CommonPurchasedState extends CommonDraftState {
     }
 
     @Override
-    public Boolean tryCarReadyToTake(CommonOrderCore core) {
-        core.updateState(new CommonCarReadyToTakeState());
+    public Boolean tryReserve(CommonOrderCore core) {
+        core.updateState(new CommonReservedState());
+
+        return true;
+    }
+
+    @Override
+    public Boolean tryCancel(CommonOrderCore core) {
+        core.updateState(new CommonCanceledState());
 
         return true;
     }

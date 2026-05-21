@@ -270,7 +270,7 @@ databaseChangeLog:
             stripComments: false
             sql: |
               CREATE TYPE common_order_state AS ENUM (
-                'PLACED', 'AGREED', 'WAITING_PAYMENT', 'PAID', 'CAR_IS_READY', 'CANCELED', 'DONE'
+                'PLACED', 'AGREED', 'WAITING_PAYMENT', 'PAID', 'CAR_IS_READY', 'CANCELED', 'DONE', 'RESERVED'
               );
 
         - createTable:
@@ -343,7 +343,7 @@ databaseChangeLog:
             stripComments: false
             sql: |
               CREATE TYPE special_order_state AS ENUM (
-                'PLACED', 'AGREED', 'WAITING_PAYMENT', 'PAID', 'CAR_IS_READY', 'CANCELED', 'DONE'
+                'PLACED', 'AGREED', 'WAITING_PAYMENT', 'PAID', 'CAR_IS_READY', 'CANCELED', 'DONE', 'RESERVED'
               );
         - createTable:
             tableName: configurators
@@ -560,3 +560,103 @@ databaseChangeLog:
         - dropTable:
             tableName: special_orders
             cascadeConstraints: true
+  - changeSet:
+      id: 0006-create-outboxe_events
+      author: auto
+      changes:
+        - sql:
+            splitStatements: false
+            stripComments: false
+            sql: |
+              CREATE TYPE order_type AS ENUM (
+                'COMMON', 'SPECIAL'
+              );
+        - createTable:
+            tableName: outbox_events
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+                    primaryKeyName: pk_configurators
+              - column:
+                  name: created_at
+                  type: TIMESTAMPTZ
+                  defaultValueComputed: NOW()
+                  constraints:
+                    nullable: false
+              - column:
+                  name: updated_at
+                  type: TIMESTAMPTZ
+                  defaultValueComputed: NOW()
+                  constraints:
+                    nullable: false
+              - column:
+                  name: removed
+                  type: BOOLEAN
+                  defaultValueBoolean: false
+                  constraints:
+                    nullable: false
+              - column:
+                  name: name
+                  type: TEXT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: order_type
+                  type: order_type
+                  constraints:
+                    nullable: false
+              - column:
+                  name: order_source_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_outbox_events_common_orders
+                    referencedTableName: common_orders
+                    referencedColumnNames: id
+              - column:
+                  name: car_source_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_outbox_events_cars
+                    referencedTableName: cars
+                    referencedColumnNames: id
+        - createTable:
+            tableName: outbox_event_car_parts
+            columns:
+              - column:
+                  name: outbox_event_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_outbox_event_outbox_event_car_part
+                    referencedTableName: outbox_events
+                    referencedColumnNames: id
+              - column:
+                  name: car_part_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_outbox_event_car_part
+                    referencedTableName: car_parts
+                    referencedColumnNames: id
+        - addPrimaryKey:
+            tableName: outbox_event_car_parts
+            columnNames: outbox_event_id, car_part_id
+            constraintName: pk_outbox_event_car_parts
+      rollback:
+        - dropTable:
+            tableName: outbox_event_car_parts
+            cascadeConstraints: true
+        - dropTable:
+            tableName: outbox_events
+            cascadeConstraints: true
+        - sql:
+            splitStatements: false
+            stripComments: false
+            sql: DROP TYPE IF EXISTS order_type CASCADE;

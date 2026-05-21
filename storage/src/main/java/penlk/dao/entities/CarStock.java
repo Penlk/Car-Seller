@@ -6,6 +6,7 @@ import jakarta.persistence.Table;
 import jakarta.validation.constraints.PositiveOrZero;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.Formula;
 
 @Getter
 @Setter
@@ -23,6 +24,6 @@ public class CarStock extends BaseEntity {
     @PositiveOrZero
     private Long reserved;
 
-    @Column(nullable = false)
+    @Formula("reserved < stock")
     private boolean available;
 }

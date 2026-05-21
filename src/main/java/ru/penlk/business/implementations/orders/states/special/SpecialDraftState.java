@@ -17,6 +17,11 @@ public abstract class SpecialDraftState implements SpecialOrderStateHandler {
     }
 
     @Override
+    public Boolean tryReserve(SpecialOrderCore core) {
+        return false;
+    }
+
+    @Override
     public Boolean tryCarReadyToTake(SpecialOrderCore core) {
         return false;
     }

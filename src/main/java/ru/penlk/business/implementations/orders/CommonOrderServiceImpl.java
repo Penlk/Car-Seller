@@ -1,9 +1,10 @@
 package ru.penlk.business.implementations.orders;
 
 import jakarta.transaction.Transactional;
-import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.authorization.AuthorityAuthorizationManager;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -21,25 +22,53 @@ import ru.penlk.business.internal.RequiredNodeConfigurationService;
 import ru.penlk.dao.entities.cars.Car;
 import ru.penlk.dao.entities.orders.common.CommonOrder;
 import ru.penlk.dao.entities.orders.common.CommonOrderState;
+import ru.penlk.dao.entities.outbox.OrderType;
+import ru.penlk.dao.entities.outbox.OutboxEvent;
 import ru.penlk.dao.repositories.interfaces.cars.CarRepository;
 import ru.penlk.dao.repositories.interfaces.orders.common.CommonOrderRepository;
+import ru.penlk.dao.repositories.interfaces.outbox.OutboxRepository;
+import ru.penlk.presentation.mapping.outbox.OutboxEventMapper;
+import ru.penlk.presentation.outbox.models.OutboxEventDto;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
-@AllArgsConstructor
 @Service
 @Transactional
 public class CommonOrderServiceImpl implements CommonOrderService {
     private final CommonOrderRepository commonOrderRepository;
     private final CarRepository carRepository;
+    private final OutboxRepository outboxRepository;
     private final KeycloakAdminService keycloakAdminService;
     private final GrantedRoleService grantedRoleService;
 
     private final ManagerSelectionStrategy managerSelectionStrategy;
     private final CommonStateMapper commonStateMapper;
+    private final OutboxEventMapper outboxEventMapper;
     private final RequiredNodeConfigurationService requiredNodeConfigurationService;
+
+    @Value("${kafka.events.output}")
+    private String outputEvent;
+
+    @Value("${kafka.topics.output}")
+    private String outputTopic;
+
+    private final KafkaTemplate<Long, OutboxEventDto> kafka;
+
+    public CommonOrderServiceImpl(CommonOrderRepository commonOrderRepository, CarRepository carRepository, OutboxRepository outboxRepository, KeycloakAdminService keycloakAdminService, GrantedRoleService grantedRoleService, ManagerSelectionStrategy managerSelectionStrategy, CommonStateMapper commonStateMapper, OutboxEventMapper outboxEventMapper, RequiredNodeConfigurationService requiredNodeConfigurationService, KafkaTemplate<Long, OutboxEventDto> kafka) {
+        this.commonOrderRepository = commonOrderRepository;
+        this.carRepository = carRepository;
+        this.outboxRepository = outboxRepository;
+        this.keycloakAdminService = keycloakAdminService;
+        this.grantedRoleService = grantedRoleService;
+        this.managerSelectionStrategy = managerSelectionStrategy;
+        this.commonStateMapper = commonStateMapper;
+        this.outboxEventMapper = outboxEventMapper;
+        this.requiredNodeConfigurationService = requiredNodeConfigurationService;
+        this.kafka = kafka;
+    }
 
     @Override
     @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER', 'USER')")
@@ -114,7 +143,7 @@ public class CommonOrderServiceImpl implements CommonOrderService {
     @Override
     @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER')")
     public CommonOrder confirm(Long orderId) throws ServiceException {
-        CommonOrderFacade orderFacade = getFacade(orderId);
+        CommonOrderFacade orderFacade = getFacade(getOrder(orderId));
 
         if (orderFacade.tryConfirm() == Boolean.FALSE) {
             throw new ServiceException(String.format("CommonOrder with id: {%d} impossible to confirm", orderId));
@@ -126,7 +155,7 @@ public class CommonOrderServiceImpl implements CommonOrderService {
     @Override
     @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER')")
     public CommonOrder waitPurchase(Long orderId) throws ServiceException {
-        CommonOrderFacade orderFacade = getFacade(orderId);
+        CommonOrderFacade orderFacade = getFacade(getOrder(orderId));
 
         if (orderFacade.tryWaitPurchase() == Boolean.FALSE) {
             throw new ServiceException(String.format("CommonOrder with id: {%d} impossible to waiting purchase", orderId));
@@ -138,11 +167,20 @@ public class CommonOrderServiceImpl implements CommonOrderService {
     @Override
     @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER', 'USER')")
     public CommonOrder purchase(Long orderId) throws ServiceException {
-        CommonOrderFacade orderFacade = getFacade(orderId);
+        CommonOrder order = getOrder(orderId);
+        CommonOrderFacade orderFacade = getFacade(order);
 
         if (orderFacade.tryPurchase() == Boolean.FALSE) {
             throw new ServiceException(String.format("CommonOrder with id: {%d} impossible to purchase", orderId));
         }
+
+        OutboxEvent outboxEvent = new OutboxEvent();
+        outboxEvent.setName(outputEvent);
+        outboxEvent.setOrderType(OrderType.COMMON);
+        outboxEvent.setOrderSourceId(orderId);
+        outboxEvent.setCarSourceId(order.getCar().getId());
+
+        outboxRepository.save(outboxEvent);
 
         return commonOrderRepository.save(orderFacade.getOrder());
     }
@@ -150,7 +188,7 @@ public class CommonOrderServiceImpl implements CommonOrderService {
     @Override
     @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER')")
     public CommonOrder carReadyToTake(Long orderId) throws ServiceException {
-        CommonOrderFacade orderFacade = getFacade(orderId);
+        CommonOrderFacade orderFacade = getFacade(getOrder(orderId));
 
         if (orderFacade.tryCarReadyToTake() == Boolean.FALSE) {
             throw new ServiceException(String.format("CommonOrder with id: {%d} impossible to car take", orderId));
@@ -162,7 +200,7 @@ public class CommonOrderServiceImpl implements CommonOrderService {
     @Override
     @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER')")
     public CommonOrder complete(Long orderId) throws ServiceException {
-        CommonOrderFacade orderFacade = getFacade(orderId);
+        CommonOrderFacade orderFacade = getFacade(getOrder(orderId));
 
         if (orderFacade.tryComplete() == Boolean.FALSE) {
             throw new ServiceException(String.format("CommonOrder with id: {%d} impossible to complete", orderId));
@@ -174,7 +212,7 @@ public class CommonOrderServiceImpl implements CommonOrderService {
     @Override
     @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER', 'USER')")
     public CommonOrder cancel(Long orderId) throws ServiceException {
-        CommonOrderFacade orderFacade = getFacade(orderId);
+        CommonOrderFacade orderFacade = getFacade(getOrder(orderId));
 
         if (orderFacade.tryCancel() == Boolean.FALSE) {
             throw new ServiceException(String.format("CommonOrder with id: {%d} impossible to cancel", orderId));
@@ -183,16 +221,41 @@ public class CommonOrderServiceImpl implements CommonOrderService {
         return commonOrderRepository.save(orderFacade.getOrder());
     }
 
-    private CommonOrderFacade getFacade(Long orderId) {
+    private CommonOrder getOrder(Long orderId) throws ServiceException {
         Optional<CommonOrder> optionalOrder = commonOrderRepository.findById(orderId);
 
         if (optionalOrder.isEmpty()) {
             throw new ServiceException(String.format("CommonOrder with id: {%d} not found", orderId));
         }
 
-        CommonOrder order = optionalOrder.get();
+        return optionalOrder.get();
+    }
+
+    private CommonOrderFacade getFacade(CommonOrder order) throws ServiceException {
         CommonOrderStateHandler state = commonStateMapper.map(order.getState());
 
         return new CommonOrderFacade(new CommonOrderCore(order, state));
+    }
+
+    @Scheduled(cron = "${outbox.cron}")
+    public void publishOutbox() {
+        Set<OutboxEvent> outboxEvents = outboxRepository.findTop100ByOrderByCreatedAtAsc();
+
+        for (OutboxEvent outboxEvent : outboxEvents) {
+            OutboxEventDto dto = outboxEventMapper.map(outboxEvent);
+
+            try {
+                kafka.send(
+                        outputTopic,
+                        dto.orderSourceId(),
+                        dto
+                ).get();
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+                return;
+            }
+
+            outboxRepository.delete(outboxEvent);
+        }
     }
 }

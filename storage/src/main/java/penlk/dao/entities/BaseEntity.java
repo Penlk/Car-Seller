@@ -21,7 +21,7 @@ import java.util.UUID;
 public class BaseEntity {
     @Id
     @Column(name = "id", nullable = false)
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.UUID)
     UUID id;
 
     @CreationTimestamp
