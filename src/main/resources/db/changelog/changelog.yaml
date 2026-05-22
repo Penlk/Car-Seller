@@ -581,7 +581,7 @@ databaseChangeLog:
                   constraints:
                     primaryKey: true
                     nullable: false
-                    primaryKeyName: pk_configurators
+                    primaryKeyName: pk_outbox_events
               - column:
                   name: created_at
                   type: TIMESTAMPTZ

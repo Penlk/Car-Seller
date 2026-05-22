@@ -49,7 +49,7 @@ public class SpecialOrderController {
         return ResponseEntity.noContent().build();
     }
 
-    @PostMapping("/issue/{configuratorId}")
+    @PostMapping("/placement/{configuratorId}")
     public ResponseEntity<?> placement(@NotNull @PathVariable Long configuratorId) {
         try {
             return ResponseEntity.ok(specialOrderMapper.specialOrderToSpecialOrderDto(service.placement(configuratorId)));

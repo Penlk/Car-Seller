@@ -8,6 +8,7 @@ import ru.penlk.business.implementations.orders.states.special.SpecialConfirmedS
 import ru.penlk.business.implementations.orders.states.special.SpecialOrderStateHandler;
 import ru.penlk.business.implementations.orders.states.special.SpecialPlacedState;
 import ru.penlk.business.implementations.orders.states.special.SpecialPurchasedState;
+import ru.penlk.business.implementations.orders.states.special.SpecialReservedState;
 import ru.penlk.business.implementations.orders.states.special.SpecialWaitingPurchaseState;
 import ru.penlk.dao.entities.orders.special.SpecialOrderState;
 

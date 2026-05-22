@@ -56,6 +56,9 @@ kafka:
     output: "storage.order.questions"
     input: "storage.order.solutions"
   events:
+    input:
+      rejected: "OrderRejected"
+      approved: "OrderApproved"
     output: "OrderSentForApproval"
 
 outbox:
