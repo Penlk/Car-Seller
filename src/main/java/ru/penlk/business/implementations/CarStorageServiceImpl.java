@@ -37,7 +37,7 @@ public class CarStorageServiceImpl implements CarStorageService {
 
     @Override
     public Car getById(Long carId) {
-        Cars.GetAvailableCarResponse car = stub.getAvailableCar(Cars.GetAvailableCarRequest.newBuilder().build());
+        Cars.GetAvailableCarResponse car = stub.getAvailableCar(Cars.GetAvailableCarRequest.newBuilder().setCarId(carId).build());
 
         if (!car.hasCar()) {
             throw new ServiceException("Car is not available");

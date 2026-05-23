@@ -14,13 +14,26 @@ spring:
         dialect: org.hibernate.dialect.PostgreSQLDialect
 
   liquibase:
-    change-log: classpath:db/changelog/changelog.yaml
+    change-log: classpath:changelog.yaml
 
   security:
     oauth2:
       resourceserver:
         jwt:
           issuer-uri: http://localhost:8080/realms/test
+  kafka:
+    consumer:
+      bootstrap-servers: localhost:9092
+      group-id: my-group
+
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+
+      properties:
+        spring.json.trusted.packages: "*"
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.LongSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
 
 keycloak:
   server-url: http://localhost:8080
@@ -35,6 +48,17 @@ springdoc:
       client-secret: test-secret
       additional-query-string-params:
         prompt: login
+outbox:
+  cron: "0 */5 * * * *"
+
+kafka:
+  topics:
+    output:
+      storage-event: "storage.order.solutions"
+    input: "storage.order.questions"
+  events:
+    input:
+      creating-event: "OrderSentForApproval"
 
 logging:
   level:
