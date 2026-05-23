@@ -17,6 +17,9 @@ public abstract class CommonDraftState implements CommonOrderStateHandler {
     }
 
     @Override
+    public Boolean tryReserve(CommonOrderCore core) { return false; }
+
+    @Override
     public Boolean tryCarReadyToTake(CommonOrderCore core) {
         return false;
     }

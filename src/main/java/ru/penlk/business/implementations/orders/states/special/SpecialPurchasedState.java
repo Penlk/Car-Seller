@@ -14,4 +14,11 @@ public class SpecialPurchasedState extends SpecialDraftState {
 
         return true;
     }
+
+    @Override
+    public Boolean tryCancel(SpecialOrderCore core) {
+        core.updateState(new SpecialCanceledState());
+
+        return true;
+    }
 }

@@ -23,6 +23,20 @@ spring:
           issuer-uri: http://${KEYCLOAK_HOST}:${KEYCLOAK_PORT}/realms/${KEYCLOAK_REALM}
           jws-algorithms: RS256
 
+  kafka:
+    consumer:
+      bootstrap-servers: localhost:9092
+      group-id: order-consumers
+
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+
+      properties:
+        spring.json.trusted.packages: "*"
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.LongSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+
 keycloak:
   server-url: http://${KEYCLOAK_HOST}:${KEYCLOAK_PORT}
   realm: ${KEYCLOAK_REALM}
@@ -36,6 +50,19 @@ springdoc:
       client-secret: ${SPRINGDOC_SWAGGER_UI_OAUTH_CLIENT_SECRET}
       additional-query-string-params:
         prompt: login
+
+kafka:
+  topics:
+    output: "storage.order.questions"
+    input: "storage.order.solutions"
+  events:
+    input:
+      rejected: "OrderRejected"
+      approved: "OrderApproved"
+    output: "OrderSentForApproval"
+
+outbox:
+  cron: "*/5 * * * * *"
 
 logging:
   level:

@@ -7,5 +7,6 @@ public enum SpecialOrderState {
     PAID,
     CAR_IS_READY,
     CANCELED,
-    DONE
+    DONE,
+    RESERVED,
 }

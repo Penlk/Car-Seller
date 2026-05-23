@@ -1,0 +1,71 @@
+spring:
+  config:
+    import: optional:file:.env[.properties]
+
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    username: ${STORAGE_POSTGRES_USER}
+    password: ${STORAGE_POSTGRES_PASSWORD}
+    url: jdbc:postgresql://${STORAGE_POSTGRES_HOST}:${STORAGE_POSTGRES_PORT}/${STORAGE_POSTGRES_DB}?sslmode=disable
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
+  liquibase:
+    change-log: classpath:changelog.yaml
+  kafka:
+    consumer:
+      bootstrap-servers: localhost:9092
+      group-id: my-group
+
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+
+      properties:
+        spring.json.trusted.packages: "*"
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.LongSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://${KEYCLOAK_HOST}:${KEYCLOAK_PORT}/realms/${KEYCLOAK_REALM}
+          jws-algorithms: RS256
+
+#keycloak:
+#  server-url: http://${KEYCLOAK_HOST}:${KEYCLOAK_PORT}
+#  realm: ${KEYCLOAK_REALM}
+#  client-id: ${KEYCLOAK_CLIENT_ID}
+#  client-secret: ${KEYCLOAK_CLIENT_SECRET}
+
+springdoc:
+  swagger-ui:
+    oauth:
+      client-id: ${SPRINGDOC_SWAGGER_UI_OAUTH_CLIENT_ID}
+      client-secret: ${SPRINGDOC_SWAGGER_UI_OAUTH_CLIENT_SECRET}
+      additional-query-string-params:
+        prompt: login
+
+kafka:
+  topics:
+    output:
+       storage-event: "storage.order.solutions"
+    input: "storage.order.questions"
+  events:
+    input:
+      creating-event: "OrderSentForApproval"
+
+outbox:
+  cron: "*/5 * * * * *"
+
+server:
+  port: 8081
+
+logging:
+  level:
+    org.springframework.security: DEBUG
+    org.springframework.security.oauth2: DEBUG

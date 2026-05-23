@@ -9,6 +9,8 @@ public interface CommonOrderStateHandler {
 
     Boolean tryPurchase(CommonOrderCore core);
 
+    Boolean tryReserve(CommonOrderCore core);
+
     Boolean tryCarReadyToTake(CommonOrderCore core);
 
     Boolean tryComplete(CommonOrderCore core);

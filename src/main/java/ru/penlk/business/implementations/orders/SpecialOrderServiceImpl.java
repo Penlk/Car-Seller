@@ -1,7 +1,7 @@
 package ru.penlk.business.implementations.orders;
 
 import jakarta.transaction.Transactional;
-import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -25,22 +25,26 @@ import ru.penlk.dao.entities.configurations.specials.SpecialConfiguration;
 import ru.penlk.dao.entities.orders.special.SpecialAllowedPart;
 import ru.penlk.dao.entities.orders.special.SpecialOrder;
 import ru.penlk.dao.entities.orders.special.SpecialOrderState;
+import ru.penlk.dao.entities.outbox.OrderType;
+import ru.penlk.dao.entities.outbox.OutboxEvent;
 import ru.penlk.dao.entities.vo.Price;
 import ru.penlk.dao.repositories.interfaces.configurations.ConfiguratorRepository;
 import ru.penlk.dao.repositories.interfaces.orders.special.SpecialOrderRepository;
+import ru.penlk.dao.repositories.interfaces.outbox.OutboxRepository;
 
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
-@AllArgsConstructor
 @Service
 @Transactional
 public class SpecialOrderServiceImpl implements SpecialOrderService {
     private final SpecialOrderRepository specialOrderRepository;
     private final ConfiguratorRepository configuratorRepository;
+    private final OutboxRepository outboxRepository;
     private final KeycloakAdminService keycloakAdminService;
     private final GrantedRoleService grantedRoleService;
 
@@ -49,6 +53,25 @@ public class SpecialOrderServiceImpl implements SpecialOrderService {
 
     private final ManagerSelectionStrategy managerSelectionStrategy;
     private final SpecialStateMapper specialStateMapper;
+
+    @Value("${kafka.events.output}")
+    private String outputEvent;
+
+    @Value("${kafka.topics.output}")
+    private String outputTopic;
+
+    public SpecialOrderServiceImpl(SpecialOrderRepository specialOrderRepository, ConfiguratorRepository configuratorRepository, OutboxRepository outboxRepository, KeycloakAdminService keycloakAdminService, GrantedRoleService grantedRoleService, RequiredNodeConfigurationService requiredNodeConfigurationService, CarPartPriceCalculator carPartPriceCalculator, ManagerSelectionStrategy managerSelectionStrategy, SpecialStateMapper specialStateMapper) {
+        this.specialOrderRepository = specialOrderRepository;
+        this.configuratorRepository = configuratorRepository;
+        this.outboxRepository = outboxRepository;
+        this.keycloakAdminService = keycloakAdminService;
+        this.grantedRoleService = grantedRoleService;
+        this.requiredNodeConfigurationService = requiredNodeConfigurationService;
+        this.carPartPriceCalculator = carPartPriceCalculator;
+        this.managerSelectionStrategy = managerSelectionStrategy;
+        this.specialStateMapper = specialStateMapper;
+    }
+
 
     @Override
     @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER') or hasRole('USER') and @orderSecurityImpl.isOwnerSpecialOrder(#orderId)")
@@ -156,7 +179,7 @@ public class SpecialOrderServiceImpl implements SpecialOrderService {
     @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER')")
     public SpecialOrder confirm(Long orderId) throws ServiceException {
 
-        SpecialOrderFacade orderFacade = getFacade(orderId);
+        SpecialOrderFacade orderFacade = getFacade(getOrder(orderId));
 
         if (orderFacade.tryConfirm() == Boolean.FALSE) {
             throw new ServiceException(String.format("SpecialOrder with id: {%d} impossible to confirm", orderId));
@@ -168,7 +191,7 @@ public class SpecialOrderServiceImpl implements SpecialOrderService {
     @Override
     @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER')")
     public SpecialOrder waitPurchase(Long orderId) throws ServiceException {
-        SpecialOrderFacade orderFacade = getFacade(orderId);
+        SpecialOrderFacade orderFacade = getFacade(getOrder(orderId));
 
         if (orderFacade.tryWaitPurchase() == Boolean.FALSE) {
             throw new ServiceException(String.format("SpecialOrder with id: {%d} impossible to waiting purchase", orderId));
@@ -180,11 +203,25 @@ public class SpecialOrderServiceImpl implements SpecialOrderService {
     @Override
     @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER', 'USER')")
     public SpecialOrder purchase(Long orderId) throws ServiceException {
-        SpecialOrderFacade orderFacade = getFacade(orderId);
+        SpecialOrder order = getOrder(orderId);
+        SpecialOrderFacade orderFacade = getFacade(order);
 
         if (orderFacade.tryPurchase() == Boolean.FALSE) {
             throw new ServiceException(String.format("SpecialOrder with id: {%d} impossible to purchase", orderId));
         }
+
+        OutboxEvent outboxEvent = new OutboxEvent();
+        outboxEvent.setName(outputEvent);
+        outboxEvent.setOrderType(OrderType.COMMON);
+        outboxEvent.setOrderSourceId(orderId);
+        outboxEvent.setCarSourceId(order.getCar().getId());
+
+        Set<CarPart> carParts = order.getConfigurator().getSpecialConfigurations()
+                .stream().map(x -> x.getSpecialAllowedPart().getCarPart()).collect(Collectors.toSet());
+
+        outboxEvent.setCarPartSources(carParts);
+
+        outboxRepository.save(outboxEvent);
 
         return specialOrderRepository.save(orderFacade.getOrder());
     }
@@ -192,7 +229,7 @@ public class SpecialOrderServiceImpl implements SpecialOrderService {
     @Override
     @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER')")
     public SpecialOrder carReadyToTake(Long orderId) throws ServiceException {
-        SpecialOrderFacade orderFacade = getFacade(orderId);
+        SpecialOrderFacade orderFacade = getFacade(getOrder(orderId));
 
         if (orderFacade.tryCarReadyToTake() == Boolean.FALSE) {
             throw new ServiceException(String.format("SpecialOrder with id: {%d} impossible to car take", orderId));
@@ -204,7 +241,7 @@ public class SpecialOrderServiceImpl implements SpecialOrderService {
     @Override
     @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER')")
     public SpecialOrder complete(Long orderId) throws ServiceException {
-        SpecialOrderFacade orderFacade = getFacade(orderId);
+        SpecialOrderFacade orderFacade = getFacade(getOrder(orderId));
 
         if (orderFacade.tryComplete() == Boolean.FALSE) {
             throw new ServiceException(String.format("SpecialOrder with id: {%d} impossible to complete", orderId));
@@ -216,7 +253,7 @@ public class SpecialOrderServiceImpl implements SpecialOrderService {
     @Override
     @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER', 'USER')")
     public SpecialOrder cancel(Long orderId) throws ServiceException {
-        SpecialOrderFacade orderFacade = getFacade(orderId);
+        SpecialOrderFacade orderFacade = getFacade(getOrder(orderId));
 
         if (orderFacade.tryCancel() == Boolean.FALSE) {
             throw new ServiceException(String.format("SpecialOrder with id: {%d} cancelled", orderId));
@@ -225,14 +262,17 @@ public class SpecialOrderServiceImpl implements SpecialOrderService {
         return specialOrderRepository.save(orderFacade.getOrder());
     }
 
-    private SpecialOrderFacade getFacade(Long orderId) {
+    private SpecialOrder getOrder(Long orderId) throws ServiceException {
         Optional<SpecialOrder> optionalOrder = specialOrderRepository.findById(orderId);
 
         if (optionalOrder.isEmpty()) {
-            throw new ServiceException(String.format("SpecialOrder with id: {%d} not found", orderId));
+            throw new ServiceException(String.format("CommonOrder with id: {%d} not found", orderId));
         }
 
-        SpecialOrder order = optionalOrder.get();
+        return optionalOrder.get();
+    }
+
+    private SpecialOrderFacade getFacade(SpecialOrder order) {
         SpecialOrderStateHandler state = specialStateMapper.map(order.getState());
 
         return new SpecialOrderFacade(new SpecialOrderCore(order, state));

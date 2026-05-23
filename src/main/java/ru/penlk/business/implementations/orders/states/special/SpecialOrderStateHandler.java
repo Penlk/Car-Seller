@@ -9,6 +9,8 @@ public interface SpecialOrderStateHandler {
 
     Boolean tryPurchase(SpecialOrderCore core);
 
+    Boolean tryReserve(SpecialOrderCore core);
+
     Boolean tryCarReadyToTake(SpecialOrderCore core);
 
     Boolean tryComplete(SpecialOrderCore core);

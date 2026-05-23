@@ -1,0 +1,234 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1779128490084-1
+      author: penlk
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_car_part_stocks
+                  name: id
+                  type: UUID
+              - column:
+                  constraints:
+                    nullable: false
+                  name: created_at
+                  type: DATETIME
+              - column:
+                  name: updated_at
+                  type: DATETIME
+              - column:
+                  name: removed
+                  type: BOOLEAN
+              - column:
+                  constraints:
+                    nullable: false
+                  name: car_part_source_id
+                  type: BIGINT
+              - column:
+                  constraints:
+                    nullable: false
+                  name: stock
+                  type: BIGINT
+              - column:
+                  constraints:
+                    nullable: false
+                  name: reserved
+                  type: BIGINT
+              - column:
+                  constraints:
+                    nullable: false
+                  name: available
+                  type: BOOLEAN
+            tableName: car_part_stocks
+  - changeSet:
+      id: 1779128490084-2
+      author: penlk
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_car_stocks
+                  name: id
+                  type: UUID
+              - column:
+                  constraints:
+                    nullable: false
+                  name: created_at
+                  type: DATETIME
+              - column:
+                  name: updated_at
+                  type: DATETIME
+              - column:
+                  name: removed
+                  type: BOOLEAN
+              - column:
+                  constraints:
+                    nullable: false
+                  name: car_source_id
+                  type: BIGINT
+              - column:
+                  constraints:
+                    nullable: false
+                  name: stock
+                  type: BIGINT
+              - column:
+                  constraints:
+                    nullable: false
+                  name: reserved
+                  type: BIGINT
+            tableName: car_stocks
+  - changeSet:
+      id: 1779128490084-3
+      author: penlk
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_order_car_parts
+                  name: car_part_stock_id
+                  type: UUID
+              - column:
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_order_car_parts
+                  name: order_stock_id
+                  type: UUID
+            tableName: order_car_parts
+  - changeSet:
+      id: 1779128490084-4
+      author: penlk
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_order_stocks
+                  name: id
+                  type: UUID
+              - column:
+                  constraints:
+                    nullable: false
+                  name: created_at
+                  type: DATETIME
+              - column:
+                  name: updated_at
+                  type: DATETIME
+              - column:
+                  name: removed
+                  type: BOOLEAN
+              - column:
+                  constraints:
+                    nullable: false
+                  name: order_source_id
+                  type: BIGINT
+              - column:
+                  constraints:
+                    nullable: false
+                  name: status
+                  type: VARCHAR(255)
+              - column:
+                  name: car_stock_id
+                  type: UUID
+              - column:
+                  name: employee_id
+                  type: VARCHAR(255)
+              - column:
+                  constraints:
+                    nullable: false
+                  name: order_type
+                  type: VARCHAR(255)
+            tableName: order_stocks
+  - changeSet:
+      id: 1779128490084-5
+      author: penlk
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_outbox
+                  name: id
+                  type: UUID
+              - column:
+                  constraints:
+                    nullable: false
+                  name: created_at
+                  type: DATETIME
+              - column:
+                  name: updated_at
+                  type: DATETIME
+              - column:
+                  name: removed
+                  type: BOOLEAN
+              - column:
+                  constraints:
+                    nullable: false
+                  name: order_type
+                  type: VARCHAR(255)
+              - column:
+                  constraints:
+                    nullable: false
+                  name: source_order_id
+                  type: BIGINT
+              - column:
+                  constraints:
+                    nullable: false
+                  name: event
+                  type: VARCHAR(255)
+              - column:
+                  name: explanation
+                  type: VARCHAR(255)
+            tableName: outbox
+  - changeSet:
+      id: 1779128490084-6
+      author: penlk
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: car_stock_id
+            baseTableName: order_stocks
+            constraintName: FK_ORDER_STOCKS_ON_CAR_STOCK
+            referencedColumnNames: id
+            referencedTableName: car_stocks
+  - changeSet:
+      id: 1779128490084-7
+      author: penlk
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: car_part_stock_id
+            baseTableName: order_car_parts
+            constraintName: fk_ordcarpar_on_car_part_stock
+            referencedColumnNames: id
+            referencedTableName: car_part_stocks
+  - changeSet:
+      id: 1779128490084-8
+      author: penlk
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: order_stock_id
+            baseTableName: order_car_parts
+            constraintName: fk_ordcarpar_on_order_stock
+            referencedColumnNames: id
+            referencedTableName: order_stocks

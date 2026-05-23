@@ -53,8 +53,51 @@ services:
         condition: service_healthy
     volumes:
       - ./src/main/resources/keycloak/import:/opt/keycloak/data/import
+  storage-db:
+    image: postgres:16
+    container_name: storage-db
+    working_dir: /app
+    environment:
+      - PGDATA=/app/data
+      - POSTGRES_DB=${STORAGE_POSTGRES_DB}
+      - POSTGRES_USER=${STORAGE_POSTGRES_USER}
+      - POSTGRES_PASSWORD=${STORAGE_POSTGRES_PASSWORD}
+    volumes:
+      - storage-data:/app/data
+    ports:
+      - ${STORAGE_POSTGRES_PORT}:5432
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U $STORAGE_POSTGRES_USER -d $STORAGE_POSTGRES_DB -h localhost -p 5432" ]
+      interval: 1m30s
+      timeout: 30s
+      retries: 5
+      start_period: 30s
+  kafka:
+    image: confluentinc/cp-kafka@sha256:acbbf674f2ed40e5d0a8ca51beb0f00692c866fc22b5ce06f8cadbdc54cd4436
+    container_name: kafka
+    ports:
+      - "9092:9092"
+    environment:
+      CLUSTER_ID: '3Myb0wkQR0yQ00XV0MUqNA'
+
+      KAFKA_NODE_ID: 1
+      KAFKA_PROCESS_ROLES: broker,controller
+
+      KAFKA_LISTENERS: PLAINTEXT://:9092,CONTROLLER://:9093
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092
+
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT
+      KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
+      KAFKA_CONTROLLER_QUORUM_VOTERS: 1@kafka:9093
+
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+
+    volumes:
+      - kafka-logs:/var/lib/kafka/data
 
 
 volumes:
   data:
   keycloak-data:
+  kafka-logs:
+  storage-data:

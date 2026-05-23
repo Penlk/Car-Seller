@@ -19,7 +19,6 @@ repositories {
 }
 
 dependencies {
-
     //lab 1
     compileOnly 'org.projectlombok:lombok:1.18.42'
     testCompileOnly 'org.projectlombok:lombok:1.18.42'
@@ -68,6 +67,11 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-security-oauth2-authorization-server'
 
     implementation 'org.keycloak:keycloak-admin-client:26.0.7'
+
+    //lab 4
+    implementation 'org.springframework.boot:spring-boot-starter-kafka'
+    testImplementation 'org.springframework.kafka:spring-kafka-test'
+    testImplementation 'org.testcontainers:kafka:1.19.7'
 }
 
 springBoot {

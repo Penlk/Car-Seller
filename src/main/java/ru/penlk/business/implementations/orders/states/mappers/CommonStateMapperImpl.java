@@ -8,6 +8,7 @@ import ru.penlk.business.implementations.orders.states.common.CommonConfirmedSta
 import ru.penlk.business.implementations.orders.states.common.CommonOrderStateHandler;
 import ru.penlk.business.implementations.orders.states.common.CommonPlacedState;
 import ru.penlk.business.implementations.orders.states.common.CommonPurchasedState;
+import ru.penlk.business.implementations.orders.states.common.CommonReservedState;
 import ru.penlk.business.implementations.orders.states.common.CommonWaitingPurchaseState;
 import ru.penlk.dao.entities.orders.common.CommonOrderState;
 
@@ -23,6 +24,7 @@ public class CommonStateMapperImpl implements CommonStateMapper {
             case CommonOrderState.CAR_IS_READY -> new CommonCarReadyToTakeState();
             case CommonOrderState.CANCELED -> new CommonCanceledState();
             case CommonOrderState.DONE -> new CommonCompletedState();
+            case CommonOrderState.RESERVED -> new CommonReservedState();
         };
     }
 }
