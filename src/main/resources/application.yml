@@ -37,6 +37,12 @@ spring:
       key-serializer: org.apache.kafka.common.serialization.LongSerializer
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
 
+grpc:
+  client:
+    storage-service:
+      address: static://${STORAGE_GRPC_HOST}:${STORAGE_GRPC_PORT}
+      negotiationType: plaintext
+
 keycloak:
   server-url: http://${KEYCLOAK_HOST}:${KEYCLOAK_PORT}
   realm: ${KEYCLOAK_REALM}
@@ -68,3 +74,5 @@ logging:
   level:
     org.springframework.security: DEBUG
     org.springframework.security.oauth2: DEBUG
+
+kind: Spring Boot

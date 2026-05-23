@@ -3,6 +3,12 @@ plugins {
     id 'idea'
     id 'io.spring.dependency-management' version '1.1.7'
     id 'org.springframework.boot' version '4.0.5'
+    id "com.google.protobuf" version '0.9.4'
+}
+ext {
+    springGrpcVersion = "1.0.3"
+    protobufVersion = '3.25.3'
+    grpcVersion = '1.64.0'
 }
 
 group = 'penlk'
@@ -72,6 +78,15 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-kafka'
     testImplementation 'org.springframework.kafka:spring-kafka-test'
     testImplementation 'org.testcontainers:kafka:1.19.7'
+
+    //lab 5
+    implementation 'net.devh:grpc-client-spring-boot-starter:3.1.0.RELEASE'
+
+    implementation 'io.grpc:grpc-netty-shaded'
+    implementation 'io.grpc:grpc-protobuf'
+    implementation 'io.grpc:grpc-stub'
+
+    implementation 'javax.annotation:javax.annotation-api:1.3.2'
 }
 
 springBoot {
@@ -94,6 +109,27 @@ sourceSets {
         resources.srcDir file('src/integrationTest/resources')
         compileClasspath += sourceSets.main.output + configurations.testRuntimeClasspath
         runtimeClasspath += sourceSets.main.output + compileClasspath
+    }
+}
+
+protobuf {
+
+    protoc {
+        artifact = "com.google.protobuf:protoc:${protobufVersion}"
+    }
+
+    plugins {
+        grpc {
+            artifact = "io.grpc:protoc-gen-grpc-java:${grpcVersion}"
+        }
+    }
+
+    generateProtoTasks {
+        all().each { task ->
+            task.plugins {
+                grpc {}
+            }
+        }
     }
 }
 
@@ -128,5 +164,10 @@ test {
     useJUnitPlatform()
     testLogging {
         events 'passed', 'skipped', 'failed'
+    }
+}
+dependencyManagement {
+    imports {
+        mavenBom "org.springframework.grpc:spring-grpc-dependencies:$springGrpcVersion"
     }
 }
