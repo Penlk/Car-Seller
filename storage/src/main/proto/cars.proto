@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+package storage;
+
+message GetAvailableCarsRequest {}
+
+message GetAvailableCarsResponse {
+  repeated Car cars = 1;
+}
+
+message Car {
+  int64 id = 1;
+  int64 free = 2;
+}
+
+message GetAvailableCarRequest {
+  int64 car_id = 1;
+}
+
+message GetAvailableCarResponse {
+  optional Car car = 1;
+}
+
+service CarService {
+  rpc GetAvailableCars (GetAvailableCarsRequest) returns (GetAvailableCarsResponse);
+
+  rpc GetAvailableCar (GetAvailableCarRequest) returns (GetAvailableCarResponse);
+}

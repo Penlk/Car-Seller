@@ -5,6 +5,7 @@ import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ru.penlk.business.contracts.ServiceException;
 import ru.penlk.business.contracts.cars.CarService;
+import ru.penlk.business.contracts.cars.CarStorageService;
 import ru.penlk.business.contracts.cars.fk.DefaultConfigurationProvider;
 import ru.penlk.business.contracts.cars.fk.RequireNodeProvider;
 import ru.penlk.business.contracts.cars.fk.SpecialAllowedPartProvider;
@@ -34,6 +36,7 @@ public class CarController {
     private final CarService carService;
     private final CreateCarMapper createCarMapper;
     private final CarMapper carMapper;
+    private final CarStorageService carStorageService;
 
     @GetMapping("/{id}")
     public ResponseEntity<CarDto> get(@PathVariable @NonNull Long id) {
@@ -43,6 +46,27 @@ public class CarController {
             return ResponseEntity.notFound().build();
         }
     }
+
+    @GetMapping("/api/v1/cars")
+    @PreAuthorize("hasAnyRole('USER', 'MANAGER', 'ADMIN')")
+    public ResponseEntity<?> getAllAvailable() {
+        try {
+            return ResponseEntity.ok().body(carStorageService.getAllAvailableCars().stream().map(carMapper::carToCarDto).toList());
+        } catch (ServiceException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @GetMapping("/api/v1/cars/{id}")
+    @PreAuthorize("hasAnyRole('USER', 'MANAGER', 'ADMIN')")
+    public ResponseEntity<?> getAvailable(@PathVariable Long id) {
+        try {
+            return ResponseEntity.ok().body(carMapper.carToCarDto(carStorageService.getById(id)));
+        } catch (ServiceException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
 
     @PostMapping
     public ResponseEntity<?> create(@RequestBody @Valid CreateCarDto request) {

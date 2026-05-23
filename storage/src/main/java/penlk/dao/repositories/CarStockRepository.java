@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import penlk.dao.entities.CarStock;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -24,4 +25,12 @@ public interface CarStockRepository extends JpaRepository<CarStock, UUID> {
     default void deleteById(@Param("id") UUID id) {
         softDeleteById(id);
     }
+
+    @Query("""
+        SELECT cs
+        FROM CarStock cs
+        WHERE cs.removed = false
+          AND cs.reserved < cs.stock
+    """)
+    List<CarStock> findAvailableCars();
 }
