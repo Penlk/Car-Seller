@@ -93,6 +93,9 @@ dependencies {
     testImplementation 'io.grpc:grpc-netty-shaded'
     testImplementation 'io.grpc:grpc-protobuf'
     testImplementation 'io.grpc:grpc-stub'
+
+    //doptask OpenTelemetry
+    implementation 'org.springframework.boot:spring-boot-starter-opentelemetry'
 }
 
 springBoot {

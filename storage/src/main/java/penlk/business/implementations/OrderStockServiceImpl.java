@@ -98,6 +98,8 @@ public class OrderStockServiceImpl implements OrderStockService {
             });
         }
 
+        carStockRepository.save(car);
+
         outboxRepository.save(new Outbox(
                 order.getOrderType(),
                 order.getOrderSourceId(),
