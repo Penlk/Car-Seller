@@ -1,6 +1,9 @@
 spring:
   config:
     import: optional:file:.env[.properties]
+  
+  profiles:
+    active: otel
 
   datasource:
     driver-class-name: org.postgresql.Driver
@@ -28,6 +31,9 @@ spring:
     producer:
       key-serializer: org.apache.kafka.common.serialization.LongSerializer
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+
+  application:
+    name: storage
 
   security:
     oauth2:
@@ -76,3 +82,24 @@ logging:
   level:
     org.springframework.security: DEBUG
     org.springframework.security.oauth2: DEBUG
+
+management:
+  tracing:
+    sampling:
+      probability: 1.0
+    propagation:
+      type: W3C
+  otlp:
+    tracing:
+      endpoint: http://localhost:4318
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus
+  metrics:
+    export:
+      prometheus:
+        enabled: true
+  endpoint:
+    health:
+      show-details: always

@@ -1,6 +1,12 @@
 spring:
   config:
     import: optional:file:.env[.properties]
+  
+  profiles:
+    active: otel
+
+  application:
+    name: order
 
   datasource:
     driver-class-name: org.postgresql.Driver
@@ -76,3 +82,26 @@ logging:
     org.springframework.security.oauth2: DEBUG
 
 kind: Spring Boot
+
+management:
+  tracing:
+    sampling:
+      probability: 1.0
+    propagation:
+      type:
+        - W3C
+        - B3
+  otlp:
+    tracing:
+      endpoint: http://localhost:4318
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus
+  metrics:
+    export:
+      prometheus:
+        enabled: true
+  endpoint:
+    health:
+      show-details: always

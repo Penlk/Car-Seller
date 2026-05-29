@@ -22,6 +22,8 @@ java {
 
 repositories {
     mavenCentral()
+    maven { url 'https://repo.spring.io/release' }
+    maven { url 'https://maven.google.com' }
 }
 
 dependencies {
@@ -94,6 +96,9 @@ dependencies {
     testImplementation 'io.grpc:grpc-netty-shaded'
     testImplementation 'io.grpc:grpc-protobuf'
     testImplementation 'io.grpc:grpc-stub'
+
+    //OpenTelemetry - minimal setup
+    implementation 'org.springframework.boot:spring-boot-starter-opentelemetry'
 }
 
 springBoot {
