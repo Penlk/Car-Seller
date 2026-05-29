@@ -7,13 +7,12 @@ datasources:
     url: http://tempo:3200
     isDefault: true
     jsonData:
+      search:
+        hide: false
+      nodeGraph:
+        enabled: true
       lokiSearch:
-        datasourceUid: loki
-      traceToLogsV2:
-        datasourceUid: loki
-        spanStartTimeShift: '-1h'
-        spanEndTimeShift: '1h'
-        filterByTraceID: true
+        datasourceUid: Loki
 
   - name: Prometheus
     type: prometheus
@@ -31,3 +30,10 @@ datasources:
     access: proxy
     url: http://loki:3100
     isDefault: false
+    jsonData:
+      derivedFields:
+        - datasourceUid: Tempo
+          matcherRegex: traceID=(\w+)
+          name: TraceID
+          url: '$$${__value.raw}'
+

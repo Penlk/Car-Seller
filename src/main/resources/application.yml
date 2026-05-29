@@ -1,6 +1,12 @@
 spring:
   config:
     import: optional:file:.env[.properties]
+  
+  profiles:
+    active: otel
+
+  application:
+    name: order
 
   datasource:
     driver-class-name: org.postgresql.Driver
@@ -22,9 +28,6 @@ spring:
         jwt:
           issuer-uri: http://${KEYCLOAK_HOST}:${KEYCLOAK_PORT}/realms/${KEYCLOAK_REALM}
           jws-algorithms: RS256
-
-  application:
-    name: order
 
   kafka:
     consumer:
@@ -84,8 +87,21 @@ management:
   tracing:
     sampling:
       probability: 1.0
-  opentelemetry:
+    propagation:
+      type:
+        - W3C
+        - B3
+  otlp:
     tracing:
-      export:
-        otlp:
-          endpoint: http://localhost:4318/v1/traces
+      endpoint: http://localhost:4318
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus
+  metrics:
+    export:
+      prometheus:
+        enabled: true
+  endpoint:
+    health:
+      show-details: always
